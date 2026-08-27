@@ -63,6 +63,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { generateMultiPageContactSheetData } from "@/lib/script/scene-viewpoint-generator";
 import type { PendingViewpointData, ContactSheetPromptSet } from "@/stores/media-panel-store";
+import { t } from "@/i18n";
 
 // 状态徽章
 function StatusBadge({ status }: { status?: CompletionStatus }) {
@@ -732,9 +733,9 @@ export function PropertyPanel({
   if (!selectedItemId || !selectedItemType) {
     return (
       <div className="h-full flex items-center justify-center text-muted-foreground text-sm p-4 text-center">
-        选择集、角色、场景或分镜
+        {t("选择集、角色、场景或分镜")}
         <br />
-        查看详情
+        {t("查看详情")}
       </div>
     );
   }
@@ -762,13 +763,13 @@ export function PropertyPanel({
             <div className="bg-gradient-to-r from-primary/5 to-transparent p-3 rounded-lg border-l-2 border-primary/30">
               <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
                 <BookOpen className="h-3 w-3" />
-                本集大纲
+                {t("本集大纲")}
               </div>
               <div className="text-sm leading-relaxed whitespace-pre-wrap">{episode.synopsis}</div>
             </div>
           ) : (
             <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded-lg">
-              未生成大纲，点击下方按钮生成
+              {t("未生成大纲，点击下方按钮生成")}
             </div>
           )}
 
@@ -777,7 +778,7 @@ export function PropertyPanel({
             <div>
               <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
                 <ListChecks className="h-3 w-3" />
-                关键事件
+                {t("关键事件")}
               </div>
               <div className="space-y-1">
                 {episode.keyEvents.map((event, i) => (
@@ -792,7 +793,7 @@ export function PropertyPanel({
 
           {/* 场景统计 */}
           <div className="bg-muted/30 p-3 rounded-lg">
-            <div className="text-xs text-muted-foreground mb-2">场景统计</div>
+            <div className="text-xs text-muted-foreground mb-2">{t("场景统计")}</div>
             <div className="text-sm">
               本集共 <span className="font-medium text-primary">{episode.scenes?.length || 0}</span> 个场景
             </div>
@@ -813,7 +814,7 @@ export function PropertyPanel({
                 disabled={episode.shotGenerationStatus === 'generating'}
               >
                 <Film className="h-4 w-4 mr-2" />
-                生成分镜
+                {t("生成分镜")}
               </Button>
             )}
             {episode.shotGenerationStatus === 'completed' && (
@@ -824,7 +825,7 @@ export function PropertyPanel({
                   onClick={() => onCalibrateShots?.(episode.index)}
                 >
                   <Sparkles className="h-4 w-4 mr-2" />
-                  AI校准分镜
+                  {t("AI校准分镜")}
                 </Button>
                 <Button
                   variant="outline"
@@ -835,7 +836,7 @@ export function PropertyPanel({
                   {copied ? (
                     <>
                       <Check className="h-4 w-4 mr-2 text-green-500" />
-                      已复制
+                      {t("已复制")}
                     </>
                   ) : (
                     <>
@@ -896,41 +897,41 @@ export function PropertyPanel({
           {isEditing ? (
             <div className="space-y-3">
               <div className="space-y-1">
-                <Label className="text-xs">身份/背景</Label>
-                <Textarea value={editData.role || ""} onChange={(e) => setEditData({ ...editData, role: e.target.value })} className="min-h-[60px]" placeholder="详细的身份背景描述" />
+                <Label className="text-xs">{t("身份/背景")}</Label>
+                <Textarea value={editData.role || ""} onChange={(e) => setEditData({ ...editData, role: e.target.value })} className="min-h-[60px]" placeholder={t("详细的身份背景描述")} />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <Label className="text-xs">性别</Label>
+                  <Label className="text-xs">{t("性别")}</Label>
                   <Input value={editData.gender || ""} onChange={(e) => setEditData({ ...editData, gender: e.target.value })} className="h-8" />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">年龄</Label>
+                  <Label className="text-xs">{t("年龄")}</Label>
                   <Input value={editData.age || ""} onChange={(e) => setEditData({ ...editData, age: e.target.value })} className="h-8" />
                 </div>
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">性格</Label>
+                <Label className="text-xs">{t("性格")}</Label>
                 <Textarea value={editData.personality || ""} onChange={(e) => setEditData({ ...editData, personality: e.target.value })} className="min-h-[60px]" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">核心特质</Label>
+                <Label className="text-xs">{t("核心特质")}</Label>
                 <Textarea value={editData.traits || ""} onChange={(e) => setEditData({ ...editData, traits: e.target.value })} className="min-h-[60px]" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">技能/能力</Label>
-                <Textarea value={editData.skills || ""} onChange={(e) => setEditData({ ...editData, skills: e.target.value })} className="min-h-[60px]" placeholder="武功、魔法、专业技能等" />
+                <Label className="text-xs">{t("技能/能力")}</Label>
+                <Textarea value={editData.skills || ""} onChange={(e) => setEditData({ ...editData, skills: e.target.value })} className="min-h-[60px]" placeholder={t("武功、魔法、专业技能等")} />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">关键行为/事迹</Label>
+                <Label className="text-xs">{t("关键行为/事迹")}</Label>
                 <Textarea value={editData.keyActions || ""} onChange={(e) => setEditData({ ...editData, keyActions: e.target.value })} className="min-h-[60px]" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">外貌特征</Label>
+                <Label className="text-xs">{t("外貌特征")}</Label>
                 <Textarea value={editData.appearance || ""} onChange={(e) => setEditData({ ...editData, appearance: e.target.value })} className="min-h-[40px]" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">人物关系</Label>
+                <Label className="text-xs">{t("人物关系")}</Label>
                 <Textarea value={editData.relationships || ""} onChange={(e) => setEditData({ ...editData, relationships: e.target.value })} className="min-h-[40px]" />
               </div>
             </div>
@@ -956,7 +957,7 @@ export function PropertyPanel({
               {/* 视觉提示词（世界级大师生成） */}
               {((promptLanguage !== 'en' && character.visualPromptZh) || (promptLanguage !== 'zh' && character.visualPromptEn)) && (
                 <div className="bg-gradient-to-r from-purple-500/10 to-transparent p-2 rounded-lg border-l-2 border-purple-500/30">
-                  <div className="text-xs text-purple-600 dark:text-purple-400 mb-1">🎨 视觉提示词</div>
+                  <div className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t("🎨 视觉提示词")}</div>
                   {promptLanguage !== 'en' && character.visualPromptZh && (
                     <div className="text-xs text-muted-foreground mb-1">{character.visualPromptZh}</div>
                   )}
@@ -968,13 +969,13 @@ export function PropertyPanel({
               
               {character.role && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">身份/背景</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("身份/背景")}</div>
                   <div className="text-sm whitespace-pre-wrap">{character.role}</div>
                 </div>
               )}
               {(character.gender || character.age) && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">基本信息</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("基本信息")}</div>
                   <div className="text-sm">
                     {[character.gender, character.age].filter(Boolean).join(" · ")}
                   </div>
@@ -982,43 +983,43 @@ export function PropertyPanel({
               )}
               {character.personality && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">性格</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("性格")}</div>
                   <div className="text-sm whitespace-pre-wrap">{character.personality}</div>
                 </div>
               )}
               {character.traits && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">核心特质</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("核心特质")}</div>
                   <div className="text-sm whitespace-pre-wrap">{character.traits}</div>
                 </div>
               )}
               {character.skills && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">技能/能力</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("技能/能力")}</div>
                   <div className="text-sm whitespace-pre-wrap">{character.skills}</div>
                 </div>
               )}
               {character.keyActions && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">关键行为/事迹</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("关键行为/事迹")}</div>
                   <div className="text-sm whitespace-pre-wrap">{character.keyActions}</div>
                 </div>
               )}
               {character.appearance && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">外貌特征</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("外貌特征")}</div>
                   <div className="text-sm whitespace-pre-wrap">{character.appearance}</div>
                 </div>
               )}
               {character.relationships && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">人物关系</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("人物关系")}</div>
                   <div className="text-sm whitespace-pre-wrap">{character.relationships}</div>
                 </div>
               )}
               {character.tags && character.tags.length > 0 && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">角色标签</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("角色标签")}</div>
                   <div className="flex flex-wrap gap-1">
                     {character.tags.map((tag, i) => (
                       <span key={i} className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs">
@@ -1030,7 +1031,7 @@ export function PropertyPanel({
               )}
               {character.notes && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">角色备注</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("角色备注")}</div>
                   <div className="text-sm text-muted-foreground italic whitespace-pre-wrap">{character.notes}</div>
                 </div>
               )}
@@ -1071,12 +1072,12 @@ export function PropertyPanel({
               {copiedCharacter ? (
                 <>
                   <Check className="h-4 w-4 mr-2 text-green-500" />
-                  已复制
+                  {t("已复制")}
                 </>
               ) : (
                 <>
                   <Copy className="h-4 w-4 mr-2" />
-                  复制角色数据
+                  {t("复制角色数据")}
                 </>
               )}
             </Button>
@@ -1086,7 +1087,7 @@ export function PropertyPanel({
               onClick={() => setDeleteDialogOpen(true)}
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              删除角色
+              {t("删除角色")}
             </Button>
           </div>
         </div>
@@ -1094,12 +1095,12 @@ export function PropertyPanel({
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>确认删除</AlertDialogTitle>
+              <AlertDialogTitle>{t("确认删除")}</AlertDialogTitle>
               <AlertDialogDescription>确定要删除角色「{character.name}」吗？</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>取消</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">删除</AlertDialogAction>
+              <AlertDialogCancel>{t("取消")}</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">{t("删除")}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -1151,15 +1152,15 @@ export function PropertyPanel({
           {isEditing ? (
             <div className="space-y-3">
               <div className="space-y-1">
-                <Label className="text-xs">地点</Label>
+                <Label className="text-xs">{t("地点")}</Label>
                 <Input value={editData.location || ""} onChange={(e) => setEditData({ ...editData, location: e.target.value })} className="h-8" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">时间</Label>
-                <Input value={editData.time || ""} onChange={(e) => setEditData({ ...editData, time: e.target.value })} className="h-8" placeholder="如：白天、夜晚、黄昏" />
+                <Label className="text-xs">{t("时间")}</Label>
+                <Input value={editData.time || ""} onChange={(e) => setEditData({ ...editData, time: e.target.value })} className="h-8" placeholder={t("如：白天、夜晚、黄昏")} />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">氛围</Label>
+                <Label className="text-xs">{t("氛围")}</Label>
                 <Textarea value={editData.atmosphere || ""} onChange={(e) => setEditData({ ...editData, atmosphere: e.target.value })} className="min-h-[60px]" />
               </div>
             </div>
@@ -1167,16 +1168,16 @@ export function PropertyPanel({
             <div className="space-y-3">
               {/* 基础信息 */}
               <div>
-                <div className="text-xs text-muted-foreground mb-1">地点</div>
+                <div className="text-xs text-muted-foreground mb-1">{t("地点")}</div>
                 <div className="text-sm">{scene.location}</div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground mb-1">时间</div>
+                <div className="text-xs text-muted-foreground mb-1">{t("时间")}</div>
                 <div className="text-sm">{scene.time}</div>
               </div>
               {scene.atmosphere && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">氛围</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("氛围")}</div>
                   <div className="text-sm">{scene.atmosphere}</div>
                 </div>
               )}
@@ -1185,41 +1186,41 @@ export function PropertyPanel({
               {(scene.architectureStyle || scene.lightingDesign || scene.colorPalette || scene.eraDetails) && (
                 <>
                   <Separator className="my-2" />
-                  <div className="text-xs font-medium text-primary mb-2">场景设计</div>
+                  <div className="text-xs font-medium text-primary mb-2">{t("场景设计")}</div>
                   
                   {scene.architectureStyle && (
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">建筑风格</div>
+                      <div className="text-xs text-muted-foreground mb-1">{t("建筑风格")}</div>
                       <div className="text-sm">{scene.architectureStyle}</div>
                     </div>
                   )}
                   {scene.lightingDesign && (
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">光影设计</div>
+                      <div className="text-xs text-muted-foreground mb-1">{t("光影设计")}</div>
                       <div className="text-sm">{scene.lightingDesign}</div>
                     </div>
                   )}
                   {scene.colorPalette && (
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">色彩基调</div>
+                      <div className="text-xs text-muted-foreground mb-1">{t("色彩基调")}</div>
                       <div className="text-sm">{scene.colorPalette}</div>
                     </div>
                   )}
                   {scene.eraDetails && (
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">时代特征</div>
+                      <div className="text-xs text-muted-foreground mb-1">{t("时代特征")}</div>
                       <div className="text-sm">{scene.eraDetails}</div>
                     </div>
                   )}
                   {scene.keyProps && scene.keyProps.length > 0 && (
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">关键道具</div>
+                      <div className="text-xs text-muted-foreground mb-1">{t("关键道具")}</div>
                       <div className="text-sm">{scene.keyProps.join('、')}</div>
                     </div>
                   )}
                   {scene.spatialLayout && (
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">空间布局</div>
+                      <div className="text-xs text-muted-foreground mb-1">{t("空间布局")}</div>
                       <div className="text-sm">{scene.spatialLayout}</div>
                     </div>
                   )}
@@ -1230,11 +1231,11 @@ export function PropertyPanel({
               {((promptLanguage !== 'en' && scene.visualPrompt) || (promptLanguage !== 'zh' && scene.visualPromptEn)) && (
                 <>
                   <Separator className="my-2" />
-                  <div className="text-xs font-medium text-primary mb-2">视觉提示词</div>
+                  <div className="text-xs font-medium text-primary mb-2">{t("视觉提示词")}</div>
                   
                   {promptLanguage !== 'en' && scene.visualPrompt && (
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">中文</div>
+                      <div className="text-xs text-muted-foreground mb-1">{t("中文")}</div>
                       <div className="text-sm text-muted-foreground">{scene.visualPrompt}</div>
                     </div>
                   )}
@@ -1256,10 +1257,10 @@ export function PropertyPanel({
                       <Separator className="my-2" />
                       <div className="text-xs font-medium text-primary mb-2">
                         <Grid3X3 className="h-3 w-3 inline mr-1" />
-                        多视角联合图
+                        {t("多视角联合图")}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        未分析视角（可选，AI校准分镜后自动生成）
+                        {t("未分析视角（可选，AI校准分镜后自动生成）")}
                       </div>
                     </>
                   );
@@ -1278,7 +1279,7 @@ export function PropertyPanel({
                     <Separator className="my-2" />
                     <div className="text-xs font-medium text-primary mb-2">
                       <Grid3X3 className="h-3 w-3 inline mr-1" />
-                      多视角联合图
+                      {t("多视角联合图")}
                     </div>
                     
                     <div className="text-xs text-muted-foreground mb-2">
@@ -1348,7 +1349,7 @@ export function PropertyPanel({
               onClick={() => onGoToSceneLibrary?.(scene.id)}
             >
               <ArrowRight className="h-4 w-4 mr-2" />
-              去场景库生成背景
+              {t("去场景库生成背景")}
             </Button>
             <Button
               variant="outline"
@@ -1368,7 +1369,7 @@ export function PropertyPanel({
               onClick={() => onGoToDirectorFromScene?.(scene.id)}
             >
               <Film className="h-4 w-4 mr-2" />
-              去AI导演生成视频
+              {t("去AI导演生成视频")}
             </Button>
             <Button
               variant="outline"
@@ -1376,7 +1377,7 @@ export function PropertyPanel({
               onClick={() => setDeleteDialogOpen(true)}
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              删除场景
+              {t("删除场景")}
             </Button>
           </div>
         </div>
@@ -1384,12 +1385,12 @@ export function PropertyPanel({
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>确认删除</AlertDialogTitle>
+              <AlertDialogTitle>{t("确认删除")}</AlertDialogTitle>
               <AlertDialogDescription>确定要删除场景「{scene.name || scene.location}」吗？其下所有分镜也将被删除。</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>取消</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">删除</AlertDialogAction>
+              <AlertDialogCancel>{t("取消")}</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">{t("删除")}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -1446,11 +1447,11 @@ export function PropertyPanel({
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <Label className="text-xs">景别</Label>
-                  <Input value={editData.shotSize || ""} onChange={(e) => setEditData({ ...editData, shotSize: e.target.value })} className="h-8" placeholder="如：WS/MS/CU/ECU" />
+                  <Label className="text-xs">{t("景别")}</Label>
+                  <Input value={editData.shotSize || ""} onChange={(e) => setEditData({ ...editData, shotSize: e.target.value })} className="h-8" placeholder={t("如：WS/MS/CU/ECU")} />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">镜头运动</Label>
+                  <Label className="text-xs">{t("镜头运动")}</Label>
                   <Select value={editData.cameraMovement || 'none'} onValueChange={(v) => setEditData({ ...editData, cameraMovement: v })}>
                     <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
                     <SelectContent>
@@ -1462,7 +1463,7 @@ export function PropertyPanel({
                 </div>
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">特殊拍摄手法</Label>
+                <Label className="text-xs">{t("特殊拍摄手法")}</Label>
                 <Select value={editData.specialTechnique || 'none'} onValueChange={(v) => setEditData({ ...editData, specialTechnique: v })}>
                   <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -1473,11 +1474,11 @@ export function PropertyPanel({
                 </Select>
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">动作描述</Label>
+                <Label className="text-xs">{t("动作描述")}</Label>
                 <Textarea value={editData.actionSummary || ""} onChange={(e) => setEditData({ ...editData, actionSummary: e.target.value })} className="min-h-[80px]" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">对白</Label>
+                <Label className="text-xs">{t("对白")}</Label>
                 <Textarea value={editData.dialogue || ""} onChange={(e) => setEditData({ ...editData, dialogue: e.target.value })} className="min-h-[60px]" />
               </div>
             </div>
@@ -1513,7 +1514,7 @@ export function PropertyPanel({
                 <div className="bg-gradient-to-r from-primary/5 to-transparent p-3 rounded-lg border-l-2 border-primary/30">
                   <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                     <Sparkles className="h-3 w-3" />
-                    视觉
+                    {t("视觉")}
                   </div>
                   <div className="text-sm leading-relaxed">{(shot as any).visualDescription}</div>
                 </div>
@@ -1521,7 +1522,7 @@ export function PropertyPanel({
 
               {/* 动作描述 */}
               <div>
-                <div className="text-xs text-muted-foreground mb-1">动作描述</div>
+                <div className="text-xs text-muted-foreground mb-1">{t("动作描述")}</div>
                 <div className="text-sm">{shot.actionSummary}</div>
               </div>
 
@@ -1530,23 +1531,23 @@ export function PropertyPanel({
                 <div className="bg-muted/30 p-3 rounded-lg space-y-2">
                   <div className="text-xs text-muted-foreground flex items-center gap-1">
                     <Volume2 className="h-3 w-3" />
-                    音频
+                    {t("音频")}
                   </div>
                   {(shot as any).ambientSound && (
                     <div>
-                      <span className="text-xs text-muted-foreground">环境声: </span>
+                      <span className="text-xs text-muted-foreground">{t("环境声:")}</span>
                       <span className="text-xs italic">{(shot as any).ambientSound}</span>
                     </div>
                   )}
                   {(shot as any).soundEffect && (
                     <div>
-                      <span className="text-xs text-muted-foreground">音效: </span>
+                      <span className="text-xs text-muted-foreground">{t("音效:")}</span>
                       <span className="text-xs italic">{(shot as any).soundEffect}</span>
                     </div>
                   )}
                   {shot.dialogue && (
                     <div>
-                      <span className="text-xs text-muted-foreground">对白: </span>
+                      <span className="text-xs text-muted-foreground">{t("对白:")}</span>
                       <span className="text-xs italic">"{shot.dialogue}"</span>
                     </div>
                   )}
@@ -1556,7 +1557,7 @@ export function PropertyPanel({
               {/* 出场角色 */}
               {shot.characterNames && shot.characterNames.length > 0 && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">出场角色</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("出场角色")}</div>
                   <div className="flex flex-wrap gap-1">
                     {shot.characterNames.map((name, i) => (
                       <span
@@ -1573,7 +1574,7 @@ export function PropertyPanel({
               {/* 情绪标签 */}
               {shot.emotionTags && shot.emotionTags.length > 0 && (
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">情绪</div>
+                  <div className="text-xs text-muted-foreground mb-1">{t("情绪")}</div>
                   <div className="flex flex-wrap gap-1">
                     {shot.emotionTags.map((tag, i) => {
                       const emotionLabels: Record<string, string> = {
@@ -1599,7 +1600,7 @@ export function PropertyPanel({
           {/* 生成状态 */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">图片</span>
+              <span className="text-muted-foreground">{t("图片")}</span>
               <StatusBadge
                 status={
                   shot.imageStatus === "completed"
@@ -1611,7 +1612,7 @@ export function PropertyPanel({
               />
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">视频</span>
+              <span className="text-muted-foreground">{t("视频")}</span>
               <StatusBadge
                 status={
                   shot.videoStatus === "completed"
@@ -1633,7 +1634,7 @@ export function PropertyPanel({
               onClick={() => onGoToDirector?.(shot.id)}
             >
               <ArrowRight className="h-4 w-4 mr-2" />
-              去AI导演生成
+              {t("去AI导演生成")}
             </Button>
             <Button
               variant="secondary"
@@ -1643,12 +1644,12 @@ export function PropertyPanel({
               {copiedShotPrompts ? (
                 <>
                   <Check className="h-4 w-4 mr-2 text-green-500" />
-                  已复制
+                  {t("已复制")}
                 </>
               ) : (
                 <>
                   <Copy className="h-4 w-4 mr-2" />
-                  复制三层提示词数据
+                  {t("复制三层提示词数据")}
                 </>
               )}
             </Button>
@@ -1658,7 +1659,7 @@ export function PropertyPanel({
               onClick={() => setDeleteDialogOpen(true)}
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              删除分镜
+              {t("删除分镜")}
             </Button>
           </div>
         </div>
@@ -1666,12 +1667,12 @@ export function PropertyPanel({
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>确认删除</AlertDialogTitle>
+              <AlertDialogTitle>{t("确认删除")}</AlertDialogTitle>
               <AlertDialogDescription>确定要删除分镜 {shot.index} 吗？</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>取消</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">删除</AlertDialogAction>
+              <AlertDialogCancel>{t("取消")}</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">{t("删除")}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

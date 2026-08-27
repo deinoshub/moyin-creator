@@ -21,6 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, Grid2X2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from "@/i18n";
 
 export type QuadVariationType = "angle" | "composition" | "moment";
 
@@ -95,7 +96,7 @@ export function QuadGridDialog({
             四宫格生成 - {frameType === "start" ? "首帧" : "尾帧"}
           </DialogTitle>
           <DialogDescription className="text-xs text-zinc-400">
-            基于当前图片生成4张一致性变体，继承人物/场景/光色
+            {t("基于当前图片生成4张一致性变体，继承人物/场景/光色")}
           </DialogDescription>
         </DialogHeader>
 
@@ -106,11 +107,11 @@ export function QuadGridDialog({
               <div className="relative w-40 aspect-video rounded overflow-hidden border border-zinc-700">
                 <img
                   src={previewUrl}
-                  alt="锚点图"
+                  alt={t("锚点图")}
                   className="w-full h-full object-cover"
                 />
                 <span className="absolute bottom-1 left-1 text-[10px] bg-cyan-500/80 text-white px-1.5 py-0.5 rounded">
-                  锚点图
+                  {t("锚点图")}
                 </span>
               </div>
             </div>
@@ -118,7 +119,7 @@ export function QuadGridDialog({
 
           {/* 变体类型选择 */}
           <div className="space-y-2">
-            <Label className="text-xs text-zinc-400">选择变体类型</Label>
+            <Label className="text-xs text-zinc-400">{t("选择变体类型")}</Label>
             <div className="grid grid-cols-3 gap-2">
               {VARIATION_OPTIONS.map((option) => (
                 <button
@@ -174,7 +175,7 @@ export function QuadGridDialog({
               htmlFor="use-char-ref" 
               className="text-xs text-zinc-400 font-normal cursor-pointer select-none leading-none"
             >
-              参考角色库形象（若画面人物混乱请关闭此项）
+              {t("参考角色库形象（若画面人物混乱请关闭此项）")}
             </Label>
           </div>
 
@@ -183,7 +184,7 @@ export function QuadGridDialog({
             {isGenerating ? (
               <div className="flex-1 flex items-center justify-center gap-2 h-8 bg-cyan-500/20 rounded border border-cyan-500/50">
                 <Loader2 className="h-4 w-4 text-cyan-400 animate-spin" />
-                <span className="text-sm text-cyan-400">正在生成四宫格，请稍候...</span>
+                <span className="text-sm text-cyan-400">{t("正在生成四宫格，请稍候...")}</span>
               </div>
             ) : (
               <>
@@ -193,7 +194,7 @@ export function QuadGridDialog({
                   onClick={() => onOpenChange(false)}
                   className="flex-1 h-8 text-xs bg-transparent border-zinc-700 hover:bg-zinc-800 text-white"
                 >
-                  取消
+                  {t("取消")}
                 </Button>
                 <Button
                   size="sm"
@@ -201,7 +202,7 @@ export function QuadGridDialog({
                   className="flex-1 h-8 text-xs bg-cyan-500 hover:bg-cyan-600 text-black"
                 >
                   <Sparkles className="h-3 w-3 mr-1" />
-                  生成四宫格
+                  {t("生成四宫格")}
                 </Button>
               </>
             )}

@@ -62,6 +62,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useResolvedImageUrl } from "@/hooks/use-resolved-image-url";
 import { ImagePreviewModal } from "@/components/panels/director/media-preview-modal";
+import { t } from "@/i18n";
 
 type ViewMode = "grid" | "list";
 
@@ -247,14 +248,14 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
 
   const handleCreateFolder = () => {
     if (!newFolderName.trim()) {
-      toast.error("请输入文件夹名称");
+      toast.error(t("请输入文件夹名称"));
       return;
     }
     const projectId = resourceSharing.shareScenes ? undefined : activeProjectId || undefined;
     addFolder(newFolderName.trim(), currentFolderId, projectId);
     setNewFolderName("");
     setShowNewFolderDialog(false);
-    toast.success("文件夹已创建");
+    toast.success(t("文件夹已创建"));
   };
 
   const handleRenameFolder = () => {
@@ -262,13 +263,13 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
     renameFolder(renamingFolder.id, renameValue.trim());
     setRenamingFolder(null);
     setRenameValue("");
-    toast.success("文件夹已重命名");
+    toast.success(t("文件夹已重命名"));
   };
 
   const handleDeleteFolder = (id: string) => {
     if (confirm("确定要删除此文件夹吗？文件夹内的场景将移动到上级目录。")) {
       deleteFolder(id);
-      toast.success("文件夹已删除");
+      toast.success(t("文件夹已删除"));
     }
   };
 
@@ -278,7 +279,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
       if (selectedSceneId === scene.id) {
         onSceneSelect(null);
       }
-      toast.success("场景已删除");
+      toast.success(t("场景已删除"));
     }
   };
 
@@ -305,7 +306,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
             onClick={() => setCurrentFolder(null)}
           >
             <Home className="h-3.5 w-3.5" />
-            场景库
+            {t("场景库")}
           </Button>
           {breadcrumbPath.map((folder) => (
             <div key={folder.id} className="flex items-center">
@@ -329,7 +330,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="搜索场景..."
+              placeholder={t("搜索场景...")}
               className="h-8 pl-7 text-sm"
             />
           </div>
@@ -342,7 +343,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
                 className="h-8 px-2 rounded-r-none text-xs"
                 onClick={() => setEpisodeViewScope('episode')}
               >
-                本集
+                {t("本集")}
               </Button>
               <Button
                 variant={episodeViewScope === 'all' ? 'secondary' : 'ghost'}
@@ -350,7 +351,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
                 className="h-8 px-2 rounded-l-none text-xs"
                 onClick={() => setEpisodeViewScope('all')}
               >
-                全剧
+                {t("全剧")}
               </Button>
             </div>
           )}
@@ -361,7 +362,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
             onClick={() => setShowNewFolderDialog(true)}
           >
             <FolderPlus className="h-3.5 w-3.5 mr-1" />
-            新建
+            {t("新建")}
           </Button>
           <div className="flex border rounded-md">
             <Button
@@ -389,7 +390,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
         {/* Folders */}
         {subFolders.length > 0 && (
           <div className="mb-4">
-            <div className="text-xs text-muted-foreground mb-2">文件夹</div>
+            <div className="text-xs text-muted-foreground mb-2">{t("文件夹")}</div>
             <div className={cn(
               viewMode === "grid" 
                 ? "grid grid-cols-3 gap-2" 
@@ -454,7 +455,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
                     onDelete={() => handleDeleteScene(scene)}
                     onMove={(folderId) => {
                       moveToFolder(scene.id, folderId);
-                      toast.success("场景已移动");
+                      toast.success(t("场景已移动"));
                     }}
                   >
                     <SceneCard
@@ -485,7 +486,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
                 {searchQuery ? "没有找到匹配的场景" : "还没有场景"}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                使用左侧控制台创建场景
+                {t("使用左侧控制台创建场景")}
               </p>
             </div>
           )
@@ -505,20 +506,20 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
       <Dialog open={showNewFolderDialog} onOpenChange={setShowNewFolderDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>新建文件夹</DialogTitle>
+            <DialogTitle>{t("新建文件夹")}</DialogTitle>
           </DialogHeader>
           <Input
             value={newFolderName}
             onChange={(e) => setNewFolderName(e.target.value)}
-            placeholder="文件夹名称"
+            placeholder={t("文件夹名称")}
             onKeyDown={(e) => e.key === "Enter" && handleCreateFolder()}
             autoFocus
           />
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewFolderDialog(false)}>
-              取消
+              {t("取消")}
             </Button>
-            <Button onClick={handleCreateFolder}>创建</Button>
+            <Button onClick={handleCreateFolder}>{t("创建")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -527,20 +528,20 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
       <Dialog open={!!renamingFolder} onOpenChange={(open) => !open && setRenamingFolder(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>重命名文件夹</DialogTitle>
+            <DialogTitle>{t("重命名文件夹")}</DialogTitle>
           </DialogHeader>
           <Input
             value={renameValue}
             onChange={(e) => setRenameValue(e.target.value)}
-            placeholder="文件夹名称"
+            placeholder={t("文件夹名称")}
             onKeyDown={(e) => e.key === "Enter" && handleRenameFolder()}
             autoFocus
           />
           <DialogFooter>
             <Button variant="outline" onClick={() => setRenamingFolder(null)}>
-              取消
+              {t("取消")}
             </Button>
-            <Button onClick={handleRenameFolder}>保存</Button>
+            <Button onClick={handleRenameFolder}>{t("保存")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -631,7 +632,7 @@ function SceneCard({
           {generatingTask && generatingTask.status !== 'done' && (
             <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-1 z-10">
               {generatingTask.status === 'error' ? (
-                <span className="text-red-400 text-[10px]">❌ 失败</span>
+                <span className="text-red-400 text-[10px]">{t("❌ 失败")}</span>
               ) : (
                 <>
                   <Loader2 className="h-6 w-6 text-white animate-spin" />
@@ -677,7 +678,7 @@ function SceneCard({
           {hasChildren && resolvedImage && (
             <div
               className="absolute bottom-1 right-1 bg-black/60 hover:bg-black/80 text-white rounded p-0.5 cursor-pointer transition-colors"
-              title="预览大图"
+              title={t("预览大图")}
               onClick={(e) => {
                 e.stopPropagation();
                 onImagePreview?.(resolvedImage);
@@ -760,7 +761,7 @@ function SceneCard({
         )}
         {depth > 0 && (
           <div className="absolute top-0 left-0 bg-blue-500 text-white text-[6px] px-0.5 rounded-br">
-            视角
+            {t("视角")}
           </div>
         )}
       </div>
@@ -788,7 +789,7 @@ function SceneCard({
             )}
           </>
         ) : (
-          <span className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded">视角</span>
+          <span className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded">{t("视角")}</span>
         )}
       </div>
     </div>
@@ -813,12 +814,12 @@ function FolderContextMenu({
       <ContextMenuContent>
         <ContextMenuItem onClick={onRename}>
           <Pencil className="h-4 w-4 mr-2" />
-          重命名
+          {t("重命名")}
         </ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem className="text-destructive" onClick={onDelete}>
           <Trash2 className="h-4 w-4 mr-2" />
-          删除文件夹
+          {t("删除文件夹")}
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
@@ -846,12 +847,12 @@ function SceneContextMenu({
         <ContextMenuSub>
           <ContextMenuSubTrigger>
             <FolderInput className="h-4 w-4 mr-2" />
-            移动到
+            {t("移动到")}
           </ContextMenuSubTrigger>
           <ContextMenuSubContent>
             <ContextMenuItem onClick={() => onMove(null)}>
               <Home className="h-4 w-4 mr-2" />
-              根目录
+              {t("根目录")}
             </ContextMenuItem>
             {folders.map((f) => (
               <ContextMenuItem key={f.id} onClick={() => onMove(f.id)}>
@@ -864,7 +865,7 @@ function SceneContextMenu({
         <ContextMenuSeparator />
         <ContextMenuItem className="text-destructive" onClick={onDelete}>
           <Trash2 className="h-4 w-4 mr-2" />
-          删除场景
+          {t("删除场景")}
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

@@ -9,6 +9,7 @@ import http from 'node:http'
 import os from 'node:os'
 import packageMetadata from '../package.json'
 import type { AvailableUpdateInfo, OpenExternalResult, UpdateCheckResult, UpdateManifest } from '../src/types/update'
+import { initMainI18n, setMainLanguage, t } from './i18n'
 
 // electron-vite 构建后的目录结构
 //
@@ -106,7 +107,7 @@ function getDefaultBaiduCode() {
 async function fetchUpdateManifest() {
   const manifestUrl = getUpdateManifestUrl()
   if (!manifestUrl) {
-    throw new Error('未配置版本清单地址')
+    throw new Error(t("未配置版本清单地址"))
   }
 
   const requestUrl = new URL(manifestUrl)
@@ -119,7 +120,7 @@ async function fetchUpdateManifest() {
 
   const rawManifest = await response.json() as Partial<UpdateManifest>
   if (!isNonEmptyString(rawManifest.version)) {
-    throw new Error('版本清单缺少有效的 version 字段')
+    throw new Error(t("版本清单缺少有效的 version 字段"))
   }
 
   return {
@@ -159,7 +160,7 @@ async function resolveAvailableUpdate(currentVersion: string): Promise<Available
 
 function createWindow() {
   win = new BrowserWindow({
-    title: '魔因漫创',
+    title: t('魔因漫创'),
     width: 1400,
     height: 900,
     minWidth: 1200,
@@ -616,7 +617,7 @@ async function fetchBuffer(url: string, timeoutMs: number = 45000) {
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
     if (buffer.length === 0) {
-      throw new Error('获取到的图片为空')
+      throw new Error(t("获取到的图片为空"))
     }
 
     return {
@@ -646,11 +647,11 @@ async function readImageSource(imageData: string): Promise<{ buffer: Buffer, mim
   const resolvedPath = resolveImageSourcePath(imageData)
   if (resolvedPath) {
     if (!fs.existsSync(resolvedPath)) {
-      throw new Error('本地图片不存在')
+      throw new Error(t("本地图片不存在"))
     }
     const buffer = fs.readFileSync(resolvedPath)
     if (buffer.length === 0) {
-      throw new Error('本地图片为空文件')
+      throw new Error(t("本地图片为空文件"))
     }
     return {
       buffer,
@@ -660,7 +661,7 @@ async function readImageSource(imageData: string): Promise<{ buffer: Buffer, mim
 
   const rawBuffer = Buffer.from(imageData, 'base64')
   if (rawBuffer.length === 0) {
-    throw new Error('图片数据无效')
+    throw new Error(t("图片数据无效"))
   }
   return {
     buffer: rawBuffer,
@@ -684,7 +685,7 @@ async function toBase64Payload(imageData: string) {
   if (imageData.startsWith('data:')) {
     const parsed = parseDataUrl(imageData)
     if (!parsed) {
-      throw new Error('图片数据无效')
+      throw new Error(t("图片数据无效"))
     }
     return parsed.buffer.toString('base64')
   }
@@ -706,7 +707,7 @@ async function uploadImageHostFromMain({
   try {
     const uploadUrl = resolveImageHostUploadUrl(provider)
     if (!uploadUrl) {
-      return { success: false, error: '图床上传地址未配置' }
+      return { success: false, error: t("图床上传地址未配置") }
     }
 
     const fieldName = provider.imageField || 'image'
@@ -804,7 +805,7 @@ async function uploadImageHostFromMain({
       return { success: false, error: `图床 ${provider.name} 上传成功但未返回 URL` }
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
-        return { success: false, error: '上传超时，请稍后重试' }
+        return { success: false, error: t("上传超时，请稍后重试") }
       }
       return { success: false, error: error instanceof Error ? error.message : '上传失败' }
     } finally {
@@ -1065,9 +1066,9 @@ ipcMain.handle('storage-select-directory', async () => {
 // Validate if a directory contains valid data (projects/ subfolder with .json files or _p/ dirs)
 ipcMain.handle('storage-validate-data-dir', async (_event, dirPath: string) => {
   try {
-    if (!dirPath) return { valid: false, error: '路径不能为空' }
+    if (!dirPath) return { valid: false, error: t("路径不能为空") }
     const target = normalizePath(dirPath)
-    if (!fs.existsSync(target)) return { valid: false, error: '目录不存在' }
+    if (!fs.existsSync(target)) return { valid: false, error: t("目录不存在") }
     
     // Check for projects/ subfolder with .json files or _p/ per-project dirs
     const projectsDir = path.join(target, 'projects')
@@ -1095,7 +1096,7 @@ ipcMain.handle('storage-validate-data-dir', async (_event, dirPath: string) => {
     }
     
     if (projectCount === 0 && mediaCount === 0) {
-      return { valid: false, error: '该目录不包含有效的数据（需要 projects/ 或 media/ 子目录）' }
+      return { valid: false, error: t("该目录不包含有效的数据（需要 projects/ 或 media/ 子目录）") }
     }
     
     return { valid: true, projectCount, mediaCount }
@@ -1107,9 +1108,9 @@ ipcMain.handle('storage-validate-data-dir', async (_event, dirPath: string) => {
 // Link to existing data directory (no data movement)
 ipcMain.handle('storage-link-data', async (_event, dirPath: string) => {
   try {
-    if (!dirPath) return { success: false, error: '路径不能为空' }
+    if (!dirPath) return { success: false, error: t("路径不能为空") }
     const target = normalizePath(dirPath)
-    if (!fs.existsSync(target)) return { success: false, error: '目录不存在' }
+    if (!fs.existsSync(target)) return { success: false, error: t("目录不存在") }
     
     // Validate it has data
     const projectsDir = path.join(target, 'projects')
@@ -1119,7 +1120,7 @@ ipcMain.handle('storage-link-data', async (_event, dirPath: string) => {
     const hasMedia = fs.existsSync(mediaDir)
     
     if (!hasProjects && !hasMedia) {
-      return { success: false, error: '该目录不包含有效的数据（需要 projects/ 或 media/ 子目录）' }
+      return { success: false, error: t("该目录不包含有效的数据（需要 projects/ 或 media/ 子目录）") }
     }
     
     // Update config to point to this directory
@@ -1137,7 +1138,7 @@ ipcMain.handle('storage-link-data', async (_event, dirPath: string) => {
 // Move all data to new location (single operation)
 ipcMain.handle('storage-move-data', async (_event, newPath: string) => {
   try {
-    if (!newPath) return { success: false, error: '路径不能为空' }
+    if (!newPath) return { success: false, error: t("路径不能为空") }
     const target = normalizePath(newPath)
     const currentBase = getStorageBasePath()
     
@@ -1202,7 +1203,7 @@ ipcMain.handle('storage-move-data', async (_event, newPath: string) => {
 // Export all data
 ipcMain.handle('storage-export-data', async (_event, targetPath: string) => {
   try {
-    if (!targetPath) return { success: false, error: '路径不能为空' }
+    if (!targetPath) return { success: false, error: t("路径不能为空") }
     const exportDir = path.join(
       normalizePath(targetPath),
       `moyin-data-${new Date().toISOString().replace(/[:.]/g, '-')}`
@@ -1229,7 +1230,7 @@ ipcMain.handle('storage-export-data', async (_event, targetPath: string) => {
 // Import all data (with backup for safety)
 ipcMain.handle('storage-import-data', async (_event, sourcePath: string) => {
   try {
-    if (!sourcePath) return { success: false, error: '路径不能为空' }
+    if (!sourcePath) return { success: false, error: t("路径不能为空") }
     const source = normalizePath(sourcePath)
     
     const sourceProjectsDir = path.join(source, 'projects')
@@ -1239,7 +1240,7 @@ ipcMain.handle('storage-import-data', async (_event, sourcePath: string) => {
     const hasProjects = fs.existsSync(sourceProjectsDir)
     const hasMedia = fs.existsSync(sourceMediaDir)
     if (!hasProjects && !hasMedia) {
-      return { success: false, error: '源目录不包含有效数据（需要 projects/ 或 media/ 子目录）' }
+      return { success: false, error: t("源目录不包含有效数据（需要 projects/ 或 media/ 子目录）") }
     }
     
     // Create temporary backup for rollback
@@ -1335,16 +1336,16 @@ ipcMain.handle('storage-link-media-data', async (_event, dirPath: string) => {
 })
 
 ipcMain.handle('storage-move-project-data', async () => {
-  return { success: false, error: '请使用新的统一存储路径功能' }
+  return { success: false, error: t("请使用新的统一存储路径功能") }
 })
 ipcMain.handle('storage-move-media-data', async () => {
-  return { success: false, error: '请使用新的统一存储路径功能' }
+  return { success: false, error: t("请使用新的统一存储路径功能") }
 })
 
 ipcMain.handle('storage-export-project-data', async (_event, targetPath: string) => {
   // Redirect to unified export
   try {
-    if (!targetPath) return { success: false, error: '路径不能为空' }
+    if (!targetPath) return { success: false, error: t("路径不能为空") }
     const exportDir = path.join(
       normalizePath(targetPath),
       `moyin-data-${new Date().toISOString().replace(/[:.]/g, '-')}`
@@ -1361,7 +1362,7 @@ ipcMain.handle('storage-export-project-data', async (_event, targetPath: string)
 
 ipcMain.handle('storage-import-project-data', async (_event, sourcePath: string) => {
   try {
-    if (!sourcePath) return { success: false, error: '路径不能为空' }
+    if (!sourcePath) return { success: false, error: t("路径不能为空") }
     const source = normalizePath(sourcePath)
     const projectsDir = path.join(source, 'projects')
     const mediaDir = path.join(source, 'media')
@@ -1424,7 +1425,7 @@ ipcMain.handle('storage-import-project-data', async (_event, sourcePath: string)
 ipcMain.handle('storage-export-media-data', async (_event, targetPath: string) => {
   // Legacy: redirect to unified export
   try {
-    if (!targetPath) return { success: false, error: '路径不能为空' }
+    if (!targetPath) return { success: false, error: t("路径不能为空") }
     const exportDir = path.join(
       normalizePath(targetPath),
       `moyin-data-${new Date().toISOString().replace(/[:.]/g, '-')}`
@@ -1442,7 +1443,7 @@ ipcMain.handle('storage-export-media-data', async (_event, targetPath: string) =
 
 ipcMain.handle('storage-import-media-data', async (_event, sourcePath: string) => {
   try {
-    if (!sourcePath) return { success: false, error: '路径不能为空' }
+    if (!sourcePath) return { success: false, error: t("路径不能为空") }
     const target = getMediaRoot()
     const source = normalizePath(sourcePath)
     if (source === target) return { success: true }
@@ -1533,7 +1534,7 @@ ipcMain.handle('app-updater-check', async (): Promise<UpdateCheckResult> => {
 ipcMain.handle('app-updater-open-link', async (_event, url: string): Promise<OpenExternalResult> => {
   const safeUrl = sanitizeExternalUrl(url)
   if (!safeUrl) {
-    return { success: false, error: '无效下载链接' }
+    return { success: false, error: t("无效下载链接") }
   }
 
   try {
@@ -1671,6 +1672,11 @@ protocol.registerSchemesAsPrivileged([{
 }])
 
 app.whenReady().then(() => {
+  initMainI18n()
+  ipcMain.on('app-set-language', (_event, lng: string) => {
+    setMainLanguage(String(lng || ''))
+    try { win?.setTitle(t('魔因漫创')) } catch { /* ignore */ }
+  })
   // Seed demo project on first run (before window creation)
   seedDemoProject()
 

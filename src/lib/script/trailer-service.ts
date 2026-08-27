@@ -15,6 +15,7 @@
 import type { Shot, ProjectBackground } from '@/types/script';
 import type { SplitScene, TrailerDuration } from '@/stores/director-store';
 import { callFeatureAPI } from '@/lib/ai/feature-router';
+import { t } from "@/i18n";
 
 // 时长对应的分镜数量
 const DURATION_TO_SHOT_COUNT: Record<TrailerDuration, number> = {
@@ -56,7 +57,7 @@ export async function selectTrailerShots(
       success: false,
       selectedShots: [],
       shotIds: [],
-      error: '没有可用的分镜',
+      error: t("没有可用的分镜"),
     };
   }
 
@@ -166,7 +167,7 @@ ${shotSummaries.map(s =>
     }
     
     if (selectedIndices.length === 0) {
-      throw new Error('AI 返回格式错误，无法解析序号');
+      throw new Error(t("AI 返回格式错误，无法解析序号"));
     }
     
     console.log('[TrailerService] Parsed selectedIndices:', selectedIndices);
@@ -190,7 +191,7 @@ ${shotSummaries.map(s =>
       success: true,
       selectedShots: fallbackShots,
       shotIds: fallbackShots.map(s => s.id),
-      error: 'AI 挑选失败，使用规则挑选',
+      error: t("AI 挑选失败，使用规则挑选"),
     };
   }
 }

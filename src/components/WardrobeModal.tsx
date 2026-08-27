@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { t } from "@/i18n";
 
 interface WardrobeModalProps {
   character: Character | null;
@@ -75,13 +76,13 @@ export function WardrobeModal({
     setNewVariationName("");
     setNewVariationPrompt("");
     setShowAddForm(false);
-    toast.success(`已添加变体: ${newVariationName}`);
+    toast.success(t("已添加变体: {{v0}}", { v0: newVariationName }));
   };
 
   const handleDeleteVariation = (variationId: string, name: string) => {
     if (!character) return;
     deleteVariation(character.id, variationId);
-    toast.success(`已删除变体: ${name}`);
+    toast.success(t("已删除变体: {{v0}}", { v0: name }));
   };
 
   const handleGenerateImage = async (variation: CharacterVariation) => {
@@ -98,9 +99,9 @@ export function WardrobeModal({
         referenceImage: imageUrl,
         generatedAt: Date.now(),
       });
-      toast.success(`变体图片生成完成: ${variation.name}`);
+      toast.success(t("变体图片生成完成: {{v0}}", { v0: variation.name }));
     } catch (error) {
-      toast.error(`生成失败: ${(error as Error).message}`);
+      toast.error(t("生成失败: {{v0}}", { v0: (error as Error).message }));
     } finally {
       setGeneratingId(null);
     }
@@ -121,7 +122,7 @@ export function WardrobeModal({
             {character.name} - 造型管理
           </DialogTitle>
           <DialogDescription className="text-zinc-500">
-            为角色创建不同的服装、状态或造型变体，用于不同场景的镜头生成。
+            {t("为角色创建不同的服装、状态或造型变体，用于不同场景的镜头生成。")}
           </DialogDescription>
         </DialogHeader>
 
@@ -168,7 +169,7 @@ export function WardrobeModal({
                   className="h-7 text-xs border-zinc-700 hover:bg-zinc-800"
                 >
                   <Plus className="w-3 h-3 mr-1" />
-                  添加变体
+                  {t("添加变体")}
                 </Button>
               </div>
 
@@ -176,16 +177,16 @@ export function WardrobeModal({
               {showAddForm && (
                 <div className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700 space-y-3">
                   <div className="space-y-2">
-                    <Label className="text-xs text-zinc-400">变体名称</Label>
+                    <Label className="text-xs text-zinc-400">{t("变体名称")}</Label>
                     <Input
-                      placeholder="如: 日常装、战斗装、晚礼服..."
+                      placeholder={t("如: 日常装、战斗装、晚礼服...")}
                       value={newVariationName}
                       onChange={(e) => setNewVariationName(e.target.value)}
                       className="bg-zinc-900 border-zinc-700"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs text-zinc-400">视觉描述 (英文)</Label>
+                    <Label className="text-xs text-zinc-400">{t("视觉描述 (英文)")}</Label>
                     <Textarea
                       placeholder="Detailed visual description for AI image generation..."
                       value={newVariationPrompt}
@@ -203,14 +204,14 @@ export function WardrobeModal({
                         setNewVariationPrompt("");
                       }}
                     >
-                      取消
+                      {t("取消")}
                     </Button>
                     <Button
                       size="sm"
                       onClick={handleAddVariation}
                       disabled={!newVariationName.trim()}
                     >
-                      添加
+                      {t("添加")}
                     </Button>
                   </div>
                 </div>
@@ -235,9 +236,9 @@ export function WardrobeModal({
               {variations.length === 0 && !showAddForm && (
                 <div className="py-8 text-center">
                   <Shirt className="w-12 h-12 text-zinc-700 mx-auto mb-3" />
-                  <p className="text-sm text-zinc-500">暂无造型变体</p>
+                  <p className="text-sm text-zinc-500">{t("暂无造型变体")}</p>
                   <p className="text-xs text-zinc-600 mt-1">
-                    添加不同服装或状态的变体
+                    {t("添加不同服装或状态的变体")}
                   </p>
                 </div>
               )}
@@ -285,7 +286,7 @@ function VariationCard({
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-zinc-700">
             <ImageIcon className="w-8 h-8 mb-1" />
-            <span className="text-[10px]">未生成</span>
+            <span className="text-[10px]">{t("未生成")}</span>
           </div>
         )}
 
@@ -316,7 +317,7 @@ function VariationCard({
           className="w-full mt-2 h-7 text-xs border-zinc-700"
         >
           <Wand2 className="w-3 h-3 mr-1" />
-          生成图片
+          {t("生成图片")}
         </Button>
       )}
 
@@ -328,7 +329,7 @@ function VariationCard({
           disabled={isGenerating}
           className="w-full mt-2 h-7 text-xs text-zinc-500 hover:text-zinc-300"
         >
-          重新生成
+          {t("重新生成")}
         </Button>
       )}
     </div>

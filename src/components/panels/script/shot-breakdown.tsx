@@ -13,6 +13,7 @@ import { useMemo, useRef } from "react";
 import type { Shot, ScriptScene, ScriptData } from "@/types/script";
 import { cn } from "@/lib/utils";
 import { Camera, MapPin, Clock, MessageSquare, Film } from "lucide-react";
+import { t } from "@/i18n";
 
 interface ShotBreakdownProps {
   shots: Shot[];
@@ -54,8 +55,8 @@ export function ShotBreakdown({
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <Film className="w-12 h-12 text-zinc-700 mb-4" />
-        <p className="text-sm text-zinc-500">暂无分镜</p>
-        <p className="text-xs text-zinc-600 mt-1">解析剧本后点击"生成分镜列表"</p>
+        <p className="text-sm text-zinc-500">{t("暂无分镜")}</p>
+        <p className="text-xs text-zinc-600 mt-1">{t("解析剧本后点击\"生成分镜列表\"")}</p>
       </div>
     );
   }
@@ -185,10 +186,10 @@ function ShotRow({ shot, isSelected, onClick }: ShotRowProps) {
         {/* Status indicators */}
         <div className="flex items-center gap-1">
           {shot.imageUrl && (
-            <span className="w-2 h-2 rounded-full bg-green-500" title="图片已生成" />
+            <span className="w-2 h-2 rounded-full bg-green-500" title={t("图片已生成")} />
           )}
           {shot.videoUrl && (
-            <span className="w-2 h-2 rounded-full bg-blue-500" title="视频已生成" />
+            <span className="w-2 h-2 rounded-full bg-blue-500" title={t("视频已生成")} />
           )}
         </div>
       </div>

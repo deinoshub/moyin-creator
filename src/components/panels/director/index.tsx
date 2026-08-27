@@ -30,6 +30,7 @@ import { useMediaStore } from "@/stores/media-store";
 import { generateStoryboardImage, generateSceneVideos } from "@/lib/storyboard";
 import { getFeatureConfig } from "@/lib/ai/feature-router";
 import { toast } from "sonner";
+import { t } from "@/i18n";
 
 export function DirectorView() {
   // Sync active project ID from project-store
@@ -123,11 +124,11 @@ export function DirectorView() {
     if (currentStepIndex >= STEPS.length - 1) return;
     // Can only go forward if conditions are met
     if (currentStepIndex === 0 && !storyboardImage) {
-      toast.error('请先生成故事板');
+      toast.error(t("请先生成故事板"));
       return;
     }
     if (currentStepIndex === 1 && splitScenes.length === 0) {
-      toast.error('请先切割场景');
+      toast.error(t("请先切割场景"));
       return;
     }
     const nextStep = STEPS[currentStepIndex + 1];
@@ -169,7 +170,7 @@ export function DirectorView() {
       // 从服务映射获取图片生成配置
       const featureConfig = getFeatureConfig('character_generation');
       if (!featureConfig) {
-        throw new Error('请先在设置中配置图片生成 API');
+        throw new Error(t("请先在设置中配置图片生成 API"));
       }
       const apiKey = featureConfig.apiKey;
       const provider = featureConfig.platform as string;
@@ -209,27 +210,27 @@ export function DirectorView() {
 
       setStoryboardImage(result.imageUrl, mediaId);
       setStoryboardStatus('preview');
-      toast.success('故事板生成成功，已保存到素材库！');
+      toast.success(t("故事板生成成功，已保存到素材库！"));
     } catch (error) {
       const err = error as Error;
       console.error('[DirectorView] Storyboard generation failed:', err);
       setStoryboardError(err.message);
       setStoryboardStatus('error');
-      toast.error(`故事板生成失败: ${err.message}`);
+      toast.error(t("故事板生成失败: {{v0}}", { v0: err.message }));
     }
   }, [getApiKey, setStoryboardImage, setStoryboardStatus, setStoryboardError, setStoryboardConfig, getOrCreateCategoryFolder, addMediaFromUrl, activeProjectId]);
 
   // Handle video generation from split scenes
   const handleGenerateVideos = useCallback(async () => {
     if (splitScenes.length === 0) {
-      toast.error('没有可生成的场景');
+      toast.error(t("没有可生成的场景"));
       return;
     }
 
     // 从服务映射获取视频生成配置
     const videoConfig = getFeatureConfig('video_generation');
     if (!videoConfig) {
-      toast.error('请先在设置中配置视频生成 API');
+      toast.error(t("请先在设置中配置视频生成 API"));
       return;
     }
     const apiKey = videoConfig.apiKey;
@@ -239,7 +240,7 @@ export function DirectorView() {
     
     console.log('[DirectorView] Using video generation config:', { provider, model, baseUrl });
 
-    toast.info(`开始为 ${splitScenes.length} 个场景生成视频... (使用 ${provider} ${model || ''})`);
+    toast.info(t("开始为 {{v0}} 个场景生成视频... (使用 {{v1}} {{v2}})", { v0: splitScenes.length, v1: provider, v2: model || '' }));
 
     await generateSceneVideos(
       splitScenes.map(s => ({
@@ -258,15 +259,15 @@ export function DirectorView() {
         console.log(`[DirectorView] Scene ${sceneId} progress: ${progress}%`);
       },
       (sceneId, videoUrl) => {
-        toast.success(`场景 ${sceneId} 视频生成完成`);
+        toast.success(t("场景 {{v0}} 视频生成完成", { v0: sceneId }));
         // TODO: Add video to media library
       },
       (sceneId, error) => {
-        toast.error(`场景 ${sceneId} 生成失败: ${error}`);
+        toast.error(t("场景 {{v0}} 生成失败: {{v1}}", { v0: sceneId, v1: error }));
       }
     );
 
-    toast.success('所有视频生成完成！');
+    toast.success(t("所有视频生成完成！"));
   }, [splitScenes, storyboardConfig]);
 
   // Render based on current status (prioritize storyboard workflow)
@@ -297,7 +298,7 @@ export function DirectorView() {
           return (
             <div className="flex flex-col items-center justify-center h-64 gap-4">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              <p className="text-sm text-muted-foreground">智能切割中...</p>
+              <p className="text-sm text-muted-foreground">{t("智能切割中...")}</p>
             </div>
           );
 
@@ -315,7 +316,7 @@ export function DirectorView() {
               <div className="text-4xl">😕</div>
               <p className="text-sm text-destructive">{storyboardError}</p>
               <Button onClick={() => resetStoryboard()} variant="outline">
-                重试
+                {t("重试")}
               </Button>
             </div>
           );
@@ -337,7 +338,7 @@ export function DirectorView() {
         return (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-            <p className="text-sm text-muted-foreground">生成剧本中...</p>
+            <p className="text-sm text-muted-foreground">{t("生成剧本中...")}</p>
           </div>
         );
 
@@ -358,7 +359,7 @@ export function DirectorView() {
                       size="sm"
                       className="h-6 px-2 text-xs text-muted-foreground hover:text-destructive"
                       onClick={deleteAllScenes}
-                      title="删除全部场景"
+                      title={t("删除全部场景")}
                     >
                       <Trash2 className="h-3 w-3" />
                     </Button>
@@ -388,7 +389,7 @@ export function DirectorView() {
                 disabled={(screenplay?.scenes.length || 0) === 0}
               >
                 <Play className="h-4 w-4 mr-2" />
-                生成场景图片
+                {t("生成场景图片")}
               </Button>
               <Button
                 variant="outline"
@@ -427,7 +428,7 @@ export function DirectorView() {
               className="w-full"
             >
               <Square className="h-4 w-4 mr-2" />
-              取消生成
+              {t("取消生成")}
             </Button>
           </div>
         );
@@ -438,9 +439,9 @@ export function DirectorView() {
             {/* Header */}
             <div className="flex items-center justify-between py-2">
               <div>
-                <h3 className="font-medium">场景图片预览</h3>
+                <h3 className="font-medium">{t("场景图片预览")}</h3>
                 <p className="text-xs text-muted-foreground">
-                  查看生成的图片，不满意可重新生成或删除
+                  {t("查看生成的图片，不满意可重新生成或删除")}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -453,7 +454,7 @@ export function DirectorView() {
                     size="sm"
                     className="h-6 px-2 text-xs text-muted-foreground hover:text-destructive"
                     onClick={deleteAllScenes}
-                    title="删除全部场景"
+                    title={t("删除全部场景")}
                   >
                     <Trash2 className="h-3 w-3" />
                   </Button>
@@ -487,7 +488,7 @@ export function DirectorView() {
                 disabled={(screenplay?.scenes.length || 0) === 0}
               >
                 <Play className="h-4 w-4 mr-2" />
-                确认并生成视频
+                {t("确认并生成视频")}
               </Button>
               <Button
                 variant="outline"
@@ -526,7 +527,7 @@ export function DirectorView() {
               className="w-full"
             >
               <Square className="h-4 w-4 mr-2" />
-              取消生成
+              {t("取消生成")}
             </Button>
           </div>
         );
@@ -537,9 +538,9 @@ export function DirectorView() {
           <div className="flex flex-col gap-4">
             <div className="text-center py-4">
               <div className="text-2xl mb-2">🎉</div>
-              <h3 className="font-medium">生成完成！</h3>
+              <h3 className="font-medium">{t("生成完成！")}</h3>
               <p className="text-sm text-muted-foreground">
-                所有场景已生成完毕，素材已添加到媒体库
+                {t("所有场景已生成完毕，素材已添加到媒体库")}
               </p>
             </div>
 
@@ -558,7 +559,7 @@ export function DirectorView() {
 
             {/* New screenplay button */}
             <Button onClick={reset} className="w-full">
-              创建新剧本
+              {t("创建新剧本")}
             </Button>
           </div>
         );
@@ -569,7 +570,7 @@ export function DirectorView() {
             <div className="text-4xl">😕</div>
             <p className="text-sm text-destructive">{screenplayError}</p>
             <Button onClick={reset} variant="outline">
-              重试
+              {t("重试")}
             </Button>
           </div>
         );
@@ -586,7 +587,7 @@ export function DirectorView() {
       {/* Header */}
       <div className="p-3 pb-2 bg-panel">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-sm">AI 导演</h2>
+          <h2 className="font-semibold text-sm">{t("AI 导演")}</h2>
           <div className="flex items-center gap-2">
             {showHeaderStatus && (
               <span className={storyboardStatus === "editing" ? "hidden" : "text-xs text-muted-foreground capitalize"}>
@@ -665,7 +666,7 @@ export function DirectorView() {
             className="flex-1"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
-            上一步
+            {t("上一步")}
           </Button>
           <Button
             variant="outline"
@@ -674,7 +675,7 @@ export function DirectorView() {
             disabled={!canGoNext}
             className="flex-1"
           >
-            下一步
+            {t("下一步")}
             <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </div>

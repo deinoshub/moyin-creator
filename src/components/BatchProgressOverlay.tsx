@@ -10,6 +10,7 @@
 
 import { Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { t } from "@/i18n";
 
 interface BatchProgressOverlayProps {
   /** Whether the overlay is visible */
@@ -69,7 +70,7 @@ export function BatchProgressOverlay({
 
         {/* Warning */}
         <p className="mt-6 text-[10px] text-zinc-600 text-center">
-          请勿关闭窗口或刷新页面
+          {t("请勿关闭窗口或刷新页面")}
         </p>
       </div>
     </div>

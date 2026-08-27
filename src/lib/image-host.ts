@@ -8,6 +8,7 @@
 
 import { useAPIConfigStore, type ImageHostProvider } from '@/stores/api-config-store';
 import { ApiKeyManager, parseApiKeys } from '@/lib/api-key-manager';
+import { t } from "@/i18n";
 
 // ==================== Types ====================
 
@@ -179,7 +180,7 @@ async function uploadWithProvider(
     }
     const uploadUrl = resolveUploadUrl(provider);
     if (!uploadUrl) {
-      return { success: false, error: '图床上传地址未配置' };
+      return { success: false, error: t("图床上传地址未配置") };
     }
 
     const fieldName = provider.imageField || 'image';
@@ -312,7 +313,7 @@ export async function uploadToImageHost(
     : store.getEnabledImageHostProviders();
 
   if (!providers || providers.length === 0) {
-    return { success: false, error: '图床未配置' };
+    return { success: false, error: t("图床未配置") };
   }
 
   const orderedProviders = getRotatedProviders(providers);

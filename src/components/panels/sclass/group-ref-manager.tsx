@@ -48,6 +48,7 @@ import {
   SEEDANCE_LIMITS,
 } from "./sclass-prompt-builder";
 import { useResolvedImageUrl } from "@/hooks/use-resolved-image-url";
+import { t } from "@/i18n";
 
 // ==================== Props ====================
 
@@ -186,19 +187,19 @@ export function GroupRefManager({
 
         // 配额检查（单类型）
         if (limits.current + i >= limits.max) {
-          toast.error(`${type === "video" ? "视频" : "音频"}引用已达上限 ${limits.max} 个`);
+          toast.error(t("{{v0}}引用已达上限 {{v1}} 个", { v0: type === "video" ? "视频" : "音频", v1: limits.max }));
           break;
         }
 
         // 配额检查（总文件数）
         if (totalFiles + i >= SEEDANCE_LIMITS.maxTotalFiles) {
-          toast.error(`总文件数已达上限 ${SEEDANCE_LIMITS.maxTotalFiles}`);
+          toast.error(t("总文件数已达上限 {{v0}}", { v0: SEEDANCE_LIMITS.maxTotalFiles }));
           break;
         }
 
         // 文件类型检查
         if (!limits.accept.some((t) => file.type.startsWith(t.split("/")[0]))) {
-          toast.error(`不支持的文件类型: ${file.name}`);
+          toast.error(t("不支持的文件类型: {{v0}}", { v0: file.name }));
           continue;
         }
 
@@ -208,7 +209,7 @@ export function GroupRefManager({
         // 检查时长（视频/音频都需 ≤15s）
         const duration = await getMediaDuration(dataUrl, type);
         if (duration > SEEDANCE_LIMITS.maxDuration) {
-          toast.error(`${file.name} 时长 ${Math.round(duration)}s 超出 ${SEEDANCE_LIMITS.maxDuration}s 限制`);
+          toast.error(t("{{v0}} 时长 {{v1}}s 超出 {{v2}}s 限制", { v0: file.name, v1: Math.round(duration), v2: SEEDANCE_LIMITS.maxDuration }));
           continue;
         }
 
@@ -225,7 +226,7 @@ export function GroupRefManager({
         };
 
         addAssetRef(group.id, asset);
-        toast.success(`已添加 ${type === "video" ? "视频" : "音频"}引用: ${file.name}`);
+        toast.success(t("已添加 {{v0}}引用: {{v1}}", { v0: type === "video" ? "视频" : "音频", v1: file.name }));
       }
     },
     [group.id, videoRefs.length, audioRefs.length, addAssetRef]
@@ -235,7 +236,7 @@ export function GroupRefManager({
   const handleRemoveRef = useCallback(
     (assetId: string, fileName: string) => {
       removeAssetRef(group.id, assetId);
-      toast.info(`已移除: ${fileName}`);
+      toast.info(t("已移除: {{v0}}", { v0: fileName }));
     },
     [group.id, removeAssetRef]
   );
@@ -262,7 +263,7 @@ export function GroupRefManager({
     <div className="px-3 py-2 border-t bg-muted/5 space-y-2">
       {/* ========== 配额总览 ========== */}
       <div className="flex items-center gap-4 flex-wrap">
-        <span className="text-xs font-medium text-muted-foreground">@引用素材</span>
+        <span className="text-xs font-medium text-muted-foreground">{t("@引用素材")}</span>
         <QuotaBar
           label="图片"
           icon={<ImageIcon className="h-3 w-3 text-blue-500" />}
@@ -306,7 +307,7 @@ export function GroupRefManager({
       <div className="space-y-1">
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <Film className="h-3 w-3 text-purple-500" />
-          <span>视频引用 — 运镜/动作复刻</span>
+          <span>{t("视频引用 — 运镜/动作复刻")}</span>
         </div>
 
         {/* 已上传的视频 */}
@@ -350,7 +351,7 @@ export function GroupRefManager({
       <div className="space-y-1">
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <Music className="h-3 w-3 text-green-500" />
-          <span>音频引用 — 节奏/BGM</span>
+          <span>{t("音频引用 — 节奏/BGM")}</span>
         </div>
 
         {/* 已上传的音频 */}
@@ -420,7 +421,7 @@ function AutoImageSection({
   if (totalCount === 0) {
     return (
       <div className="text-xs text-muted-foreground/60 py-1">
-        暂无自动收集的图片引用（请先生成首帧图片、关联角色或场景）
+        {t("暂无自动收集的图片引用（请先生成首帧图片、关联角色或场景）")}
       </div>
     );
   }

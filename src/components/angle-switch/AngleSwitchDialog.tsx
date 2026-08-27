@@ -24,6 +24,7 @@ import {
   type ShotSize,
 } from "@/lib/ai/runninghub-angles";
 import { AngleController } from "./AngleController";
+import { t } from "@/i18n";
 
 export interface AngleSwitchDialogProps {
   open: boolean;
@@ -94,7 +95,7 @@ export function AngleSwitchDialog({
             视角切换 - {frameType === "start" ? "首帧" : "尾帧"}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            通过3D球面控制器选择目标视角，拖拽旋转、滚轮缩放
+            {t("通过3D球面控制器选择目标视角，拖拽旋转、滚轮缩放")}
           </DialogDescription>
         </DialogHeader>
 
@@ -116,7 +117,7 @@ export function AngleSwitchDialog({
               disabled={isGenerating}
               className="flex-1 h-8 text-xs bg-transparent border-zinc-700 hover:bg-zinc-800 text-white"
             >
-              取消
+              {t("取消")}
             </Button>
             <Button
               size="sm"
@@ -125,7 +126,7 @@ export function AngleSwitchDialog({
               className="flex-1 h-8 text-xs bg-lime-500 hover:bg-lime-600 text-black"
             >
               {isGenerating ? (
-                <><Loader2 className="h-3 w-3 mr-1 animate-spin" />生成中</>
+                <><Loader2 className="h-3 w-3 mr-1 animate-spin" />{t("生成中")}</>
               ) : (
                 "生成"
               )}

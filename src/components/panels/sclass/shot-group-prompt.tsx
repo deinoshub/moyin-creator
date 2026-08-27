@@ -45,6 +45,7 @@ import {
   SEEDANCE_LIMITS,
   type GroupPromptResult,
 } from "./sclass-prompt-builder";
+import { t } from "@/i18n";
 
 // ==================== Props ====================
 
@@ -222,7 +223,7 @@ export function ShotGroupPrompt({
         {result.refs.overLimit && (
           <div className="flex items-center gap-1 text-red-500">
             <AlertCircle className="h-3 w-3" />
-            <span>素材超限</span>
+            <span>{t("素材超限")}</span>
           </div>
         )}
 
@@ -254,7 +255,7 @@ export function ShotGroupPrompt({
                 "text-xs font-mono resize-y",
                 isOverLimit && "border-red-500"
               )}
-              placeholder="组级提示词..."
+              placeholder={t("组级提示词...")}
             />
             <div className="flex items-center gap-1.5">
               <Button
@@ -263,7 +264,7 @@ export function ShotGroupPrompt({
                 onClick={handleSave}
               >
                 <Check className="h-3 w-3 mr-1" />
-                保存
+                {t("保存")}
               </Button>
               <Button
                 variant="outline"
@@ -271,7 +272,7 @@ export function ShotGroupPrompt({
                 className="h-6 px-2 text-xs"
                 onClick={() => setIsEditing(false)}
               >
-                取消
+                {t("取消")}
               </Button>
               <Button
                 variant="ghost"
@@ -280,7 +281,7 @@ export function ShotGroupPrompt({
                 onClick={handleReset}
               >
                 <RotateCcw className="h-3 w-3 mr-1" />
-                重置为自动
+                {t("重置为自动")}
               </Button>
             </div>
           </div>
@@ -326,7 +327,7 @@ export function ShotGroupPrompt({
  * 在 prompt 文本中高亮 @Image/@Video/@Audio 标签
  */
 function highlightRefs(text: string): React.ReactNode {
-  if (!text) return <span className="text-muted-foreground">点击编辑组级提示词...</span>;
+  if (!text) return <span className="text-muted-foreground">{t("点击编辑组级提示词...")}</span>;
 
   // 匹配 @Image1, @Video2, @Audio3 等
   const regex = /(@(?:Image|Video|Audio)\d+)/g;

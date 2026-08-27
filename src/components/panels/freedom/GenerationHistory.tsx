@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useFreedomStore, type HistoryEntry } from '@/stores/freedom-store';
 import { cn } from '@/lib/utils';
+import { t } from "@/i18n";
 
 interface GenerationHistoryProps {
   type: 'image' | 'video' | 'cinema';
@@ -27,7 +28,7 @@ export function GenerationHistory({ type, onSelect, className }: GenerationHisto
     return (
       <div className={cn('flex flex-col items-center justify-center h-full text-muted-foreground', className)}>
         <Clock className="h-8 w-8 mb-2 opacity-40" />
-        <p className="text-sm">暂无生成记录</p>
+        <p className="text-sm">{t("暂无生成记录")}</p>
       </div>
     );
   }
@@ -42,7 +43,7 @@ export function GenerationHistory({ type, onSelect, className }: GenerationHisto
           className="h-7 text-xs text-muted-foreground hover:text-destructive"
           onClick={() => clearHistory(type)}
         >
-          清空
+          {t("清空")}
         </Button>
       </div>
       <ScrollArea className="flex-1">

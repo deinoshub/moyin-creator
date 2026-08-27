@@ -18,6 +18,7 @@ import type {
 import type { AIScreenplay, AIScene, GenerationConfig, AICharacter, CharacterBibleLike } from '@opencut/ai-core';
 import { PromptCompiler } from '@opencut/ai-core/services/prompt-compiler';
 import { TaskPoller } from '@opencut/ai-core/api/task-poller';
+import { t } from "@/i18n";
 
 const WORKER_VERSION = '0.3.1';
 
@@ -173,7 +174,7 @@ async function handleGenerateScreenplay(command: GenerateScreenplayCommand): Pro
     
     // Only require API key if not in mock mode
     if (!apiKey && !mockMode) {
-      throw new Error('未配置 API Key，请在设置中添加或启用 Mock 模式');
+      throw new Error(t("未配置 API Key，请在设置中添加或启用 Mock 模式"));
     }
     
     // Call the backend API with correct schema
@@ -234,7 +235,7 @@ async function generateImage(
   const provider = (config as any).imageProvider || 'memefast';
   
   if (!apiKey) {
-    throw new Error('未配置图片生成 API Key');
+    throw new Error(t("未配置图片生成 API Key"));
   }
   
   // Submit image generation task
@@ -290,7 +291,7 @@ async function generateVideo(
   const provider = (config as any).videoProvider || 'memefast';
   
   if (!apiKey) {
-    throw new Error('未配置视频生成 API Key');
+    throw new Error(t("未配置视频生成 API Key"));
   }
   
   // Submit video generation task

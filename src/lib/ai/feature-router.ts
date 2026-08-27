@@ -10,7 +10,7 @@
  * Usage:
  *   const config = getFeatureConfig('character_generation');
  *   if (!config) {
- *     toast.error('请先在设置中配置角色生成的 API 供应商');
+ *     toast.error(t("请先在设置中配置角色生成的 API 供应商"));
  *     return;
  *   }
  *   // Use config.apiKey and config.provider in API call
@@ -226,6 +226,7 @@ export function getFeatureNotConfiguredMessage(feature: AIFeature): string {
 // ==================== 统一 API 调用入口 ====================
 
 import { callChatAPI } from '@/lib/script/script-parser';
+import { t } from "@/i18n";
 
 export interface CallFeatureAPIOptions {
   /** 自定义温度，默认 0.7 */
@@ -267,10 +268,10 @@ export async function callFeatureAPI(
   const model = options?.modelOverride || config.model || config.models?.[0];
   const baseUrl = config.baseUrl?.replace(/\/+$/, '');
   if (!baseUrl) {
-    throw new Error('请先在设置中配置 Base URL');
+    throw new Error(t("请先在设置中配置 Base URL"));
   }
   if (!model) {
-    throw new Error('请先在设置中配置模型');
+    throw new Error(t("请先在设置中配置模型"));
   }
   
   console.log(`[callFeatureAPI] 功能: ${feature}`);

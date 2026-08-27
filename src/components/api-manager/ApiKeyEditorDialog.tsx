@@ -36,6 +36,7 @@ import {
   Pencil,
   Save,
 } from "lucide-react";
+import { t } from "@/i18n";
 
 type KeyStatus = "pending" | "testing" | "valid" | "invalid";
 
@@ -231,7 +232,7 @@ export function ApiKeyEditorDialog({
                       value={key.value}
                       onChange={(e) => updateKeyValue(key.id, e.target.value)}
                       disabled={!key.editing}
-                      placeholder="输入 API Key"
+                      placeholder={t("输入 API Key")}
                       className="font-mono text-sm"
                     />
                   </div>
@@ -253,7 +254,7 @@ export function ApiKeyEditorDialog({
                                 <Save className="h-4 w-4 text-green-500" />
                               </Button>
                             </TooltipTrigger>
-                            <TooltipContent>保存</TooltipContent>
+                            <TooltipContent>{t("保存")}</TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       ) : (
@@ -279,7 +280,7 @@ export function ApiKeyEditorDialog({
                                   <Shield className="h-4 w-4" />
                                 </Button>
                               </TooltipTrigger>
-                              <TooltipContent>测试 Key</TooltipContent>
+                              <TooltipContent>{t("测试 Key")}</TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
 
@@ -295,7 +296,7 @@ export function ApiKeyEditorDialog({
                                   <Pencil className="h-4 w-4" />
                                 </Button>
                               </TooltipTrigger>
-                              <TooltipContent>编辑</TooltipContent>
+                              <TooltipContent>{t("编辑")}</TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
 
@@ -311,7 +312,7 @@ export function ApiKeyEditorDialog({
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
                               </TooltipTrigger>
-                              <TooltipContent>删除</TooltipContent>
+                              <TooltipContent>{t("删除")}</TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
                         </>
@@ -344,7 +345,7 @@ export function ApiKeyEditorDialog({
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent>删除无效 Keys</TooltipContent>
+                        <TooltipContent>{t("删除无效 Keys")}</TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   )}
@@ -355,10 +356,10 @@ export function ApiKeyEditorDialog({
                         <TooltipTrigger asChild>
                           <Button variant="ghost" size="sm" onClick={testAllKeys}>
                             <Shield className="h-4 w-4 mr-1" />
-                            测试全部
+                            {t("测试全部")}
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent>测试所有 Keys</TooltipContent>
+                        <TooltipContent>{t("测试所有 Keys")}</TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   )}
@@ -367,7 +368,7 @@ export function ApiKeyEditorDialog({
 
               <Button variant="outline" size="sm" onClick={addKey}>
                 <Plus className="h-4 w-4 mr-1" />
-                添加
+                {t("添加")}
               </Button>
             </div>
           </div>
@@ -375,9 +376,9 @@ export function ApiKeyEditorDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            取消
+            {t("取消")}
           </Button>
-          <Button onClick={handleSave}>确认</Button>
+          <Button onClick={handleSave}>{t("确认")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

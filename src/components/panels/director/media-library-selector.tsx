@@ -20,6 +20,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { t } from "@/i18n";
 
 interface MediaLibrarySelectorProps {
   sceneId: number;
@@ -102,7 +103,7 @@ export function MediaLibrarySelector({
         
         {imageFiles.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-8">
-            素材库中没有图片，请先添加图片或生成四宫格
+            {t("素材库中没有图片，请先添加图片或生成四宫格")}
           </p>
         ) : (
           <div className="space-y-3">
@@ -118,7 +119,7 @@ export function MediaLibrarySelector({
                       : "bg-muted hover:bg-muted/80 text-muted-foreground"
                   )}
                 >
-                  全部
+                  {t("全部")}
                 </button>
                 {visibleFolders.map((folder) => (
                   <button
@@ -142,7 +143,7 @@ export function MediaLibrarySelector({
             <div className="max-h-[300px] overflow-y-auto">
               {filteredImages.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-4">
-                  该文件夹中没有图片
+                  {t("该文件夹中没有图片")}
                 </p>
               ) : (
                 <div className="grid grid-cols-4 gap-2">

@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import type { IProvider } from "@/lib/api-key-manager";
+import { t } from "@/i18n";
 
 /**
  * 平台预设配置
@@ -132,19 +133,19 @@ export function AddProviderDialog({
 
   const handleSubmit = () => {
     if (!platform) {
-      toast.error("请选择平台");
+      toast.error(t("请选择平台"));
       return;
     }
     if (!name.trim()) {
-      toast.error("请输入名称");
+      toast.error(t("请输入名称"));
       return;
     }
     if (isCustom && !baseUrl.trim()) {
-      toast.error("自定义平台需要输入 Base URL");
+      toast.error(t("自定义平台需要输入 Base URL"));
       return;
     }
     if (!apiKey.trim()) {
-      toast.error("请输入 API Key");
+      toast.error(t("请输入 API Key"));
       return;
     }
 
@@ -176,17 +177,17 @@ export function AddProviderDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>添加 API 供应商</DialogTitle>
-          <DialogDescription className="hidden">添加一个新的 API 供应商</DialogDescription>
+          <DialogTitle>{t("添加 API 供应商")}</DialogTitle>
+          <DialogDescription className="hidden">{t("添加一个新的 API 供应商")}</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4 py-4">
           {/* Platform Selection */}
           <div className="space-y-2">
-            <Label>平台</Label>
+            <Label>{t("平台")}</Label>
             <Select value={platform} onValueChange={setPlatform}>
               <SelectTrigger>
-                <SelectValue placeholder="选择平台" />
+                <SelectValue placeholder={t("选择平台")} />
               </SelectTrigger>
               <SelectContent>
               {availablePlatforms.map((preset) => (
@@ -195,7 +196,7 @@ export function AddProviderDialog({
                       {preset.name}
                       {preset.recommended && (
                         <span className="text-[10px] px-1.5 py-0.5 bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded font-medium">
-                          推荐
+                          {t("推荐")}
                         </span>
                       )}
                     </span>
@@ -207,11 +208,11 @@ export function AddProviderDialog({
 
           {/* Name */}
           <div className="space-y-2">
-            <Label>名称</Label>
+            <Label>{t("名称")}</Label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="供应商名称"
+              placeholder={t("供应商名称")}
             />
           </div>
 
@@ -234,28 +235,28 @@ export function AddProviderDialog({
               type="password"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              placeholder="输入 API Key"
+              placeholder={t("输入 API Key")}
               className="font-mono"
             />
             <p className="text-xs text-muted-foreground">
-              支持多个 Key，用逗号分隔
+              {t("支持多个 Key，用逗号分隔")}
             </p>
           </div>
 
           {/* Model - optional input */}
           <div className="space-y-2">
-            <Label>模型 (可选)</Label>
+            <Label>{t("模型 (可选)")}</Label>
             <Input
               value={model}
               onChange={(e) => setModel(e.target.value)}
-              placeholder="输入模型名称，如 gpt-4o"
+              placeholder={t("输入模型名称，如 gpt-4o")}
             />
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            取消
+            {t("取消")}
           </Button>
           <Button onClick={handleSubmit}>{isMemefastAppend ? "追加 Key" : "添加"}</Button>
         </DialogFooter>

@@ -29,6 +29,7 @@ import {
   type ImageHostProvider,
   type ImageHostPlatform,
 } from "@/stores/api-config-store";
+import { t } from "@/i18n";
 
 interface AddImageHostDialogProps {
   open: boolean;
@@ -121,11 +122,11 @@ export function AddImageHostDialog({
 
   const handleSubmit = () => {
     if (!name.trim()) {
-      toast.error("请输入名称");
+      toast.error(t("请输入名称"));
       return;
     }
     if (!baseUrl.trim() && !uploadPath.trim()) {
-      toast.error("请配置 Base URL 或 Upload Path");
+      toast.error(t("请配置 Base URL 或 Upload Path"));
       return;
     }
     if (!apiKey.trim() && !apiKeyOptional) {
@@ -154,22 +155,22 @@ export function AddImageHostDialog({
     });
 
     onOpenChange(false);
-    toast.success(`已添加 ${name}`);
+    toast.success(t("已添加 {{v0}}", { v0: name }));
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[85vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>添加图床服务商</DialogTitle>
+          <DialogTitle>{t("添加图床服务商")}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4 py-4 overflow-y-auto pr-1">
           <div className="space-y-2">
-            <Label>平台</Label>
+            <Label>{t("平台")}</Label>
             <Select value={platform} onValueChange={(v) => setPlatform(v as ImageHostPlatform)}>
               <SelectTrigger>
-                <SelectValue placeholder="选择平台" />
+                <SelectValue placeholder={t("选择平台")} />
               </SelectTrigger>
               <SelectContent>
                 {IMAGE_HOST_PRESETS.map((preset) => (
@@ -182,8 +183,8 @@ export function AddImageHostDialog({
           </div>
 
           <div className="space-y-2">
-            <Label>名称</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="图床名称" />
+            <Label>{t("名称")}</Label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("图床名称")} />
           </div>
 
           <div className="space-y-2">
@@ -193,7 +194,7 @@ export function AddImageHostDialog({
 
           <div className="space-y-2">
             <Label>Upload Path / URL</Label>
-            <Input value={uploadPath} onChange={(e) => setUploadPath(e.target.value)} placeholder="/upload 或完整 URL" />
+            <Input value={uploadPath} onChange={(e) => setUploadPath(e.target.value)} placeholder={t("/upload 或完整 URL")} />
           </div>
 
           <div className="space-y-2">
@@ -213,12 +214,12 @@ export function AddImageHostDialog({
             )}
             {platform === "imgurl" && (
               <p className="text-xs text-muted-foreground">
-                使用 ImgURL / Zpic 开放接口里的上传 Token（V3），支持多 Token 轮换。
+                {t("使用 ImgURL / Zpic 开放接口里的上传 Token（V3），支持多 Token 轮换。")}
               </p>
             )}
             {platform === "scdn" && (
               <p className="text-xs text-muted-foreground">
-                SCDN 图床支持直接上传，当前更适合作为默认图床使用。
+                {t("SCDN 图床支持直接上传，当前更适合作为默认图床使用。")}
               </p>
             )}
             {platform === "catbox" && (
@@ -229,15 +230,15 @@ export function AddImageHostDialog({
           </div>
 
           <div className="flex items-center justify-between">
-            <Label>启用</Label>
+            <Label>{t("启用")}</Label>
             <Switch checked={enabled} onCheckedChange={setEnabled} />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm text-muted-foreground">高级配置（可选）</Label>
+            <Label className="text-sm text-muted-foreground">{t("高级配置（可选）")}</Label>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <Label className="text-xs">API Key Query 参数</Label>
+                <Label className="text-xs">{t("API Key Query 参数")}</Label>
                 <Input value={apiKeyParam} onChange={(e) => setApiKeyParam(e.target.value)} placeholder="key" />
               </div>
               <div className="space-y-1">
@@ -245,23 +246,23 @@ export function AddImageHostDialog({
                 <Input value={apiKeyHeader} onChange={(e) => setApiKeyHeader(e.target.value)} placeholder="Authorization" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">过期参数</Label>
+                <Label className="text-xs">{t("过期参数")}</Label>
                 <Input value={expirationParam} onChange={(e) => setExpirationParam(e.target.value)} placeholder="expiration" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">图片字段名</Label>
+                <Label className="text-xs">{t("图片字段名")}</Label>
                 <Input value={imageField} onChange={(e) => setImageField(e.target.value)} placeholder="image" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">名称字段名</Label>
+                <Label className="text-xs">{t("名称字段名")}</Label>
                 <Input value={nameField} onChange={(e) => setNameField(e.target.value)} placeholder="name" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">返回 URL 字段</Label>
+                <Label className="text-xs">{t("返回 URL 字段")}</Label>
                 <Input value={responseUrlField} onChange={(e) => setResponseUrlField(e.target.value)} placeholder="data.url" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">删除 URL 字段</Label>
+                <Label className="text-xs">{t("删除 URL 字段")}</Label>
                 <Input value={responseDeleteUrlField} onChange={(e) => setResponseDeleteUrlField(e.target.value)} placeholder="data.delete_url" />
               </div>
             </div>
@@ -269,8 +270,8 @@ export function AddImageHostDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>取消</Button>
-          <Button onClick={handleSubmit}>添加</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>{t("取消")}</Button>
+          <Button onClick={handleSubmit}>{t("添加")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

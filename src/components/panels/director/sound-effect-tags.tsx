@@ -17,6 +17,7 @@ import {
 import { SOUND_EFFECT_PRESETS, type SoundEffectTag } from "@/stores/director-store";
 import { Volume2, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from "@/i18n";
 
 interface SoundEffectTagsProps {
   value: SoundEffectTag[];
@@ -94,7 +95,7 @@ export function SoundEffectTags({
             <PopoverTrigger asChild>
               <button className="inline-flex items-center gap-0.5 px-1.5 py-0.5 border border-dashed border-muted-foreground/30 hover:border-primary/50 rounded text-[10px] text-muted-foreground hover:text-foreground transition-colors">
                 <Plus className="h-2.5 w-2.5" />
-                音效
+                {t("音效")}
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-2" align="start">

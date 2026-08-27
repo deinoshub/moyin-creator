@@ -38,6 +38,7 @@ import {
   type ExportProgress,
 } from "@/lib/script/export-service";
 import { toast } from "sonner";
+import { t } from "@/i18n";
 
 export function ExportView() {
   const { activeProject } = useProjectStore();
@@ -100,7 +101,7 @@ export function ExportView() {
           },
           (p) => setExportProgress(p)
         );
-        if (success) toast.success('导出完成！');
+        if (success) toast.success(t("导出完成！"));
       } else if (scriptData) {
         const success = await exportProjectToFolder(
           {
@@ -114,12 +115,12 @@ export function ExportView() {
           },
           (p) => setExportProgress(p)
         );
-        if (success) toast.success('导出完成！');
+        if (success) toast.success(t("导出完成！"));
       } else {
-        toast.error('没有可导出的数据');
+        toast.error(t("没有可导出的数据"));
       }
     } catch (error) {
-      toast.error(`导出失败: ${(error as Error).message}`);
+      toast.error(t("导出失败: {{v0}}", { v0: (error as Error).message }));
     } finally {
       setIsExporting(false);
       setExportProgress(null);
@@ -157,9 +158,9 @@ export function ExportView() {
           (p) => setExportProgress(p)
         );
       }
-      toast.success('下载完成！');
+      toast.success(t("下载完成！"));
     } catch (error) {
-      toast.error(`下载失败: ${(error as Error).message}`);
+      toast.error(t("下载失败: {{v0}}", { v0: (error as Error).message }));
     } finally {
       setIsExporting(false);
       setExportProgress(null);
@@ -173,7 +174,7 @@ export function ExportView() {
         <div className="flex items-center gap-4">
           <h2 className="text-lg font-bold text-foreground flex items-center gap-3">
             <Film className="w-5 h-5 text-primary" />
-            成片与导出
+            {t("成片与导出")}
             <span className="text-xs text-muted-foreground font-mono font-normal uppercase tracking-wider bg-muted px-2 py-1 rounded">
               Rendering & Export
             </span>
@@ -351,9 +352,9 @@ export function ExportView() {
                   )}
                 >
                   {isExporting ? (
-                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />导出中...</>
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t("导出中...")}</>
                   ) : (
-                    <><FolderOpen className="w-4 h-4 mr-2" />选择文件夹导出</>
+                    <><FolderOpen className="w-4 h-4 mr-2" />{t("选择文件夹导出")}</>
                   )}
                 </Button>
 
@@ -364,7 +365,7 @@ export function ExportView() {
                   className="h-12 font-bold text-xs uppercase tracking-widest"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  逐个下载素材
+                  {t("逐个下载素材")}
                 </Button>
               </div>
 
@@ -387,9 +388,9 @@ export function ExportView() {
               >
                 <Layers className="w-5 h-5 text-muted-foreground group-hover:text-primary mb-4 transition-colors" />
                 <div>
-                  <h4 className="text-sm font-bold text-foreground mb-1">素材下载</h4>
+                  <h4 className="text-sm font-bold text-foreground mb-1">{t("素材下载")}</h4>
                   <p className="text-[10px] text-muted-foreground">
-                    下载所有已生成的图片和视频素材
+                    {t("下载所有已生成的图片和视频素材")}
                   </p>
                 </div>
               </div>

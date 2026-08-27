@@ -9,6 +9,7 @@
 
 import { uploadToImageHost, isImageHostConfigured } from '@/lib/image-host';
 import { readImageAsBase64 } from '@/lib/image-storage';
+import { t } from "@/i18n";
 
 /**
  * Upload base64 image and get HTTP URL
@@ -38,7 +39,7 @@ export async function uploadBase64Image(imageData: string): Promise<string> {
   }
 
   if (!isImageHostConfigured()) {
-    throw new Error('图床未配置');
+    throw new Error(t("图床未配置"));
   }
 
   const result = await uploadToImageHost(base64Data, {
@@ -61,7 +62,7 @@ export async function uploadMultipleImages(base64Images: string[]): Promise<stri
   if (base64Images.length === 0) return [];
 
   if (!isImageHostConfigured()) {
-    throw new Error('图床未配置');
+    throw new Error(t("图床未配置"));
   }
 
   const results = await Promise.allSettled(

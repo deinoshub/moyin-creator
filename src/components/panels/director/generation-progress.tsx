@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { useMemo, useCallback, useEffect, useRef } from "react";
 import { getWorkerBridge } from "@/lib/ai/worker-bridge";
 import { useAPIConfigStore } from "@/stores/api-config-store";
+import { t } from "@/i18n";
 
 export function GenerationProgress() {
   // Get current project data
@@ -198,7 +199,7 @@ export function GenerationProgress() {
     <div className="border-t p-4 space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="font-medium text-sm">生成进度</h3>
+        <h3 className="font-medium text-sm">{t("生成进度")}</h3>
         <span className="text-sm text-muted-foreground">
           {overallProgress.completed} / {overallProgress.total} 场景
         </span>

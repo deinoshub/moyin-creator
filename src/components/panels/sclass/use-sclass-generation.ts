@@ -45,6 +45,7 @@ import {
   SEEDANCE_LIMITS,
   type GroupPromptResult,
 } from "./sclass-prompt-builder";
+import { t } from "@/i18n";
 
 // ==================== Types ====================
 
@@ -147,7 +148,7 @@ export function useSClassGeneration() {
           groupId: group.id,
           success: false,
           videoUrl: null,
-          error: "无活跃项目",
+          error: t("无活跃项目"),
         };
       }
 
@@ -169,7 +170,7 @@ export function useSClassGeneration() {
           groupId: group.id,
           success: false,
           videoUrl: null,
-          error: "请先在设置中配置视频生成 API Key",
+          error: t("请先在设置中配置视频生成 API Key"),
         };
       }
       const sclassProjectData = getProjectData(projectId);
@@ -190,7 +191,7 @@ export function useSClassGeneration() {
           groupId: group.id,
           success: false,
           videoUrl: null,
-          error: "组内无场景",
+          error: t("组内无场景"),
         };
       }
 
@@ -415,7 +416,7 @@ export function useSClassGeneration() {
         }
 
         if (!videoUrl) {
-          throw lastVideoError || new Error("视频生成失败：没有可用 API Key");
+          throw lastVideoError || new Error(t("视频生成失败：没有可用 API Key"));
         }
 
         // 7. 保存视频到本地
@@ -502,7 +503,7 @@ export function useSClassGeneration() {
     ): Promise<GroupGenerationResult[]> => {
       const projectId = activeProjectId;
       if (!projectId) {
-        toast.error("无活跃项目");
+        toast.error(t("无活跃项目"));
         return [];
       }
 
@@ -510,7 +511,7 @@ export function useSClassGeneration() {
       const groups = projectData.shotGroups;
 
       if (groups.length === 0) {
-        toast.error("没有镜头组");
+        toast.error(t("没有镜头组"));
         return [];
       }
 
@@ -520,20 +521,19 @@ export function useSClassGeneration() {
       );
 
       if (groupsToGenerate.length === 0) {
-        toast.info("所有镜头组已生成或正在生成中");
+        toast.info(t("所有镜头组已生成或正在生成中"));
         return [];
       }
 
       abortRef.current = false;
       const results: GroupGenerationResult[] = [];
 
-      toast.info(
-        `开始逐组生成 ${groupsToGenerate.length} 个镜头组视频...`
+      toast.info(t("开始逐组生成 {{v0}} 个镜头组视频...", { v0: groupsToGenerate.length })
       );
 
       for (let i = 0; i < groupsToGenerate.length; i++) {
         if (abortRef.current) {
-          toast.warning("已中止批量生成");
+          toast.warning(t("已中止批量生成"));
           break;
         }
 
@@ -560,12 +560,10 @@ export function useSClassGeneration() {
         results.push(result);
 
         if (result.success) {
-          toast.success(
-            `组 ${i + 1}/${groupsToGenerate.length} 「${group.name}」生成完成`
+          toast.success(t("组 {{v0}}/{{v1}} 「{{v2}}」生成完成", { v0: i + 1, v1: groupsToGenerate.length, v2: group.name })
           );
         } else {
-          toast.error(
-            `组 ${i + 1}/${groupsToGenerate.length} 「${group.name}」失败: ${result.error}`
+          toast.error(t("组 {{v0}}/{{v1}} 「{{v2}}」失败: {{v3}}", { v0: i + 1, v1: groupsToGenerate.length, v2: group.name, v3: result.error })
           );
         }
       }
@@ -580,10 +578,9 @@ export function useSClassGeneration() {
       const successCount = results.filter((r) => r.success).length;
       const failCount = results.filter((r) => !r.success).length;
       if (failCount === 0) {
-        toast.success(`全部 ${successCount} 个镜头组生成完成 🎬`);
+        toast.success(t("全部 {{v0}} 个镜头组生成完成 🎬", { v0: successCount }));
       } else {
-        toast.warning(
-          `生成完毕：${successCount} 成功，${failCount} 失败`
+        toast.warning(t("生成完毕：{{v0}} 成功，{{v1}} 失败", { v0: successCount, v1: failCount })
         );
       }
 
@@ -598,7 +595,7 @@ export function useSClassGeneration() {
     async (sceneId: number): Promise<boolean> => {
       const scene = splitScenes.find((s: SplitScene) => s.id === sceneId);
       if (!scene) {
-        toast.error("未找到分镜");
+        toast.error(t("未找到分镜"));
         return false;
       }
 
@@ -610,7 +607,7 @@ export function useSClassGeneration() {
 
       const keyManager = featureConfig.keyManager;
       if (!keyManager.getCurrentKey()) {
-        toast.error("请先在设置中配置视频生成 API Key");
+        toast.error(t("请先在设置中配置视频生成 API Key"));
         return false;
       }
       const projectId = activeProjectId;
@@ -701,7 +698,7 @@ export function useSClassGeneration() {
         }
 
         if (!videoUrl) {
-          throw lastVideoError || new Error("视频生成失败：没有可用 API Key");
+          throw lastVideoError || new Error(t("视频生成失败：没有可用 API Key"));
         }
 
         const localUrl = await saveVideoLocally(videoUrl, sceneId);
@@ -713,7 +710,7 @@ export function useSClassGeneration() {
           videoError: null,
         });
 
-        toast.success(`分镜 ${sceneId + 1} 生成完成`);
+        toast.success(t("分镜 {{v0}} 生成完成", { v0: sceneId + 1 }));
         return true;
       } catch (error) {
         const err = error as Error;
@@ -722,7 +719,7 @@ export function useSClassGeneration() {
           videoProgress: 0,
           videoError: err.message,
         });
-        toast.error(`分镜 ${sceneId + 1} 生成失败: ${err.message}`);
+        toast.error(t("分镜 {{v0}} 生成失败: {{v1}}", { v0: sceneId + 1, v1: err.message }));
         return false;
       }
     },
@@ -738,7 +735,7 @@ export function useSClassGeneration() {
 
   const abortGeneration = useCallback(() => {
     abortRef.current = true;
-    toast.info("正在中止生成...");
+    toast.info(t("正在中止生成..."));
   }, []);
 
   // ========== 重试单组 ==========
@@ -791,14 +788,14 @@ export function useSClassGeneration() {
     ): Promise<GroupGenerationResult | null> => {
       const projectId = activeProjectId;
       if (!projectId) {
-        toast.error('无活跃项目');
+        toast.error(t("无活跃项目"));
         return null;
       }
 
       const pd = getProjectData(projectId);
       const sourceGroup = pd.shotGroups.find(g => g.id === sourceGroupId);
       if (!sourceGroup || !sourceGroup.videoUrl) {
-        toast.error('源组无已完成视频，无法延长');
+        toast.error(t("源组无已完成视频，无法延长"));
         return null;
       }
 
@@ -829,7 +826,7 @@ export function useSClassGeneration() {
       };
 
       addShotGroup(childGroup);
-      toast.info(`已创建延长子组「${childGroup.name}」`);
+      toast.info(t("已创建延长子组「{{v0}}」", { v0: childGroup.name }));
 
       return generateGroupVideo(childGroup);
     },

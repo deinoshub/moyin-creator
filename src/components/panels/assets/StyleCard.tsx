@@ -11,6 +11,7 @@
 import { cn } from "@/lib/utils";
 import { LocalImage } from "@/components/ui/local-image";
 import type { StyleCategory } from "@/lib/constants/visual-styles";
+import { t } from "@/i18n";
 
 // 风格分类色块（与 StylePicker 一致）
 const CATEGORY_COLORS: Record<string, string> = {
@@ -80,13 +81,13 @@ export function StyleCard({
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
-            无参考图
+            {t("无参考图")}
           </div>
         )}
         {/* 自定义标记 */}
         {isCustom && (
           <div className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded text-[10px] bg-primary/80 text-primary-foreground">
-            自定义
+            {t("自定义")}
           </div>
         )}
       </div>

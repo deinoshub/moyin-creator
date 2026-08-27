@@ -35,6 +35,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { t } from "@/i18n";
 
 // Mood presets for quick selection
 const MOOD_PRESETS = [
@@ -157,26 +158,26 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
         return (
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
             <ImageIcon className="h-3 w-3" />
-            生成图片
+            {t("生成图片")}
           </span>
         );
       case "video":
         return (
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
             <VideoIcon className="h-3 w-3" />
-            生成视频
+            {t("生成视频")}
           </span>
         );
       case "audio":
         return (
           <span className="text-xs text-muted-foreground">
-            生成音频
+            {t("生成音频")}
           </span>
         );
       case "done":
         return (
           <span className="text-xs text-green-500">
-            完成
+            {t("完成")}
           </span>
         );
       default:
@@ -235,13 +236,13 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
                     className="h-5 px-1.5 text-[10px] text-muted-foreground"
                   >
                     <Plus className="h-3 w-3 mr-0.5" />
-                    情绪
+                    {t("情绪")}
                   </Button>
                 )}
               </PopoverTrigger>
               <PopoverContent className="w-56 p-2" onClick={(e) => e.stopPropagation()}>
                 <div className="space-y-2">
-                  <div className="text-xs font-medium text-muted-foreground">选择情绪标签</div>
+                  <div className="text-xs font-medium text-muted-foreground">{t("选择情绪标签")}</div>
                   <div className="flex flex-wrap gap-1">
                     {MOOD_PRESETS.map((preset) => (
                       <Badge
@@ -267,7 +268,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
                       onClick={handleRandomMood}
                     >
                       <Shuffle className="h-3 w-3 mr-1" />
-                      随机
+                      {t("随机")}
                     </Button>
                     {scene.mood && (
                       <Button
@@ -277,7 +278,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
                         onClick={() => handleSetMood(undefined)}
                       >
                         <X className="h-3 w-3 mr-1" />
-                        清除
+                        {t("清除")}
                       </Button>
                     )}
                   </div>
@@ -309,7 +310,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
               onClick={handleRetry}
             >
               <RotateCcw className="h-3 w-3 mr-1" />
-              重试
+              {t("重试")}
             </Button>
           )}
           {canDelete && onDelete && (
@@ -318,7 +319,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
               variant="ghost"
               className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
               onClick={handleDelete}
-              title="删除场景"
+              title={t("删除场景")}
             >
               <Trash2 className="h-3.5 w-3.5" />
             </Button>
@@ -336,7 +337,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
             onKeyDown={handleNarrationKeyDown}
             onBlur={handleNarrationSave}
             className="min-h-[60px] text-sm resize-none"
-            placeholder="输入场景旁白..."
+            placeholder={t("输入场景旁白...")}
           />
           <div className="flex justify-end gap-1 mt-1">
             <Button
@@ -346,7 +347,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
               onClick={handleNarrationCancel}
             >
               <X className="h-3 w-3 mr-1" />
-              取消
+              {t("取消")}
             </Button>
             <Button
               size="sm"
@@ -355,7 +356,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
               onClick={handleNarrationSave}
             >
               <Check className="h-3 w-3 mr-1" />
-              保存
+              {t("保存")}
             </Button>
           </div>
         </div>
@@ -414,7 +415,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
               }}
             >
               <RotateCcw className="h-3 w-3 mr-1" />
-              重新生成
+              {t("重新生成")}
             </Button>
           )}
         </div>
@@ -431,15 +432,15 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
       {isSelected && (
         <div className="mt-3 pt-3 border-t space-y-2">
           <div>
-            <label className="text-xs font-medium text-muted-foreground">镜头</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("镜头")}</label>
             <p className="text-xs">{scene.camera}</p>
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground">视觉描述</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("视觉描述")}</label>
             <p className="text-xs line-clamp-3">{scene.visualContent}</p>
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground">动作</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("动作")}</label>
             <p className="text-xs line-clamp-2">{scene.action}</p>
           </div>
         </div>

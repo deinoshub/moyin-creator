@@ -68,6 +68,7 @@ import {
   DEFAULT_STYLE_ID,
   type VisualStyleId 
 } from "@/lib/constants/visual-styles";
+import { t } from "@/i18n";
 
 interface GenerationPanelProps {
   selectedScene: Scene | null;
@@ -351,12 +352,11 @@ export function GenerationPanel({ selectedScene, onSceneCreated }: GenerationPan
         setExtractedViewpoints(firstPageViewpoints);
         
         const pageCount = data.contactSheetPrompts.length;
-        toast.success(
-          `场景「${data.name}」已创建\n` +
+        toast.success(t("场景「{{v0}}」已创建\\n", { v0: data.name }) +
           `✔ ${data.viewpoints.length} 个视角已加载${pageCount > 1 ? `（${pageCount}张联合图）` : ''}`
         );
       } else {
-        toast.success(`场景「${data.name}」已自动创建`);
+        toast.success(t("场景「{{v0}}」已自动创建", { v0: data.name }));
       }
     } else {
       // 只有部分数据，仅填充表单
@@ -577,11 +577,11 @@ ${gridItemsZh}
 
   const handleCreateScene = () => {
     if (!name.trim()) {
-      toast.error("请输入场景名称");
+      toast.error(t("请输入场景名称"));
       return;
     }
     if (!location.trim()) {
-      toast.error("请输入地点描述");
+      toast.error(t("请输入地点描述"));
       return;
     }
 
@@ -607,7 +607,7 @@ ${gridItemsZh}
       linkedEpisodeId: manualEpisodeId,
     });
 
-    toast.success("场景已创建");
+    toast.success(t("场景已创建"));
     selectScene(id);
     onSceneCreated?.(id);
   };
@@ -615,11 +615,11 @@ ${gridItemsZh}
   const handleGenerate = async () => {
     const targetId = selectedScene?.id;
     if (!targetId) {
-      toast.error("请先选择或创建场景");
+      toast.error(t("请先选择或创建场景"));
       return;
     }
     if (!location.trim()) {
-      toast.error("请输入地点描述");
+      toast.error(t("请输入地点描述"));
       return;
     }
 
@@ -680,11 +680,11 @@ ${gridItemsZh}
       setPreviewUrl(result.imageUrl);
       setPreviewSceneId(targetId);
       setGenerationStatus('completed');
-      toast.success("场景概念图生成完成，请预览确认");
+      toast.success(t("场景概念图生成完成，请预览确认"));
     } catch (error) {
       const err = error as Error;
       setGenerationStatus('error', err.message);
-      toast.error(`生成失败: ${err.message}`);
+      toast.error(t("生成失败: {{v0}}", { v0: err.message }));
     } finally {
       setGeneratingScene(null);
     }
@@ -727,10 +727,10 @@ ${gridItemsZh}
 
       setPreviewUrl(null);
       setPreviewSceneId(null);
-      toast.success("场景概念图已保存到本地！", { id: 'saving-scene-preview' });
+      toast.success(t("场景概念图已保存到本地！"), { id: 'saving-scene-preview' });
     } catch (error) {
       console.error('Failed to save scene preview:', error);
-      toast.error("保存失败", { id: 'saving-scene-preview' });
+      toast.error(t("保存失败"), { id: 'saving-scene-preview' });
     }
   };
 
@@ -747,7 +747,7 @@ ${gridItemsZh}
    */
   const handleGenerateContactSheetPrompt = () => {
     if (!selectedScene) {
-      toast.error("请先选择场景");
+      toast.error(t("请先选择场景"));
       return;
     }
 
@@ -758,7 +758,7 @@ ${gridItemsZh}
     );
 
     if (sceneShots.length === 0) {
-      toast.warning("该场景没有关联的分镜，将使用默认视角");
+      toast.warning(t("该场景没有关联的分镜，将使用默认视角"));
     }
 
     // 获取当前选中的风格
@@ -789,7 +789,7 @@ ${gridItemsZh}
     const sceneViewpoints = (selectedScene as any)?.viewpoints || (sceneData as any)?.viewpoints;
     const hasAIViewpoints = sceneViewpoints && sceneViewpoints.length > 0;
     const sourceText = hasAIViewpoints ? 'AI 分析' : '关键词提取';
-    toast.success(`${sourceText} ${result.viewpoints.length} 个视角，提示词已生成`);
+    toast.success(t("{{v0}} {{v1}} 个视角，提示词已生成", { v0: sourceText, v1: result.viewpoints.length }));
   };
 
   /**
@@ -845,7 +845,7 @@ ${gridItemsZh}
    */
   const handleGenerateContactSheetImage = async () => {
     if (!contactSheetPrompt) {
-      toast.error("请先生成提示词");
+      toast.error(t("请先生成提示词"));
       return;
     }
 
@@ -861,7 +861,7 @@ ${gridItemsZh}
     const keyManager = featureConfig.keyManager;
 
     if (!apiKey || !baseUrl || !model) {
-      toast.error('图片生成 API 未配置');
+      toast.error(t("图片生成 API 未配置"));
       return;
     }
 
@@ -922,7 +922,7 @@ ${gridItemsZh}
 
       setContactSheetProgress(100);
       if (!result.imageUrl) {
-        throw new Error('图片生成失败：未返回图片 URL');
+        throw new Error(t("图片生成失败：未返回图片 URL"));
       }
       
       // 如果返回的是 HTTP URL，转为 base64 — 避免后续切割时 CORS 问题
@@ -944,11 +944,11 @@ ${gridItemsZh}
       }
       
       setContactSheetImage(finalImageUrl);
-      toast.success("联合图生成成功，可以进行切割");
+      toast.success(t("联合图生成成功，可以进行切割"));
     } catch (error) {
       const err = error as Error;
       console.error('[ContactSheet] 生成失败:', err);
-      toast.error(`生成失败: ${err.message}`);
+      toast.error(t("生成失败: {{v0}}", { v0: err.message }));
     } finally {
       setIsGeneratingContactSheet(false);
       setContactSheetProgress(0);
@@ -983,7 +983,7 @@ ${gridItemsZh}
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
       setContactSheetImage(dataUrl);
-      toast.success("联合图已上传，可以进行切割");
+      toast.success(t("联合图已上传，可以进行切割"));
     };
     reader.readAsDataURL(file);
   };
@@ -1059,7 +1059,7 @@ ${gridItemsZh}
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
       setContactSheetImage(dataUrl);
-      toast.success(`联合图已上传（${dims.rows}×${dims.cols} = ${totalCells}格），切割后将自动创建新场景`);
+      toast.success(t("联合图已上传（{{v0}}×{{v1}} = {{v2}}格），切割后将自动创建新场景", { v0: dims.rows, v1: dims.cols, v2: totalCells }));
     };
     reader.readAsDataURL(file);
   };
@@ -1123,7 +1123,7 @@ ${gridItemsZh}
     const viewpointsToUse = currentPageVps.length > 0 ? currentPageVps : extractedViewpoints;
     
     if (!contactSheetImage || viewpointsToUse.length === 0) {
-      toast.error("请先上传联合图并生成提示词");
+      toast.error(t("请先上传联合图并生成提示词"));
       return;
     }
 
@@ -1217,10 +1217,10 @@ ${gridItemsZh}
       }
       
       setSplitViewpointImages(viewpointImagesMap);
-      toast.success(`已切割为 ${Object.keys(viewpointImagesMap).length} 个视角图片`);
+      toast.success(t("已切割为 {{v0}} 个视角图片", { v0: Object.keys(viewpointImagesMap).length }));
     } catch (error) {
       console.error('[ContactSheet] 切割失败:', error);
-      toast.error("切割失败，请检查图片格式");
+      toast.error(t("切割失败，请检查图片格式"));
     } finally {
       setIsSplitting(false);
     }
@@ -1233,7 +1233,7 @@ ${gridItemsZh}
    */
   const handleSaveViewpointImages = async () => {
     if (Object.keys(splitViewpointImages).length === 0) {
-      toast.error("没有可保存的视角图片");
+      toast.error(t("没有可保存的视角图片"));
       return;
     }
     
@@ -1260,13 +1260,13 @@ ${gridItemsZh}
       parentScene = scenes.find(s => s.id === newParentId) || null;
       
       if (!parentScene) {
-        toast.error("创建父场景失败");
+        toast.error(t("创建父场景失败"));
         return;
       }
       
       // 选中新创建的场景
       selectScene(newParentId);
-      toast.success(`已自动创建场景「${sceneName}」`);
+      toast.success(t("已自动创建场景「{{v0}}」", { v0: sceneName }));
     }
 
     // 优先使用 pendingViewpoints（从剧本传来的），否则用 extractedViewpoints
@@ -1274,7 +1274,7 @@ ${gridItemsZh}
     let viewpointsToUse = currentPageVps.length > 0 ? currentPageVps : extractedViewpoints;
     
     if (viewpointsToUse.length === 0) {
-      toast.error("没有视角数据");
+      toast.error(t("没有视角数据"));
       return;
     }
     
@@ -1424,7 +1424,7 @@ ${gridItemsZh}
     // 仅保存新创建的子场景 ID，用于批量四视图
     setSavedChildSceneIds(createdVariantIds);
     
-    toast.success(`已创建 ${createdVariantIds.length} 个视角变体场景`);
+    toast.success(t("已创建 {{v0}} 个视角变体场景", { v0: createdVariantIds.length }));
     
     // 清空临时状态（保留 savedChildSceneIds）
     setContactSheetPrompt(null);
@@ -1453,7 +1453,7 @@ ${gridItemsZh}
    */
   const handleAutoGenerateContactSheet = async () => {
     if (!contactSheetPrompt) {
-      toast.error("请先生成提示词");
+      toast.error(t("请先生成提示词"));
       return;
     }
 
@@ -1516,7 +1516,7 @@ ${gridItemsZh}
 
     // 设置生成中状态 — 中间栏会显示 spinner
     setContactSheetTask(parentSceneId, { status: 'generating', progress: 10, message: '正在生成联合图...' });
-    toast.info(`场景「${snapshotName}」联合图开始生成...`);
+    toast.info(t("场景「{{v0}}」联合图开始生成...", { v0: snapshotName }));
 
     // 立即清空左栏状态，允许用户设置下一个任务
     setContactSheetPrompt(null);
@@ -1540,7 +1540,7 @@ ${gridItemsZh}
         const keyManager = autoFeatureConfig.keyManager;
 
         if (!apiKey || !baseUrl || !model) {
-          throw new Error('图片生成 API 未配置');
+          throw new Error(t("图片生成 API 未配置"));
         }
 
         // 负面提示词 — 增加 distorted grid / uneven panels
@@ -1604,7 +1604,7 @@ ${gridItemsZh}
 
         const generatedImageUrl = result.imageUrl;
         if (!generatedImageUrl) {
-          throw new Error('图片生成失败：未返回图片 URL');
+          throw new Error(t("图片生成失败：未返回图片 URL"));
         }
 
         console.log('[AutoContactSheet] 阶段1完成，图片URL类型:', 
@@ -1750,7 +1750,7 @@ ${gridItemsZh}
         const { scenes: currentScenes } = useSceneStore.getState();
         const parentScene = currentScenes.find(s => s.id === parentSceneId);
         if (!parentScene) {
-          throw new Error('父场景已被删除');
+          throw new Error(t("父场景已被删除"));
         }
         const parentSceneName = parentScene.name || parentScene.location;
         const targetFolderId = parentScene.folderId;
@@ -1873,9 +1873,9 @@ ${gridItemsZh}
         });
         setContactSheetTask(parentSceneId, { status: 'done', progress: 100, message: `完成，已创建 ${createdVariantIds.length} 个子场景` });
         if (createdVariantIds.length > 0) {
-          toast.success(`场景「${parentSceneName}」联合图已切割保存，共 ${createdVariantIds.length} 个视角子场景（点击展开查看）`);
+          toast.success(t("场景「{{v0}}」联合图已切割保存，共 {{v1}} 个视角子场景（点击展开查看）", { v0: parentSceneName, v1: createdVariantIds.length }));
         } else {
-          toast.warning(`场景「${parentSceneName}」联合图已保存，但未能创建子场景（切割结果: ${splitResults.length} 个）`);
+          toast.warning(t("场景「{{v0}}」联合图已保存，但未能创建子场景（切割结果: {{v1}} 个）", { v0: parentSceneName, v1: splitResults.length }));
         }
 
         // 3秒后清除完成状态
@@ -1887,7 +1887,7 @@ ${gridItemsZh}
         const err = error as Error;
         console.error('[AutoContactSheet] 自动流水线失败:', err);
         setContactSheetTask(parentSceneId, { status: 'error', progress: 0, message: err.message });
-        toast.error(`场景联合图自动生成失败: ${err.message}`);
+        toast.error(t("场景联合图自动生成失败: {{v0}}", { v0: err.message }));
         // 10秒后清除错误状态
         setTimeout(() => {
           setContactSheetTask(parentSceneId, null);
@@ -1908,7 +1908,7 @@ ${gridItemsZh}
    */
   const handleBatchGenerateOrthographic = async () => {
     if (savedChildSceneIds.length === 0) {
-      toast.error("没有可处理的子场景");
+      toast.error(t("没有可处理的子场景"));
       return;
     }
 
@@ -1924,11 +1924,11 @@ ${gridItemsZh}
       .filter(Boolean) as Scene[];
 
     if (childScenes.length === 0) {
-      toast.error("找不到子场景");
+      toast.error(t("找不到子场景"));
       return;
     }
 
-    toast.info(`开始为 ${childScenes.length} 个子场景生成四视图...`);
+    toast.info(t("开始为 {{v0}} 个子场景生成四视图...", { v0: childScenes.length }));
 
     let successCount = 0;
     let failCount = 0;
@@ -2071,7 +2071,7 @@ No characters, empty environment.`;
     }
 
     setSavedChildSceneIds([]);
-    toast.success(`批量四视图完成！成功 ${successCount} 个，失败 ${failCount} 个`);
+    toast.success(t("批量四视图完成！成功 {{v0}} 个，失败 {{v1}} 个", { v0: successCount, v1: failCount }));
   };
 
   // ========== 四视图（正交视图）功能 ==========
@@ -2131,7 +2131,7 @@ No characters, empty environment.`;
    */
   const handleGenerateOrthographicPrompt = () => {
     if (!selectedScene) {
-      toast.error("请先选择场景");
+      toast.error(t("请先选择场景"));
       return;
     }
 
@@ -2178,7 +2178,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
 
     setOrthographicPrompt(promptEn);
     setOrthographicPromptZh(promptZh);
-    toast.success("四视图提示词已生成");
+    toast.success(t("四视图提示词已生成"));
   };
 
   /**
@@ -2186,7 +2186,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
    */
   const handleGenerateOrthographicImage = async () => {
     if (!orthographicPrompt) {
-      toast.error("请先生成提示词");
+      toast.error(t("请先生成提示词"));
       return;
     }
 
@@ -2269,11 +2269,11 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
 
       setOrthographicProgress(100);
       setOrthographicImage(result.imageUrl);
-      toast.success("四视图生成成功，可以进行切割");
+      toast.success(t("四视图生成成功，可以进行切割"));
     } catch (error) {
       const err = error as Error;
       console.error('[Orthographic] 生成失败:', err);
-      toast.error(`生成失败: ${err.message}`);
+      toast.error(t("生成失败: {{v0}}", { v0: err.message }));
     } finally {
       setIsGeneratingOrthographic(false);
       setOrthographicProgress(0);
@@ -2291,7 +2291,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
       setOrthographicImage(dataUrl);
-      toast.success("四视图已上传，可以进行切割");
+      toast.success(t("四视图已上传，可以进行切割"));
     };
     reader.readAsDataURL(file);
   };
@@ -2301,7 +2301,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
    */
   const handleSplitOrthographic = async () => {
     if (!orthographicImage) {
-      toast.error("请先生成或上传四视图");
+      toast.error(t("请先生成或上传四视图"));
       return;
     }
 
@@ -2336,10 +2336,10 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
       }
 
       setOrthographicViews(viewMap);
-      toast.success("已切割为 4 个视角图片");
+      toast.success(t("已切割为 4 个视角图片"));
     } catch (error) {
       console.error('[Orthographic] 切割失败:', error);
-      toast.error("切割失败，请检查图片格式");
+      toast.error(t("切割失败，请检查图片格式"));
     } finally {
       setIsSplitting(false);
     }
@@ -2350,13 +2350,13 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
    */
   const handleSaveOrthographicViews = async () => {
     if (!selectedScene) {
-      toast.error("请先选择场景");
+      toast.error(t("请先选择场景"));
       return;
     }
 
     const { front, back, left, right } = orthographicViews;
     if (!front && !back && !left && !right) {
-      toast.error("没有可保存的视角图片");
+      toast.error(t("没有可保存的视角图片"));
       return;
     }
 
@@ -2415,7 +2415,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
       orthographicImage,
     } as any);
 
-    toast.success(`已创建 ${createdIds.length} 个正交视角场景`);
+    toast.success(t("已创建 {{v0}} 个正交视角场景", { v0: createdIds.length }));
     
     // 清空状态
     setOrthographicPrompt(null);
@@ -2459,10 +2459,10 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
         <div className="p-3 pb-2 border-b flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Box className="h-4 w-4" />
-            <h3 className="font-medium text-sm">四视图（正交视图）</h3>
+            <h3 className="font-medium text-sm">{t("四视图（正交视图）")}</h3>
           </div>
           <Button variant="ghost" size="sm" onClick={handleCancelOrthographic}>
-            取消
+            {t("取消")}
           </Button>
         </div>
         
@@ -2471,7 +2471,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
             {/* 视觉风格 + 宽高比 */}
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-2">
-                <Label className="text-xs">视觉风格</Label>
+                <Label className="text-xs">{t("视觉风格")}</Label>
                 <StylePicker
                   value={styleId}
                   onChange={(id) => setStyleId(id)}
@@ -2479,14 +2479,14 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-xs">宽高比</Label>
+                <Label className="text-xs">{t("宽高比")}</Label>
                 <Select value={orthographicAspectRatio} onValueChange={(v) => setOrthographicAspectRatio(v as '16:9' | '9:16')} disabled={isGeneratingOrthographic}>
                   <SelectTrigger className="h-8">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="16:9">16:9 横屏</SelectItem>
-                    <SelectItem value="9:16">9:16 竖屏</SelectItem>
+                    <SelectItem value="16:9">{t("16:9 横屏")}</SelectItem>
+                    <SelectItem value="9:16">{t("9:16 竖屏")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -2494,22 +2494,22 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
 
             {/* 视角说明 */}
             <div className="space-y-2">
-              <Label className="text-xs">视角布局 (2x2)</Label>
+              <Label className="text-xs">{t("视角布局 (2x2)")}</Label>
               <div className="grid grid-cols-2 gap-1.5 text-xs">
                 <div className="p-2 rounded border bg-muted/50 text-center">
-                  <span className="font-medium">正面</span>
+                  <span className="font-medium">{t("正面")}</span>
                   <span className="text-muted-foreground block">Front View</span>
                 </div>
                 <div className="p-2 rounded border bg-muted/50 text-center">
-                  <span className="font-medium">背面</span>
+                  <span className="font-medium">{t("背面")}</span>
                   <span className="text-muted-foreground block">Back View</span>
                 </div>
                 <div className="p-2 rounded border bg-muted/50 text-center">
-                  <span className="font-medium">左侧</span>
+                  <span className="font-medium">{t("左侧")}</span>
                   <span className="text-muted-foreground block">Left Profile</span>
                 </div>
                 <div className="p-2 rounded border bg-muted/50 text-center">
-                  <span className="font-medium">右侧</span>
+                  <span className="font-medium">{t("右侧")}</span>
                   <span className="text-muted-foreground block">Right Profile</span>
                 </div>
               </div>
@@ -2560,7 +2560,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
               
               return (
                 <div className="space-y-2">
-                  <Label className="text-xs">参考图（自动获取）</Label>
+                  <Label className="text-xs">{t("参考图（自动获取）")}</Label>
                   <div className="grid grid-cols-2 gap-2">
                     {referenceImages.map((ref, idx) => (
                       <div key={idx} className="space-y-1">
@@ -2600,13 +2600,13 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                   ) : (
                     <>
                       <Box className="h-4 w-4 mr-2" />
-                      生成四视图
+                      {t("生成四视图")}
                     </>
                   )}
                 </Button>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-px bg-border" />
-                  <span className="text-xs text-muted-foreground">或</span>
+                  <span className="text-xs text-muted-foreground">{t("或")}</span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
                 <label className="block">
@@ -2619,7 +2619,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                   />
                   <div className="flex items-center justify-center gap-2 p-2 border border-dashed rounded-lg cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors">
                     <Upload className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">上传已有图片</span>
+                    <span className="text-xs text-muted-foreground">{t("上传已有图片")}</span>
                   </div>
                 </label>
               </div>
@@ -2629,7 +2629,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
             <details className="group" open>
               <summary className="flex items-center gap-1 text-xs text-muted-foreground cursor-pointer hover:text-foreground">
                 <span className="group-open:rotate-90 transition-transform">▶</span>
-                四视图提示词（可编辑，修改后直接用于生成）
+                {t("四视图提示词（可编辑，修改后直接用于生成）")}
               </summary>
               <div className="mt-2 space-y-2">
                 {(() => {
@@ -2678,7 +2678,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                 <div className={`relative rounded-lg overflow-hidden border bg-muted ${orthographicAspectRatio === '16:9' ? 'aspect-video' : 'aspect-[9/16]'}`}>
                   <img 
                     src={orthographicImage} 
-                    alt="四视图预览"
+                    alt={t("四视图预览")}
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -2695,7 +2695,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                   ) : (
                     <>
                       <Scissors className="h-4 w-4 mr-2" />
-                      切割为 4 个视角
+                      {t("切割为 4 个视角")}
                     </>
                   )}
                 </Button>
@@ -2705,7 +2705,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
             {/* 切割结果预览 */}
             {(orthographicViews.front || orthographicViews.back || orthographicViews.left || orthographicViews.right) && (
               <div className="space-y-2">
-                <Label className="text-xs">切割结果</Label>
+                <Label className="text-xs">{t("切割结果")}</Label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { key: 'front', name: '正面', image: orthographicViews.front },
@@ -2735,7 +2735,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                 </div>
                 <Button onClick={handleSaveOrthographicViews} className="w-full">
                   <Check className="h-4 w-4 mr-2" />
-                  保存视角图片到场景
+                  {t("保存视角图片到场景")}
                 </Button>
               </div>
             )}
@@ -2765,7 +2765,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
       <div className="h-full flex flex-col">
         <div className="p-3 pb-2 border-b flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h3 className="font-medium text-sm">多视角联合图</h3>
+            <h3 className="font-medium text-sm">{t("多视角联合图")}</h3>
             {hasMultiplePages && (
               <span className="text-xs text-muted-foreground">
                 ({currentPageIndex + 1}/{totalPages})
@@ -2773,7 +2773,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
             )}
           </div>
           <Button variant="ghost" size="sm" onClick={handleCancelContactSheet}>
-            取消
+            {t("取消")}
           </Button>
         </div>
         
@@ -2796,7 +2796,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                     setSplitViewpointImages({});
                   }}
                 >
-                  上一页
+                  {t("上一页")}
                 </Button>
                 <span className="text-xs">
                   联合图 {currentPageIndex + 1} / {totalPages}
@@ -2815,7 +2815,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                     setSplitViewpointImages({});
                   }}
                 >
-                  下一页
+                  {t("下一页")}
                 </Button>
               </div>
             )}
@@ -2824,7 +2824,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
             <div className="space-y-2">
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">
-                  <Label className="text-xs">视觉风格</Label>
+                  <Label className="text-xs">{t("视觉风格")}</Label>
                   <StylePicker
                     value={styleId}
                     onChange={(id) => setStyleId(id)}
@@ -2832,28 +2832,28 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs">宽高比</Label>
+                  <Label className="text-xs">{t("宽高比")}</Label>
                   <Select value={contactSheetAspectRatio} onValueChange={(v) => setContactSheetAspectRatio(v as '16:9' | '9:16')} disabled={isGeneratingContactSheet}>
                     <SelectTrigger className="h-8">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="16:9">16:9 横屏</SelectItem>
-                      <SelectItem value="9:16">9:16 竖屏</SelectItem>
+                      <SelectItem value="16:9">{t("16:9 横屏")}</SelectItem>
+                      <SelectItem value="9:16">{t("9:16 竖屏")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               {/* 布局选择 */}
               <div className="space-y-2">
-                <Label className="text-xs">网格布局</Label>
+                <Label className="text-xs">{t("网格布局")}</Label>
                 <Select value={contactSheetLayout} onValueChange={(v) => handleContactSheetLayoutChange(v as ContactSheetLayout)} disabled={isGeneratingContactSheet}>
                   <SelectTrigger className="h-8">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="2x2">2×2 (4格)</SelectItem>
-                    <SelectItem value="3x3">3×3 (9格)</SelectItem>
+                    <SelectItem value="2x2">{t("2×2 (4格)")}</SelectItem>
+                    <SelectItem value="3x3">{t("3×3 (9格)")}</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-[10px] text-muted-foreground">
@@ -2891,7 +2891,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                       </div>
                       {shotIndexes.length > 0 && (
                         <div className="text-muted-foreground text-right shrink-0">
-                          <div className="text-[10px]">分镜</div>
+                          <div className="text-[10px]">{t("分镜")}</div>
                           <div>#{shotIndexes.map(i => String(i).padStart(2, '0')).join(',#')}</div>
                         </div>
                       )}
@@ -2917,13 +2917,13 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                   ) : (
                     <>
                       <Grid3X3 className="h-4 w-4 mr-2" />
-                      生成联合图（自动切割并保存）
+                      {t("生成联合图（自动切割并保存）")}
                     </>
                   )}
                 </Button>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-px bg-border" />
-                  <span className="text-xs text-muted-foreground">或</span>
+                  <span className="text-xs text-muted-foreground">{t("或")}</span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
                 <label className="block">
@@ -2936,7 +2936,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                   />
                   <div className="flex items-center justify-center gap-2 p-2 border border-dashed rounded-lg cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors">
                     <Upload className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">上传已有图片</span>
+                    <span className="text-xs text-muted-foreground">{t("上传已有图片")}</span>
                   </div>
                 </label>
               </div>
@@ -2946,7 +2946,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
             <details className="group" open>
               <summary className="flex items-center gap-1 text-xs text-muted-foreground cursor-pointer hover:text-foreground">
                 <span className="group-open:rotate-90 transition-transform">▶</span>
-                联合图提示词（可编辑，修改后直接用于生成）
+                {t("联合图提示词（可编辑，修改后直接用于生成）")}
               </summary>
               <div className="mt-2 space-y-2">
                 {(() => {
@@ -2991,11 +2991,11 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
             {/* 联合图预览 */}
             {contactSheetImage && (
               <div className="space-y-2">
-                <Label className="text-xs">联合图预览</Label>
+                <Label className="text-xs">{t("联合图预览")}</Label>
                 <div className="relative rounded-lg overflow-hidden border bg-muted">
                   <img 
                     src={contactSheetImage} 
-                    alt="联合图预览"
+                    alt={t("联合图预览")}
                     className="w-full h-auto"
                   />
                 </div>
@@ -3063,7 +3063,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                   </div>
                   <Button onClick={handleSaveViewpointImages} className="w-full">
                     <Check className="h-4 w-4 mr-2" />
-                    保存视角图片到场景
+                    {t("保存视角图片到场景")}
                   </Button>
                 </div>
               );
@@ -3084,29 +3084,29 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
   if (previewUrl) {
     return (
       <div className="h-full flex flex-col p-3">
-        <h3 className="font-medium text-sm mb-3">预览场景概念图</h3>
+        <h3 className="font-medium text-sm mb-3">{t("预览场景概念图")}</h3>
         <ScrollArea className="flex-1">
           <div className="space-y-4">
             <div className="relative rounded-lg overflow-hidden border-2 border-amber-500/50 bg-muted">
               <img 
                 src={previewUrl} 
-                alt="场景概念图预览"
+                alt={t("场景概念图预览")}
                 className="w-full h-auto"
               />
               <div className="absolute top-2 left-2 bg-amber-500 text-white text-xs px-2 py-1 rounded">
-                预览
+                {t("预览")}
               </div>
             </div>
             <Button onClick={handleSavePreview} className="w-full">
               <Check className="h-4 w-4 mr-2" />
-              保存概念图
+              {t("保存概念图")}
             </Button>
             <Button onClick={handleGenerate} variant="outline" className="w-full" disabled={isGenerating}>
               <RotateCcw className="h-4 w-4 mr-2" />
-              重新生成
+              {t("重新生成")}
             </Button>
             <Button onClick={handleDiscardPreview} variant="ghost" className="w-full text-muted-foreground" size="sm">
-              放弃并返回
+              {t("放弃并返回")}
             </Button>
           </div>
         </ScrollArea>
@@ -3117,7 +3117,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
   return (
     <div className="h-full flex flex-col">
       <div className="p-3 pb-2 border-b space-y-2">
-        <h3 className="font-medium text-sm">生成控制台</h3>
+        <h3 className="font-medium text-sm">{t("生成控制台")}</h3>
         {/* 生成模式切换 */}
         <ToggleGroup 
           type="single" 
@@ -3125,17 +3125,17 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
           onValueChange={(v) => v && setGenerationMode(v as GenerationMode)}
           className="justify-start"
         >
-          <ToggleGroupItem value="single" aria-label="单图" className="text-xs px-2.5 h-7 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
+          <ToggleGroupItem value="single" aria-label={t("单图")} className="text-xs px-2.5 h-7 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
             <ImageIcon className="h-3 w-3 mr-1" />
-            单图
+            {t("单图")}
           </ToggleGroupItem>
-          <ToggleGroupItem value="contact-sheet" aria-label="联合图" className="text-xs px-2.5 h-7 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
+          <ToggleGroupItem value="contact-sheet" aria-label={t("联合图")} className="text-xs px-2.5 h-7 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
             <Grid3X3 className="h-3 w-3 mr-1" />
-            联合图
+            {t("联合图")}
           </ToggleGroupItem>
-          <ToggleGroupItem value="orthographic" aria-label="四视图" className="text-xs px-2.5 h-7 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
+          <ToggleGroupItem value="orthographic" aria-label={t("四视图")} className="text-xs px-2.5 h-7 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
             <Box className="h-3 w-3 mr-1" />
-            四视图
+            {t("四视图")}
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
@@ -3144,22 +3144,22 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
         <div className="space-y-4">
           {/* Scene name */}
           <div className="space-y-2">
-            <Label className="text-xs">场景名称</Label>
+            <Label className="text-xs">{t("场景名称")}</Label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="例如：城市街道、森林小屋"
+              placeholder={t("例如：城市街道、森林小屋")}
               disabled={isGenerating}
             />
           </div>
 
           {/* Location */}
           <div className="space-y-2">
-            <Label className="text-xs">地点描述</Label>
+            <Label className="text-xs">{t("地点描述")}</Label>
             <Textarea
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="详细描述场景的环境，例如：繁华的东京涩谷十字路口，霓虹灯闪烁..."
+              placeholder={t("详细描述场景的环境，例如：繁华的东京涩谷十字路口，霓虹灯闪烁...")}
               className="min-h-[100px] text-sm resize-none"
               disabled={isGenerating}
             />
@@ -3168,10 +3168,10 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
           {/* Time and Atmosphere */}
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">
-              <Label className="text-xs">时间</Label>
+              <Label className="text-xs">{t("时间")}</Label>
               <Select value={time} onValueChange={setTime} disabled={isGenerating}>
                 <SelectTrigger>
-                  <SelectValue placeholder="选择" />
+                  <SelectValue placeholder={t("选择")} />
                 </SelectTrigger>
                 <SelectContent>
                   {TIME_PRESETS.map((t) => (
@@ -3181,10 +3181,10 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs">氛围</Label>
+              <Label className="text-xs">{t("氛围")}</Label>
               <Select value={atmosphere} onValueChange={setAtmosphere} disabled={isGenerating}>
                 <SelectTrigger>
-                  <SelectValue placeholder="选择" />
+                  <SelectValue placeholder={t("选择")} />
                 </SelectTrigger>
                 <SelectContent>
                   {ATMOSPHERE_PRESETS.map((a) => (
@@ -3197,7 +3197,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
 
           {/* Style */}
           <div className="space-y-2">
-            <Label className="text-xs">视觉风格</Label>
+            <Label className="text-xs">{t("视觉风格")}</Label>
             <StylePicker
               value={styleId}
               onChange={(id) => setStyleId(id)}
@@ -3208,7 +3208,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
           {/* Reference images */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs">参考图片</Label>
+              <Label className="text-xs">{t("参考图片")}</Label>
               <span className="text-xs text-muted-foreground">{referenceImages.length}/3</span>
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -3243,13 +3243,13 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                     onClick={() => document.getElementById('scene-gen-ref-image')?.click()}
                   >
                     <ImagePlus className="h-4 w-4" />
-                    <span className="text-[10px]">上传</span>
+                    <span className="text-[10px]">{t("上传")}</span>
                   </div>
                 </>
               )}
             </div>
             <p className="text-[10px] text-muted-foreground">
-              AI 将参考这些图片生成场景概念图
+              {t("AI 将参考这些图片生成场景概念图")}
             </p>
           </div>
         </div>
@@ -3271,14 +3271,14 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                 size="sm"
               >
                 <Box className="h-3 w-3 mr-1" />
-                批量生成四视图
+                {t("批量生成四视图")}
               </Button>
               <Button 
                 onClick={handleClearBatchOrthographic} 
                 variant="ghost"
                 size="sm"
               >
-                跳过
+                {t("跳过")}
               </Button>
             </div>
           </div>
@@ -3289,7 +3289,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
           !selectedScene ? (
             <Button onClick={handleCreateScene} className="w-full" disabled={!name.trim() || !location.trim()}>
               <Plus className="h-4 w-4 mr-2" />
-              创建场景
+              {t("创建场景")}
             </Button>
           ) : (
             <Button 
@@ -3317,14 +3317,14 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
           <div className="space-y-2">
             {/* 布局选择器 */}
             <div className="flex items-center gap-2">
-              <Label className="text-xs shrink-0">网格布局</Label>
+              <Label className="text-xs shrink-0">{t("网格布局")}</Label>
               <Select value={contactSheetLayout} onValueChange={(v) => setContactSheetLayout(v as ContactSheetLayout)} disabled={isGenerating}>
                 <SelectTrigger className="h-8 flex-1">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="2x2">2×2 (4格)</SelectItem>
-                  <SelectItem value="3x3">3×3 (9格)</SelectItem>
+                  <SelectItem value="2x2">{t("2×2 (4格)")}</SelectItem>
+                  <SelectItem value="3x3">{t("3×3 (9格)")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -3335,18 +3335,18 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
                 disabled={isGenerating}
               >
                 <Grid3X3 className="h-4 w-4 mr-2" />
-                生成多视角联合图
+                {t("生成多视角联合图")}
               </Button>
             ) : (
               <Button onClick={handleCreateScene} className="w-full" disabled={!name.trim() || !location.trim()}>
                 <Plus className="h-4 w-4 mr-2" />
-                创建场景
+                {t("创建场景")}
               </Button>
             )}
             {/* 或直接上传 */}
             <div className="flex items-center gap-2">
               <div className="flex-1 h-px bg-border" />
-              <span className="text-xs text-muted-foreground">或</span>
+              <span className="text-xs text-muted-foreground">{t("或")}</span>
               <div className="flex-1 h-px bg-border" />
             </div>
             <label className="block">
@@ -3359,7 +3359,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
               />
               <div className="flex items-center justify-center gap-2 p-2 border border-dashed rounded-lg cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors">
                 <Upload className="h-3 w-3 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground">直接上传联合图切割</span>
+                <span className="text-xs text-muted-foreground">{t("直接上传联合图切割")}</span>
               </div>
             </label>
           </div>
@@ -3370,7 +3370,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
           !selectedScene ? (
             <Button onClick={handleCreateScene} className="w-full" disabled={!name.trim() || !location.trim()}>
               <Plus className="h-4 w-4 mr-2" />
-              创建场景
+              {t("创建场景")}
             </Button>
           ) : (
             <Button 
@@ -3379,7 +3379,7 @@ ${anchor} 的背面直视镜头。展示后部结构。背景是物体面向的�
               disabled={isGenerating}
             >
               <Box className="h-4 w-4 mr-2" />
-              生成四视图
+              {t("生成四视图")}
             </Button>
           )
         )}

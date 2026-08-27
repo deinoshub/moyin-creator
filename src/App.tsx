@@ -12,6 +12,8 @@ import { parseApiKeys } from "@/lib/api-key-manager";
 import { Loader2 } from "lucide-react";
 import { migrateToProjectStorage, recoverFromLegacy } from "@/lib/storage-migration";
 import type { AvailableUpdateInfo } from "@/types/update";
+import { LanguageProvider } from "@/i18n/LanguageProvider";
+import { applyLanguage, t } from "@/i18n";
 
 let hasTriggeredStartupUpdateCheck = false;
 
@@ -27,6 +29,7 @@ function App() {
     (async () => {
       try {
         await useAppSettingsStore.persist.rehydrate();
+        applyLanguage(useAppSettingsStore.getState().language);
         await migrateToProjectStorage();
         await recoverFromLegacy();
       } catch (err) {
@@ -117,19 +120,14 @@ function App() {
     };
   }, [isMigrating, updateSettings.autoCheckEnabled, updateSettings.ignoredVersion]);
 
-  // 迁移中显示加载界面
-  if (isMigrating) {
-    return (
-      <div className="h-screen w-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-muted-foreground">正在初始化...</p>
-        </div>
+  const body = isMigrating ? (
+    <div className="h-screen w-screen flex items-center justify-center bg-background">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">{t("正在初始化...")}</p>
       </div>
-    );
-  }
-
-  return (
+    </div>
+  ) : (
     <div className="h-screen w-screen overflow-hidden">
       <Layout />
       <UpdateDialog
@@ -144,6 +142,8 @@ function App() {
       <Toaster richColors position="top-center" />
     </div>
   );
+
+  return <LanguageProvider>{body}</LanguageProvider>;
 }
 
 export default App;

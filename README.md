@@ -43,7 +43,7 @@
 </p>
 
 <p align="center">
-  <strong>🇨🇳 中文</strong> | <a href="README_EN.md">🇬🇧 English</a>
+  <strong>🇨🇳 中文</strong> | <a href="README_EN.md">🇬🇧 English</a> | <a href="README_VI.md">🇻🇳 Tiếng Việt</a>
 </p>
 
 <p align="center">

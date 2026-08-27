@@ -9,6 +9,7 @@ import {
   generateVideoThumbnail,
 } from "@/stores/media-store";
 import { MediaFile } from "@/types/media";
+import { t } from "@/i18n";
 
 export interface ProcessedMediaItem extends Omit<MediaFile, "id"> {}
 
@@ -26,7 +27,7 @@ export async function processMediaFiles(
     const fileType = getFileType(file);
 
     if (!fileType) {
-      toast.error(`不支持的文件类型: ${file.name}`);
+      toast.error(t("不支持的文件类型: {{v0}}", { v0: file.name }));
       continue;
     }
 
@@ -77,7 +78,7 @@ export async function processMediaFiles(
       }
     } catch (error) {
       console.error("Error processing file:", file.name, error);
-      toast.error(`处理失败: ${file.name}`);
+      toast.error(t("处理失败: {{v0}}", { v0: file.name }));
       URL.revokeObjectURL(url);
     }
   }

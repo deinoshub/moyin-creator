@@ -45,6 +45,7 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { getStyleTokens as getStyleTokensFromLib } from "@/lib/constants/visual-styles";
+import { t } from "@/i18n";
 
 interface ShotListProps {
   projectId: string;
@@ -133,14 +134,14 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
         imageProgress: 100,
         imageUrl,
       });
-      toast.success(`镜头 ${shot.index} 图片生成完成`);
+      toast.success(t("镜头 {{v0}} 图片生成完成", { v0: shot.index }));
     } catch (error) {
       const err = error as Error;
       updateShot(projectId, shot.id, {
         imageStatus: 'failed',
         imageError: err.message,
       });
-      toast.error(`镜头 ${shot.index} 生成失败: ${err.message}`);
+      toast.error(t("镜头 {{v0}} 生成失败: {{v1}}", { v0: shot.index, v1: err.message }));
     } finally {
       setGeneratingShotId(null);
     }
@@ -149,7 +150,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
   // Handle single shot video generation
   const handleGenerateVideo = useCallback(async (shot: Shot) => {
     if (!shot.imageUrl) {
-      toast.error('请先生成图片');
+      toast.error(t("请先生成图片"));
       return;
     }
 
@@ -191,14 +192,14 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
         videoProgress: 100,
         videoUrl,
       });
-      toast.success(`镜头 ${shot.index} 视频生成完成`);
+      toast.success(t("镜头 {{v0}} 视频生成完成", { v0: shot.index }));
     } catch (error) {
       const err = error as Error;
       updateShot(projectId, shot.id, {
         videoStatus: 'failed',
         videoError: err.message,
       });
-      toast.error(`镜头 ${shot.index} 视频生成失败: ${err.message}`);
+      toast.error(t("镜头 {{v0}} 视频生成失败: {{v1}}", { v0: shot.index, v1: err.message }));
     } finally {
       setGeneratingShotId(null);
     }
@@ -208,7 +209,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
   const handleBatchGenerateImages = useCallback(async () => {
     const pendingShots = shots.filter(s => s.imageStatus !== 'completed');
     if (pendingShots.length === 0) {
-      toast.info('所有镜头已生成图片');
+      toast.info(t("所有镜头已生成图片"));
       return;
     }
 
@@ -274,7 +275,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
 
     setIsGenerating(false);
     setBatchProgress(projectId, null);
-    toast.success(`批量生成完成: ${completed}/${pendingShots.length}`);
+    toast.success(t("批量生成完成: {{v0}}/{{v1}}", { v0: completed, v1: pendingShots.length }));
   }, [shots, projectId, updateShot, setBatchProgress, getStyleTokensLocal]);
 
   // Handle character variation change
@@ -319,7 +320,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
           ) : (
             <>
               <Play className="h-4 w-4 mr-1" />
-              批量生成图片
+              {t("批量生成图片")}
             </>
           )}
         </Button>
@@ -519,7 +520,7 @@ function CharacterVariationSelector({
       </PopoverTrigger>
       <PopoverContent className="w-48 p-1" align="start">
         <div className="text-xs font-medium px-2 py-1 text-muted-foreground">
-          选择造型
+          {t("选择造型")}
         </div>
         <button
           className={cn(
@@ -529,7 +530,7 @@ function CharacterVariationSelector({
           onClick={() => onSelect(null)}
         >
           <User className="h-4 w-4" />
-          <span>默认形象</span>
+          <span>{t("默认形象")}</span>
           {!selectedVariationId && <Check className="h-3 w-3 ml-auto text-primary" />}
         </button>
         {variations.map((variation) => (
@@ -558,7 +559,7 @@ function CharacterVariationSelector({
         ))}
         {variations.length === 0 && (
           <div className="px-2 py-2 text-xs text-muted-foreground">
-            暂无其他造型
+            {t("暂无其他造型")}
           </div>
         )}
       </PopoverContent>

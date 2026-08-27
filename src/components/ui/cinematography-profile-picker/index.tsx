@@ -29,6 +29,7 @@ import {
 } from "@/lib/constants/cinematography-profiles";
 import { getMediaType, MEDIA_TYPE_LABELS, type MediaType } from "@/lib/constants/visual-styles";
 import { isFieldSkipped } from "@/lib/generation/media-type-tokens";
+import { t } from "@/i18n";
 
 interface CinematographyProfilePickerProps {
   /** 当前选中的档案 ID */
@@ -93,7 +94,7 @@ export function CinematographyProfilePicker({
             <div key={category.id} className="mb-4">
               {/* 分类标题 */}
               <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground border-b border-border/50 mb-2">
-                {category.emoji} {category.name}
+                {category.emoji} {t(category.name)}
               </div>
               {/* 档案列表 */}
               <div className="space-y-1">
@@ -119,14 +120,14 @@ export function CinematographyProfilePicker({
         <div className="flex items-center gap-2 mb-3">
           <span className="text-2xl">{previewProfile.emoji}</span>
           <div>
-            <div className="font-medium text-sm">{previewProfile.name}</div>
+            <div className="font-medium text-sm">{t(previewProfile.name)}</div>
             <div className="text-xs text-muted-foreground">{previewProfile.nameEn}</div>
           </div>
         </div>
 
         {/* 描述 */}
         <div className="text-xs text-muted-foreground mb-3 leading-relaxed">
-          {previewProfile.description}
+          {t(previewProfile.description)}
         </div>
 
         {/* 媒介适配提示 */}
@@ -167,7 +168,7 @@ export function CinematographyProfilePicker({
 
         {/* 参考影片 */}
         <div className="border-t border-border/50 pt-2">
-          <div className="text-xs text-muted-foreground mb-1">🎞️ 参考影片</div>
+          <div className="text-xs text-muted-foreground mb-1">{t("🎞️ 参考影片")}</div>
           <div className="flex flex-wrap gap-1">
             {previewProfile.referenceFilms.map((film) => (
               <span
@@ -264,7 +265,7 @@ function ProfileItem({ profile, isSelected, onSelect, onHover, onLeave }: Profil
       {/* Emoji */}
       <span className="text-base flex-shrink-0">{profile.emoji}</span>
       {/* 名称 */}
-      <span className="flex-1 text-left text-sm truncate">{profile.name}</span>
+      <span className="flex-1 text-left text-sm truncate">{t(profile.name)}</span>
       {/* 选中标记 */}
       {isSelected && (
         <Check className="w-4 h-4 text-primary flex-shrink-0" />

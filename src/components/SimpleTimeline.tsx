@@ -25,6 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { usePreviewStore } from "@/stores/preview-store";
+import { t } from "@/i18n";
 
 interface DragState {
   isDragging: boolean;
@@ -106,7 +107,7 @@ export function SimpleTimeline() {
               thumbnailUrl: data.thumbnailUrl,
               duration: data.duration || 5,
             });
-            toast.success(`已添加: ${data.name || '视频片段'}`);
+            toast.success(t("已添加: {{v0}}", { v0: data.name || '视频片段' }));
             handled = true;
           } else if (data.type === "video" && data.id) {
             // Fallback: try to get from media store if URL not provided
@@ -123,7 +124,7 @@ export function SimpleTimeline() {
                   thumbnailUrl: mediaFile.thumbnailUrl,
                   duration: mediaFile.duration || 5,
                 });
-                toast.success(`已添加: ${mediaFile.name || data.name}`);
+                toast.success(t("已添加: {{v0}}", { v0: mediaFile.name || data.name }));
                 handled = true;
               }
             } catch {
@@ -147,7 +148,7 @@ export function SimpleTimeline() {
               thumbnailUrl: data.thumbnailUrl,
               duration: data.duration || 5,
             });
-            toast.success(`已添加: ${data.name}`);
+            toast.success(t("已添加: {{v0}}", { v0: data.name }));
             handled = true;
           }
         } catch (err) {
@@ -271,7 +272,7 @@ export function SimpleTimeline() {
             className="h-7 w-7"
             onClick={clearTimeline}
             disabled={clips.length === 0}
-            title="清空时间线"
+            title={t("清空时间线")}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -287,7 +288,7 @@ export function SimpleTimeline() {
         {clips.length === 0 ? (
           <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
             <Video className="h-5 w-5 mr-2 opacity-50" />
-            拖拽视频片段到这里
+            {t("拖拽视频片段到这里")}
           </div>
         ) : (
           <div

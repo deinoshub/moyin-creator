@@ -11,6 +11,7 @@ import { getFeatureConfig, getFeatureNotConfiguredMessage } from '@/lib/ai/featu
 import { retryOperation } from '@/lib/utils/retry';
 import { resolveImageApiFormat } from '@/lib/api-key-manager';
 import { useAPIConfigStore } from '@/stores/api-config-store';
+import { t } from "@/i18n";
 
 export interface ImageGenerationParams {
   prompt: string;
@@ -361,9 +362,9 @@ async function submitViaChatCompletions(
     );
 
     // 外部 signal 取消时同步取消内部 controller，并传播 reason
-    const onExternalAbort = () => controller.abort(signal?.reason || new Error('用户已取消'));
+    const onExternalAbort = () => controller.abort(signal?.reason || new Error(t("用户已取消")));
     if (signal) {
-      if (signal.aborted) throw new Error('用户已取消');
+      if (signal.aborted) throw new Error(t("用户已取消"));
       signal.addEventListener('abort', onExternalAbort, { once: true });
     }
 
@@ -487,7 +488,7 @@ async function submitViaChatCompletions(
 
   // Extract image from response - multiple possible formats
   const choice = data.choices?.[0];
-  if (!choice) throw new Error('响应中无有效内容');
+  if (!choice) throw new Error(t("响应中无有效内容"));
 
   const message = choice.message;
 
@@ -518,7 +519,7 @@ async function submitViaChatCompletions(
     if (b64Match) return { imageUrl: b64Match[1] };
   }
 
-  throw new Error('未能从响应中提取图片 URL');
+  throw new Error(t("未能从响应中提取图片 URL"));
 }
 
 /**
@@ -536,7 +537,7 @@ async function submitImageTask(
   endpointTypes?: string[],
 ): Promise<{ taskId?: string; imageUrl?: string; pollUrl?: string }> {
   if (!baseUrl) {
-    throw new Error('请先在设置中配置图片生成服务映射');
+    throw new Error(t("请先在设置中配置图片生成服务映射"));
   }
   // 根据模型决定 size 格式
   let sizeValue: string = aspectRatio;
@@ -607,7 +608,7 @@ async function submitImageTask(
           }
 
           if (response.status === 401 || response.status === 403) {
-            throw new Error('API Key 无效或已过期');
+            throw new Error(t("API Key 无效或已过期"));
           } else if (response.status === 529 || response.status === 503) {
             // 上游负载饱和/服务不可用，需要触发重试
             const err = new Error(errorMessage || `上游服务暂时不可用 (${response.status})`) as Error & { status?: number };
@@ -685,10 +686,10 @@ async function submitImageTask(
     return { taskId, pollUrl };
   } catch (error) {
     if (error instanceof Error) {
-      if (error.name === 'AbortError') throw new Error('API 请求超时');
+      if (error.name === 'AbortError') throw new Error(t("API 请求超时"));
       throw error;
     }
-    throw new Error('调用图片生成 API 时发生未知错误');
+    throw new Error(t("调用图片生成 API 时发生未知错误"));
   }
 }
 
@@ -768,7 +769,7 @@ async function pollTaskStatus(
     }
   }
 
-  throw new Error('图片生成超时');
+  throw new Error(t("图片生成超时"));
 }
 
 /**
@@ -830,7 +831,7 @@ export async function submitGridImageRequest(params: {
   const data = await retryOperation(async () => {
     // 每次重试动态取当前 key（利用 keyManager rotate 后的新 key）
     const currentApiKey = keyManager?.getCurrentKey?.() || apiKey;
-    if (signal?.aborted) throw new Error('用户已取消');
+    if (signal?.aborted) throw new Error(t("用户已取消"));
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -973,7 +974,7 @@ async function submitViaKlingImages(
   if (directUrl) return { imageUrl: directUrl };
 
   const taskId = data.data?.task_id;
-  if (!taskId) throw new Error('Kling image 返回空任务 ID');
+  if (!taskId) throw new Error(t("Kling image 返回空任务 ID"));
 
   const pollUrl = `${rootBase}/${nativePath}/${taskId}`;
   const pollInterval = 2000;
@@ -990,14 +991,14 @@ async function submitViaKlingImages(
     const status = String(pollData.data?.task_status || '').toLowerCase();
     if (status === 'succeed' || status === 'success' || status === 'completed') {
       const imageUrl = pollData.data?.task_result?.images?.[0]?.url;
-      if (!imageUrl) throw new Error('Kling image 成功但无图片 URL');
+      if (!imageUrl) throw new Error(t("Kling image 成功但无图片 URL"));
       return { imageUrl, taskId: String(taskId) };
     }
     if (status === 'failed' || status === 'error') {
       throw new Error(pollData.data?.task_status_msg || 'Kling image 生成失败');
     }
   }
-  throw new Error('Kling image 生成超时');
+  throw new Error(t("Kling image 生成超时"));
 }
 
 /**

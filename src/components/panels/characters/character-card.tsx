@@ -33,6 +33,7 @@ import {
 import { cn } from "@/lib/utils";
 import { WardrobeModal } from "./wardrobe-modal";
 import { LocalImage } from "@/components/ui/local-image";
+import { t } from "@/i18n";
 
 interface CharacterCardProps {
   character: Character;
@@ -230,7 +231,7 @@ export function CharacterCard({
       {/* Expanded views preview */}
       {isSelected && character.views.length > 0 && (
         <div className="mt-3 pt-3 border-t">
-          <div className="text-xs text-muted-foreground mb-2">角色视图</div>
+          <div className="text-xs text-muted-foreground mb-2">{t("角色视图")}</div>
           <div className="grid grid-cols-4 gap-2">
             {character.views.map((view) => (
               <div 
@@ -258,7 +259,7 @@ export function CharacterCard({
       {/* Expanded variations preview */}
       {isSelected && variationCount > 0 && (
         <div className="mt-3 pt-3 border-t">
-          <div className="text-xs text-muted-foreground mb-2">衣橱变体</div>
+          <div className="text-xs text-muted-foreground mb-2">{t("衣橱变体")}</div>
           <div className="grid grid-cols-4 gap-2">
             {character.variations?.slice(0, 4).map((variation) => (
               <div 
@@ -302,15 +303,15 @@ export function CharacterCard({
       <ContextMenuContent>
         <ContextMenuItem onClick={handleStartRename}>
           <Edit3 className="h-4 w-4 mr-2" />
-          改名
+          {t("改名")}
         </ContextMenuItem>
         <ContextMenuItem onClick={handleCopyName}>
           <Copy className="h-4 w-4 mr-2" />
-          复制名称
+          {t("复制名称")}
         </ContextMenuItem>
         <ContextMenuItem onClick={() => setShowWardrobe(true)}>
           <Shirt className="h-4 w-4 mr-2" />
-          管理衣橱
+          {t("管理衣橱")}
         </ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem 
@@ -318,7 +319,7 @@ export function CharacterCard({
           className="text-destructive focus:text-destructive"
         >
           <Trash2 className="h-4 w-4 mr-2" />
-          删除角色
+          {t("删除角色")}
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

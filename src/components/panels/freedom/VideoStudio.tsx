@@ -19,6 +19,7 @@ import {
   getResolutionsForModel,
 } from '@/lib/freedom/model-registry';
 import { resolveVeoUploadCapability, type VeoUploadCapability } from '@/lib/freedom/veo-capability';
+import { t } from "@/i18n";
 
 interface LocalUploadAsset {
   id: string;
@@ -64,7 +65,7 @@ function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result || ''));
-    reader.onerror = () => reject(new Error('文件读取失败'));
+    reader.onerror = () => reject(new Error(t("文件读取失败")));
     reader.readAsDataURL(file);
   });
 }
@@ -259,7 +260,7 @@ export function VideoStudio() {
     e.target.value = '';
     if (!file) return;
     if (referenceUploads.length >= Math.max(veoCapability.maxFiles, 1)) {
-      toast.error(`当前模型最多支持 ${veoCapability.maxFiles} 张参考图`);
+      toast.error(t("当前模型最多支持 {{v0}} 张参考图", { v0: veoCapability.maxFiles }));
       return;
     }
     try {
@@ -321,7 +322,7 @@ export function VideoStudio() {
           className="h-24 w-full rounded border border-dashed flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-foreground hover:border-primary/40"
         >
           <Upload className="h-4 w-4" />
-          <span className="text-xs">上传图片</span>
+          <span className="text-xs">{t("上传图片")}</span>
         </button>
       )}
       {asset && (
@@ -333,7 +334,7 @@ export function VideoStudio() {
           onClick={onPick}
           disabled={videoGenerating}
         >
-          更换
+          {t("更换")}
         </Button>
       )}
     </div>
@@ -341,7 +342,7 @@ export function VideoStudio() {
 
   const handleGenerate = useCallback(async () => {
     if (!videoPrompt.trim()) {
-      toast.error('请输入描述文字');
+      toast.error(t("请输入描述文字"));
       return;
     }
 
@@ -388,10 +389,10 @@ export function VideoStudio() {
         type: 'video',
       });
 
-      toast.success('视频生成成功！已保存到素材库');
+      toast.success(t("视频生成成功！已保存到素材库"));
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : '未知错误';
-      toast.error(`生成失败: ${message}`);
+      toast.error(t("生成失败: {{v0}}", { v0: message }));
     } finally {
       setVideoGenerating(false);
     }
@@ -420,7 +421,7 @@ export function VideoStudio() {
           <div className="p-4 space-y-5">
             {/* Model Selection */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">模型选择</Label>
+              <Label className="text-sm font-medium">{t("模型选择")}</Label>
               <ModelSelector
                 type="video"
                 value={selectedVideoModel}
@@ -434,7 +435,7 @@ export function VideoStudio() {
             {/* Aspect Ratio */}
             {aspectRatios.length > 0 && (
               <div className="space-y-2">
-                <Label className="text-sm font-medium">宽高比</Label>
+                <Label className="text-sm font-medium">{t("宽高比")}</Label>
                 <div className="flex flex-wrap gap-1.5">
                   {aspectRatios.map((ratio) => (
                     <Button
@@ -454,7 +455,7 @@ export function VideoStudio() {
             {/* Duration */}
             {durations.length > 0 && (
               <div className="space-y-2">
-                <Label className="text-sm font-medium">时长 (秒)</Label>
+                <Label className="text-sm font-medium">{t("时长 (秒)")}</Label>
                 <div className="flex flex-wrap gap-1.5">
                   {durations.map((d) => (
                     <Button
@@ -474,10 +475,10 @@ export function VideoStudio() {
             {/* Resolution */}
             {resolutions.length > 0 && (
               <div className="space-y-2">
-                <Label className="text-sm font-medium">分辨率</Label>
+                <Label className="text-sm font-medium">{t("分辨率")}</Label>
                 <Select value={videoResolution} onValueChange={setVideoResolution}>
                   <SelectTrigger className="h-9">
-                    <SelectValue placeholder="选择分辨率" />
+                    <SelectValue placeholder={t("选择分辨率")} />
                   </SelectTrigger>
                   <SelectContent>
                     {resolutions.map((r) => (
@@ -491,10 +492,10 @@ export function VideoStudio() {
             {/* Veo Dynamic Uploads */}
             {veoCapability.isVeo && (
               <div className="space-y-2">
-                <Label className="text-sm font-medium">上传素材（Veo）</Label>
+                <Label className="text-sm font-medium">{t("上传素材（Veo）")}</Label>
                 {veoCapability.mode === 'none' ? (
                   <p className="text-xs text-muted-foreground rounded-md border px-2 py-2">
-                    当前模型仅文生视频，不需要上传图片。
+                    {t("当前模型仅文生视频，不需要上传图片。")}
                   </p>
                 ) : (
                   <div className="space-y-2">
@@ -554,7 +555,7 @@ export function VideoStudio() {
                               className="h-20 rounded border border-dashed flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-foreground hover:border-primary/40"
                             >
                               <Upload className="h-4 w-4" />
-                              <span className="text-[11px]">添加</span>
+                              <span className="text-[11px]">{t("添加")}</span>
                             </button>
                           )}
                         </div>
@@ -570,9 +571,9 @@ export function VideoStudio() {
 
             {/* Prompt */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">描述文字</Label>
+              <Label className="text-sm font-medium">{t("描述文字")}</Label>
               <Textarea
-                placeholder="描述你想生成的视频..."
+                placeholder={t("描述你想生成的视频...")}
                 value={videoPrompt}
                 onChange={(e) => setVideoPrompt(e.target.value)}
                 className="min-h-[120px] resize-none"
@@ -615,9 +616,9 @@ export function VideoStudio() {
               disabled={videoGenerating || !videoPrompt.trim()}
             >
               {videoGenerating ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> 生成中...</>
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("生成中...")}</>
               ) : (
-                <><Sparkles className="mr-2 h-4 w-4" /> 生成视频</>
+                <><Sparkles className="mr-2 h-4 w-4" />{t("生成视频")}</>
               )}
             </Button>
           </div>
@@ -629,7 +630,7 @@ export function VideoStudio() {
         {videoGenerating ? (
           <div className="flex flex-col items-center gap-4">
             <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">视频生成中，请稍候（可能需要 1-4 分钟）...</p>
+            <p className="text-sm text-muted-foreground">{t("视频生成中，请稍候（可能需要 1-4 分钟）...")}</p>
           </div>
         ) : videoResult ? (
           <div className="max-w-full max-h-full relative group">
@@ -651,8 +652,8 @@ export function VideoStudio() {
         ) : (
           <div className="flex flex-col items-center gap-3 text-muted-foreground">
             <VideoIcon className="h-16 w-16 opacity-20" />
-            <p className="text-lg font-medium">视频工作室</p>
-            <p className="text-sm">选择模型，输入描述，生成你想要的视频</p>
+            <p className="text-lg font-medium">{t("视频工作室")}</p>
+            <p className="text-sm">{t("选择模型，输入描述，生成你想要的视频")}</p>
           </div>
         )}
       </div>

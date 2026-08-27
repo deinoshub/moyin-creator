@@ -19,6 +19,7 @@ import {
   Box,
 } from "lucide-react";
 import { useState } from "react";
+import { t } from "@/i18n";
 
 // 导航节点类型
 export type AssetSection = "style-default" | "style-custom" | "props-library";
@@ -76,7 +77,7 @@ export function AssetSidebar({ activeSection, onSectionChange }: AssetSidebarPro
       <div className="px-3 py-3 border-b border-border shrink-0">
         <div className="flex items-center gap-2">
           <FolderOpen className="w-4 h-4 text-primary" />
-          <span className="text-sm font-semibold">个人资产库</span>
+          <span className="text-sm font-semibold">{t("个人资产库")}</span>
         </div>
       </div>
 

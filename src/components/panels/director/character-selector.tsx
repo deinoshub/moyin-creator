@@ -19,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { t } from "@/i18n";
 
 interface CharacterSelectorProps {
   selectedIds: string[];
@@ -82,15 +83,15 @@ export function CharacterSelector({
           {validSelectedCount > 0 ? (
             <span>已选 {validSelectedCount} 个</span>
           ) : (
-            <span>角色库</span>
+            <span>{t("角色库")}</span>
           )}
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-64 p-2" align="start">
-        <p className="text-sm font-medium mb-2">选择角色</p>
+        <p className="text-sm font-medium mb-2">{t("选择角色")}</p>
         {visibleCharacters.length === 0 ? (
           <p className="text-xs text-muted-foreground text-center py-4">
-            角色库为空，请先创建角色
+            {t("角色库为空，请先创建角色")}
           </p>
         ) : (
           <div className="max-h-[280px] overflow-y-auto space-y-1">
@@ -136,13 +137,13 @@ export function CharacterSelector({
                         )}
                       >
                         {thumbnail ? (
-                          <img src={thumbnail} alt="基础定妆照" className="w-8 h-8 rounded object-cover shrink-0 border border-muted-foreground/10" />
+                          <img src={thumbnail} alt={t("基础定妆照")} className="w-8 h-8 rounded object-cover shrink-0 border border-muted-foreground/10" />
                         ) : (
                           <div className="w-8 h-8 rounded bg-muted flex items-center justify-center shrink-0">
                             <User className="h-3 w-3" />
                           </div>
                         )}
-                        <span className="flex-1 text-[11px] truncate">基础定妆照</span>
+                        <span className="flex-1 text-[11px] truncate">{t("基础定妆照")}</span>
                         {!selectedVarId && <Check className="h-3 w-3 text-primary shrink-0" />}
                       </button>
                       {/* 变体列表 */}

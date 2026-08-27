@@ -11,6 +11,7 @@
 
 import React, { useEffect, useCallback } from "react";
 import { X } from "lucide-react";
+import { t } from "@/i18n";
 
 interface ImagePreviewModalProps {
   imageUrl: string;
@@ -59,7 +60,7 @@ export function ImagePreviewModal({
           <X className="h-5 w-5" />
         </button>
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white/60 text-xs bg-black/40 px-3 py-1 rounded-full pointer-events-none">
-          点击空白处或按 Esc 关闭
+          {t("点击空白处或按 Esc 关闭")}
         </div>
       </div>
     </div>

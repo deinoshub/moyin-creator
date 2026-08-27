@@ -4,6 +4,7 @@
 import { useEffect, useRef } from "react";
 import { usePreviewStore } from "@/stores/preview-store";
 import { Video } from "lucide-react";
+import { t } from "@/i18n";
 
 export function PreviewPanel() {
   const { previewItem, shouldAutoPlay, setVideoRef, playNext, playlist } = usePreviewStore();
@@ -42,7 +43,7 @@ export function PreviewPanel() {
       <div className="h-full min-w-0 flex flex-col items-center justify-center text-muted-foreground bg-neutral-200 dark:bg-neutral-900">
         <div className="flex flex-col items-center gap-2">
           <Video className="h-12 w-12 opacity-30" />
-          <p className="text-sm">点击图片或视频预览</p>
+          <p className="text-sm">{t("点击图片或视频预览")}</p>
         </div>
       </div>
     );

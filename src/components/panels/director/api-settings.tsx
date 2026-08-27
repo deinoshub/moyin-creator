@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ProviderId } from "@opencut/ai-core";
+import { t } from "@/i18n";
 
 interface APISettingsProps {
   collapsed?: boolean;
@@ -100,7 +101,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
       >
         <span className="flex items-center gap-2">
           <Settings className="h-4 w-4" />
-          API 设置
+          {t("API 设置")}
         </span>
         <ChevronDown className="h-4 w-4" />
       </Button>
@@ -113,7 +114,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-sm flex items-center gap-2">
           <Settings className="h-4 w-4" />
-          API 设置
+          {t("API 设置")}
         </h3>
         <Button
           variant="ghost"
@@ -134,7 +135,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
               {isConfigured(provider.id) && (
                 <span className="text-xs text-green-500 flex items-center gap-1">
                   <Check className="h-3 w-3" />
-                  已配置
+                  {t("已配置")}
                 </span>
               )}
             </div>
@@ -195,7 +196,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
 
       {/* Concurrency Setting */}
       <div className="pt-2 border-t space-y-2">
-        <Label className="text-sm font-medium">并发设置</Label>
+        <Label className="text-sm font-medium">{t("并发设置")}</Label>
         <div className="flex items-center gap-2">
           <Input
             type="number"
@@ -206,7 +207,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
             className="w-20 text-sm"
           />
           <span className="text-xs text-muted-foreground">
-            同时生成场景数（单 Key 建议设为 1）
+            {t("同时生成场景数（单 Key 建议设为 1）")}
           </span>
         </div>
       </div>

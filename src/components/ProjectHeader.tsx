@@ -14,6 +14,8 @@ import { useScriptStore } from "@/stores/script-store";
 import { useMediaPanelStore, stages } from "@/stores/media-panel-store";
 import { Cloud, CloudOff, Loader2, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from "@/i18n";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export type SaveStatus = "saved" | "saving" | "unsaved";
 
@@ -72,7 +74,7 @@ export function ProjectHeader() {
       {/* Left: Project Name + Stage + Episode Breadcrumb */}
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium text-white truncate max-w-[200px]">
-          {activeProject?.name || "未命名项目"}
+          {activeProject?.name || t("未命名项目")}
         </span>
         {activeEpisodeIndex != null && (
           <>
@@ -80,7 +82,7 @@ export function ProjectHeader() {
             <button
               className="text-xs text-primary hover:text-primary/80 font-medium transition-colors"
               onClick={backToSeries}
-              title="返回全剧视图"
+              title={t("返回全剧视图")}
             >
               第{activeEpisodeIndex}集
             </button>
@@ -101,6 +103,7 @@ export function ProjectHeader() {
 
       {/* Right: Save Status */}
       <div className="flex items-center gap-2">
+        <LanguageSwitcher compact />
         <SaveStatusIndicator status={saveStatus} />
       </div>
     </div>
@@ -120,19 +123,19 @@ function SaveStatusIndicator({ status }: { status: SaveStatus }) {
       {status === "saved" && (
         <>
           <Check className="w-3 h-3" />
-          <span>Saved</span>
+          <span>{t("已保存")}</span>
         </>
       )}
       {status === "saving" && (
         <>
           <Loader2 className="w-3 h-3 animate-spin" />
-          <span>Saving...</span>
+          <span>{t("保存中...")}</span>
         </>
       )}
       {status === "unsaved" && (
         <>
           <CloudOff className="w-3 h-3" />
-          <span>Unsaved</span>
+          <span>{t("未保存")}</span>
         </>
       )}
     </div>

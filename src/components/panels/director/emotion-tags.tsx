@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { t } from "@/i18n";
 
 interface EmotionTagsProps {
   value: EmotionTag[];
@@ -131,14 +132,14 @@ export function EmotionTags({ value, onChange, disabled }: EmotionTagsProps) {
             className="h-7 text-xs"
           >
             <Plus className="h-3 w-3 mr-1" />
-            添加情绪标签
+            {t("添加情绪标签")}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-72 p-3" align="start">
           <div className="space-y-3">
-            <p className="text-sm font-medium">选择情绪标签</p>
+            <p className="text-sm font-medium">{t("选择情绪标签")}</p>
             <p className="text-xs text-muted-foreground">
-              按顺序添加标签，视频将按此顺序呈现情绪变化
+              {t("按顺序添加标签，视频将按此顺序呈现情绪变化")}
             </p>
             {renderTagGroup("基础情绪", EMOTION_PRESETS.basic)}
             {renderTagGroup("氛围情绪", EMOTION_PRESETS.atmosphere)}
@@ -150,7 +151,7 @@ export function EmotionTags({ value, onChange, disabled }: EmotionTagsProps) {
       {/* 提示文字 */}
       {value.length === 0 && (
         <p className="text-xs text-muted-foreground">
-          添加情绪标签控制视频氛围和说话语气
+          {t("添加情绪标签控制视频氛围和说话语气")}
         </p>
       )}
       {value.length > 1 && (

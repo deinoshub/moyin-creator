@@ -21,6 +21,7 @@ import { type AIFeature, useAPIConfigStore } from '@/stores/api-config-store';
 import { useMediaStore } from '@/stores/media-store';
 import { useProjectStore } from '@/stores/project-store';
 import { toast } from 'sonner';
+import { t } from "@/i18n";
 
 // ==================== Types ====================
 
@@ -341,7 +342,7 @@ async function _generateFreedomImageInner(
   );
   if (!config) {
     const msg = getFeatureNotConfiguredMessage('character_generation');
-    toast.error('自由板块图片生成未配置：请在设置中配置「自由板块-图片」或「图片生成」服务映射');
+    toast.error(t("自由板块图片生成未配置：请在设置中配置「自由板块-图片」或「图片生成」服务映射"));
     throw new Error(msg);
   }
   console.log(`[Freedom] Image config source: ${configSource}`);
@@ -425,7 +426,7 @@ async function generateViaChatCompletions(
   const imageUrl = extractChatCompletionsImage(data);
 
   if (!imageUrl) {
-    throw new Error('未能从聊天响应中提取图片 URL');
+    throw new Error(t("未能从聊天响应中提取图片 URL"));
   }
 
   const mediaId = saveToMediaLibrary(imageUrl, params.prompt, 'ai-image');
@@ -669,7 +670,7 @@ async function generateViaMidjourneyEndpoint(
     throw new Error(submitData.description || submitData.error || `Midjourney 提交失败 (code=${submitData.code})`);
   }
   const taskId = submitData.result || submitData.task_id || submitData.id;
-  if (!taskId) throw new Error('Midjourney 返回空任务 ID');
+  if (!taskId) throw new Error(t("Midjourney 返回空任务 ID"));
 
   const pollUrl = `${rootBase}/mj/task/${taskId}/fetch`;
   for (let i = 0; i < IMAGE_POLL_MAX_ATTEMPTS; i++) {
@@ -687,7 +688,7 @@ async function generateViaMidjourneyEndpoint(
         pollData.url ||
         pollData.data?.imageUrl ||
         pollData.data?.image_url;
-      if (!imageUrl) throw new Error('Midjourney 成功但未返回图片 URL');
+      if (!imageUrl) throw new Error(t("Midjourney 成功但未返回图片 URL"));
       const mediaId = saveToMediaLibrary(imageUrl, params.prompt, 'ai-image');
       return { url: imageUrl, taskId: String(taskId), mediaId };
     }
@@ -696,7 +697,7 @@ async function generateViaMidjourneyEndpoint(
     }
   }
 
-  throw new Error('Midjourney 生成超时');
+  throw new Error(t("Midjourney 生成超时"));
 }
 
 function toIdeogramAspectRatio(model: string, aspectRatio?: string): string | undefined {
@@ -769,7 +770,7 @@ async function generateViaIdeogramEndpoint(
 
   const data = await response.json();
   const imageUrl = extractImageUrl(data);
-  if (!imageUrl) throw new Error('Ideogram 响应未包含图片 URL');
+  if (!imageUrl) throw new Error(t("Ideogram 响应未包含图片 URL"));
   const mediaId = saveToMediaLibrary(imageUrl, params.prompt, 'ai-image');
   return { url: imageUrl, mediaId };
 }
@@ -813,7 +814,7 @@ async function generateViaReplicateImageEndpoint(
   }
 
   const predictionId = submitData.id;
-  if (!predictionId) throw new Error('Replicate 返回空 prediction ID');
+  if (!predictionId) throw new Error(t("Replicate 返回空 prediction ID"));
 
   const pollUrl = `${rootBase}/replicate/v1/predictions/${predictionId}`;
   for (let i = 0; i < IMAGE_POLL_MAX_ATTEMPTS; i++) {
@@ -826,7 +827,7 @@ async function generateViaReplicateImageEndpoint(
     const status = String(pollData.status || '').toLowerCase();
     if (status === 'succeeded') {
       const imageUrl = extractImageUrl(pollData);
-      if (!imageUrl) throw new Error('Replicate 成功但未返回图片 URL');
+      if (!imageUrl) throw new Error(t("Replicate 成功但未返回图片 URL"));
       const mediaId = saveToMediaLibrary(imageUrl, params.prompt, 'ai-image');
       return { url: imageUrl, taskId: String(predictionId), mediaId };
     }
@@ -834,7 +835,7 @@ async function generateViaReplicateImageEndpoint(
       throw new Error(pollData.error || 'Replicate 图片生成失败');
     }
   }
-  throw new Error('Replicate 图片生成超时');
+  throw new Error(t("Replicate 图片生成超时"));
 }
 
 // ==================== Video Generation ====================
@@ -856,7 +857,7 @@ async function _generateFreedomVideoInner(
   );
   if (!config) {
     const msg = getFeatureNotConfiguredMessage('video_generation');
-    toast.error('自由板块视频生成未配置：请在设置中配置「自由板块-视频」或「视频生成」服务映射');
+    toast.error(t("自由板块视频生成未配置：请在设置中配置「自由板块-视频」或「视频生成」服务映射"));
     throw new Error(msg);
   }
   console.log(`[Freedom] Video config source: ${configSource}`);
@@ -1022,7 +1023,7 @@ async function toUploadHttpUrl(file: FreedomVideoUploadFile): Promise<string> {
 
 function dataUrlToBlob(dataUrl: string, mimeHint?: string): Blob {
   const match = dataUrl.match(/^data:(.*?);base64,(.*)$/);
-  if (!match) throw new Error('上传文件格式无效，必须是 data URL 或 http(s) URL');
+  if (!match) throw new Error(t("上传文件格式无效，必须是 data URL 或 http(s) URL"));
   const mime = match[1] || mimeHint || 'image/png';
   const b64 = match[2];
   const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
@@ -1135,7 +1136,7 @@ async function generateVideoViaOpenAIOfficial(
   const taskId = submitData.id || submitData.video_id;
   const directUrl = extractVideoUrl(submitData);
   if (directUrl) return { url: directUrl, taskId: taskId ? String(taskId) : undefined };
-  if (!taskId) throw new Error('Sora 返回空任务 ID');
+  if (!taskId) throw new Error(t("Sora 返回空任务 ID"));
 
   const pollUrl = buildEndpoint(baseUrl, `videos/${taskId}`);
   for (let i = 0; i < VIDEO_POLL_MAX_ATTEMPTS; i++) {
@@ -1155,7 +1156,7 @@ async function generateVideoViaOpenAIOfficial(
     }
   }
 
-  throw new Error('Sora 生成超时');
+  throw new Error(t("Sora 生成超时"));
 }
 
 async function generateVideoViaUnified(
@@ -1258,7 +1259,7 @@ async function generateVideoViaUnified(
     submitData.output?.id;
   const directUrl = extractVideoUrl(submitData);
   if (directUrl) return { url: directUrl, taskId: taskId ? String(taskId) : undefined };
-  if (!taskId) throw new Error('统一视频接口返回空任务 ID');
+  if (!taskId) throw new Error(t("统一视频接口返回空任务 ID"));
 
   // 轮询：直接使用端点类型对应的 URL
   const pollUrl = `${rootBase}${endpointPaths.poll(String(taskId))}`;
@@ -1280,7 +1281,7 @@ async function generateVideoViaUnified(
     }
   }
 
-  throw new Error('视频生成超时');
+  throw new Error(t("视频生成超时"));
 }
 
 async function generateVideoViaVolc(
@@ -1327,7 +1328,7 @@ async function generateVideoViaVolc(
 
   const submitData = await submitResp.json();
   const taskId = submitData.id;
-  if (!taskId) throw new Error('Volc 返回空任务 ID');
+  if (!taskId) throw new Error(t("Volc 返回空任务 ID"));
 
   const pollUrl = `${rootBase}/volc/v1/contents/generations/tasks/${taskId}`;
   for (let i = 0; i < VIDEO_POLL_MAX_ATTEMPTS; i++) {
@@ -1340,7 +1341,7 @@ async function generateVideoViaVolc(
     const status = String(pollData.status || '').toLowerCase();
     if (status === 'succeeded' || status === 'completed' || status === 'success') {
       const videoUrl = pollData.content?.video_url || extractVideoUrl(pollData);
-      if (!videoUrl) throw new Error('Volc 成功但无视频 URL');
+      if (!videoUrl) throw new Error(t("Volc 成功但无视频 URL"));
       return { url: videoUrl, taskId: String(taskId) };
     }
     if (status === 'failed' || status === 'expired' || status === 'cancelled' || status === 'error') {
@@ -1348,7 +1349,7 @@ async function generateVideoViaVolc(
     }
   }
 
-  throw new Error('Volc 视频生成超时');
+  throw new Error(t("Volc 视频生成超时"));
 }
 
 async function generateVideoViaWan(
@@ -1386,7 +1387,7 @@ async function generateVideoViaWan(
 
   const submitData = await submitResp.json();
   const taskId = submitData.output?.task_id;
-  if (!taskId) throw new Error('Wan 返回空任务 ID');
+  if (!taskId) throw new Error(t("Wan 返回空任务 ID"));
 
   const pollUrl = `${rootBase}/alibailian/api/v1/tasks/${taskId}`;
   for (let i = 0; i < VIDEO_POLL_MAX_ATTEMPTS; i++) {
@@ -1399,7 +1400,7 @@ async function generateVideoViaWan(
     const status = String(pollData.output?.task_status || '').toUpperCase();
     if (status === 'SUCCEEDED' || status === 'COMPLETED') {
       const videoUrl = pollData.output?.video_url || extractVideoUrl(pollData);
-      if (!videoUrl) throw new Error('Wan 成功但无视频 URL');
+      if (!videoUrl) throw new Error(t("Wan 成功但无视频 URL"));
       return { url: videoUrl, taskId: String(taskId) };
     }
     if (status === 'FAILED' || status === 'ERROR' || status === 'CANCELLED') {
@@ -1407,7 +1408,7 @@ async function generateVideoViaWan(
     }
   }
 
-  throw new Error('Wan 视频生成超时');
+  throw new Error(t("Wan 视频生成超时"));
 }
 
 // Native Kling endpoint paths (relative to /kling/v1/videos/)
@@ -1475,7 +1476,7 @@ async function generateVideoViaKling(
 
   const submitData = await submitResp.json();
   const taskId = submitData.data?.task_id;
-  if (!taskId) throw new Error('Kling 返回空任务 ID');
+  if (!taskId) throw new Error(t("Kling 返回空任务 ID"));
 
   // Poll URL mirrors the submit path: GET /kling/v1/videos/{path}/{task_id}
   const pollUrl = `${rootBase}/kling/v1/videos/${endpointPath}/${taskId}`;
@@ -1492,7 +1493,7 @@ async function generateVideoViaKling(
         pollData.data?.task_result?.videos?.[0]?.url ||
         pollData.data?.task_result?.video_url ||
         extractVideoUrl(pollData);
-      if (!videoUrl) throw new Error('Kling 成功但无视频 URL');
+      if (!videoUrl) throw new Error(t("Kling 成功但无视频 URL"));
       return { url: videoUrl, taskId: String(taskId) };
     }
     if (status === 'failed' || status === 'error') {
@@ -1500,7 +1501,7 @@ async function generateVideoViaKling(
     }
   }
 
-  throw new Error('Kling 视频生成超时');
+  throw new Error(t("Kling 视频生成超时"));
 }
 
 /**
@@ -1542,7 +1543,7 @@ async function generateVideoViaReplicate(
   if (directUrl) return { url: directUrl };
 
   const predictionId = submitData.id;
-  if (!predictionId) throw new Error('Replicate 返回空 prediction ID');
+  if (!predictionId) throw new Error(t("Replicate 返回空 prediction ID"));
 
   const pollUrl = `${rootBase}/replicate/v1/predictions/${predictionId}`;
   for (let i = 0; i < VIDEO_POLL_MAX_ATTEMPTS; i++) {
@@ -1555,14 +1556,14 @@ async function generateVideoViaReplicate(
     const status = String(pollData.status || '').toLowerCase();
     if (status === 'succeeded') {
       const videoUrl = extractVideoUrl(pollData);
-      if (!videoUrl) throw new Error('Replicate 成功但未返回视频 URL');
+      if (!videoUrl) throw new Error(t("Replicate 成功但未返回视频 URL"));
       return { url: videoUrl, taskId: String(predictionId) };
     }
     if (status === 'failed' || status === 'canceled') {
       throw new Error(pollData.error || 'Replicate 视频生成失败');
     }
   }
-  throw new Error('Replicate 视频生成超时');
+  throw new Error(t("Replicate 视频生成超时"));
 }
 
 // ==================== Helpers ====================

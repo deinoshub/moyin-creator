@@ -13,6 +13,7 @@ import { STYLE_CATEGORIES, type StylePreset } from "@/lib/constants/visual-style
 import { StyleCard } from "./StyleCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { t } from "@/i18n";
 
 export function DefaultStylesGrid() {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
@@ -33,7 +34,7 @@ export function DefaultStylesGrid() {
     <ScrollArea className="h-full">
       <div className="p-4 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-foreground">默认风格</h2>
+          <h2 className="text-sm font-semibold text-foreground">{t("默认风格")}</h2>
           <span className="text-xs text-muted-foreground">
             {STYLE_CATEGORIES.reduce((n, c) => n + c.styles.length, 0)} 个预设
           </span>

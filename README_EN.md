@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">🇨🇳 中文</a> | <strong>🇬🇧 English</strong>
+  <a href="README.md">🇨🇳 中文</a> | <strong>🇬🇧 English</strong> | <a href="README_VI.md">🇻🇳 Tiếng Việt</a>
 </p>
 
 <p align="center">
@@ -35,6 +35,8 @@
 > **📝 Script → 🎭 Characters → 🌄 Scenes → 🎬 Director → ⭐ S-Class (Seedance 2.0)**
 
 Each stage's output automatically flows into the next — no manual glue required. Supports multiple mainstream AI models, ideal for batch production of short dramas, anime series, trailers, and more.
+
+Switch the in-app UI among **Vietnamese**, **English**, and **Chinese** from Settings or the project header (or follow the OS language).
 
 ## Features
 

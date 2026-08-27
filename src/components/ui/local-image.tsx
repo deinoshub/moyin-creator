@@ -11,6 +11,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { t } from "@/i18n";
 
 interface LocalImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -44,7 +45,7 @@ export function LocalImage({ src, fallback, className, alt, ...props }: LocalIma
         )}
         style={props.style}
       >
-        图片加载失败
+        {t("图片加载失败")}
       </div>
     );
   }
