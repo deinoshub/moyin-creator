@@ -102,7 +102,7 @@ export function ShotBreakdown({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded">
-                    场景 {groupIdx + 1}
+                    {t("场景 {{v0}}", { v0: groupIdx + 1 })}
                   </span>
                   <span className="text-sm font-medium text-white">
                     {group.scene.name || group.scene.location}
@@ -168,7 +168,7 @@ function ShotRow({ shot, isSelected, onClick }: ShotRowProps) {
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-zinc-300">
-            镜头 {shot.index}
+            {t("镜头 {{v0}}", { v0: shot.index })}
           </span>
           {shot.shotSize && (
             <span className="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">

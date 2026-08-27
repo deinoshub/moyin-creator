@@ -17,6 +17,7 @@ import type { SplitScene } from '@/stores/director-store';
 import type { Character } from '@/stores/character-library-store';
 import type { Scene } from '@/stores/scene-store';
 import type { ShotGroup, AssetRef, AssetPurpose, SClassAspectRatio, SClassResolution, SClassDuration, EditType } from '@/stores/sclass-store';
+import { t } from "@/i18n";
 
 // ==================== Types ====================
 
@@ -113,7 +114,7 @@ export async function mergeToGridImage(
   imageUrls: string[],
   aspectRatio: string = '16:9',
 ): Promise<string> {
-  if (imageUrls.length === 0) throw new Error('mergeToGridImage: 无图片可合并');
+  if (imageUrls.length === 0) throw new Error(t("mergeToGridImage: 无图片可合并"));
   if (imageUrls.length === 1) {
     // 单张直接返回，无需合并
     return imageUrls[0];
@@ -138,7 +139,7 @@ export async function mergeToGridImage(
       const img = new Image();
       img.crossOrigin = 'anonymous';
       img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error(`加载图片失败: ${src.substring(0, 60)}...`));
+      img.onerror = () => reject(new Error(t("加载图片失败: {{v0}}...", { v0: src.substring(0, 60) })));
       img.src = src;
     });
 

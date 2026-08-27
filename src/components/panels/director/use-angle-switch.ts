@@ -72,7 +72,7 @@ export function useAngleSwitch({
 
     const imageUrl = type === "start" ? scene.imageDataUrl : scene.endFrameImageUrl;
     if (!imageUrl) {
-      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? "首帧" : "尾帧" }));
+      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? t("首帧") : t("尾帧") }));
       return;
     }
 

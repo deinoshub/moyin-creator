@@ -124,7 +124,7 @@ export function ShotPropertiesPanel({
       : endKf?.imageUrl;
 
     if (!imageUrl) {
-      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? "起始帧" : "结束帧" }));
+      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? t("起始帧") : t("结束帧") }));
       return;
     }
 
@@ -226,7 +226,7 @@ export function ShotPropertiesPanel({
     setPreviewItem({
       type: "image",
       url: angleSwitchResult.newImage,
-      name: `镜头 ${shotIndex + 1} - ${angleSwitchTarget === "start" ? "起始帧" : "结束帧"} (视角切换)`,
+      name: t("镜头 {{v0}} - {{v1}} (视角切换)", { v0: shotIndex + 1, v1: angleSwitchTarget === "start" ? t("起始帧") : t("结束帧") }),
     });
 
     setAngleSwitchResultOpen(false);
@@ -293,10 +293,10 @@ export function ShotPropertiesPanel({
       setPreviewItem({
         type: "image",
         url: imageUrl,
-        name: `镜头 ${shotIndex + 1} - ${type === "start" ? "起始帧" : "结束帧"}`,
+        name: t("镜头 {{v0}} - {{v1}}", { v0: shotIndex + 1, v1: type === "start" ? t("起始帧") : t("结束帧") }),
       });
 
-      toast.success(t("{{v0}}生成完成", { v0: type === "start" ? "起始帧" : "结束帧" }));
+      toast.success(t("{{v0}}生成完成", { v0: type === "start" ? t("起始帧") : t("结束帧") }));
     } catch (error) {
       toast.error(t("生成失败: {{v0}}", { v0: (error as Error).message }));
     } finally {
@@ -332,7 +332,7 @@ export function ShotPropertiesPanel({
       setPreviewItem({
         type: "video",
         url: videoUrl,
-        name: `镜头 ${shotIndex + 1} - 视频`,
+        name: t("镜头 {{v0}} - 视频", { v0: shotIndex + 1 }),
       });
 
       toast.success(t("视频生成完成"));
@@ -355,7 +355,7 @@ export function ShotPropertiesPanel({
         setPreviewItem({
           type: "video",
           url: videoUrl,
-          name: `镜头 ${shotIndex + 1}`,
+          name: t("镜头 {{v0}}", { v0: shotIndex + 1 }),
         });
       }
     } else {
@@ -367,7 +367,7 @@ export function ShotPropertiesPanel({
         setPreviewItem({
           type: "image",
           url: imageUrl,
-          name: `镜头 ${shotIndex + 1} - ${type === "start" ? "起始帧" : "结束帧"}`,
+          name: t("镜头 {{v0}} - {{v1}}", { v0: shotIndex + 1, v1: type === "start" ? t("起始帧") : t("结束帧") }),
         });
       }
     }
@@ -596,7 +596,7 @@ export function ShotPropertiesPanel({
                       disabled={processingType === "start" || !onGenerateImage}
                     >
                       <Sparkles className="w-2.5 h-2.5 mr-0.5" />
-                      {hasStartImage ? "重新" : "生成"}
+                      {hasStartImage ? t("重新") : t("生成")}
                     </Button>
                   </div>
                   {hasStartImage && (
@@ -653,7 +653,7 @@ export function ShotPropertiesPanel({
                       disabled={processingType === "end" || !onGenerateImage}
                     >
                       <Sparkles className="w-2.5 h-2.5 mr-0.5" />
-                      {hasEndImage ? "重新" : "生成"}
+                      {hasEndImage ? t("重新") : t("生成")}
                     </Button>
                   </div>
                   {hasEndImage && (
@@ -730,12 +730,12 @@ export function ShotPropertiesPanel({
                   {processingType === "video" ? (
                     <>
                       <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
-                      生成中...
+                      {t("生成中...")}
                     </>
                   ) : (
                     <>
                       <Video className="w-3 h-3 mr-1.5" />
-                      {hasVideo ? "重新生成视频" : "生成视频"}
+                      {hasVideo ? t("重新生成视频") : t("生成视频")}
                     </>
                   )}
                 </Button>

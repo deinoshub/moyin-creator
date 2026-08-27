@@ -94,7 +94,7 @@ export function StoryboardPreview({ onBack, onSplitComplete }: StoryboardPreview
           imagePrompt: '',
           imagePromptZh: '',
           videoPrompt: '',
-          videoPromptZh: '场景 1',
+          videoPromptZh: t("场景 1"),
           needsEndFrame: false,
           endFramePrompt: '',
           endFramePromptZh: '',
@@ -168,7 +168,7 @@ export function StoryboardPreview({ onBack, onSplitComplete }: StoryboardPreview
           imagePrompt: '',
           imagePromptZh: '',
           videoPrompt: '', // 英文提示词，等待 AI 生成
-          videoPromptZh: `场景 ${index + 1}`, // 中文提示词默认值
+          videoPromptZh: t("场景 {{v0}}", { v0: index + 1 }), // 中文提示词默认值
           needsEndFrame: false,
           endFramePrompt: '',
           endFramePromptZh: '',
@@ -248,7 +248,7 @@ export function StoryboardPreview({ onBack, onSplitComplete }: StoryboardPreview
         <div className="text-center space-y-1">
           <p className="text-sm font-medium text-destructive">{t("生成失败")}</p>
           <p className="text-xs text-muted-foreground max-w-[250px]">
-            {storyboardError || splitError || "未知错误"}
+            {storyboardError || splitError || t("未知错误")}
           </p>
         </div>
         <Button variant="outline" onClick={handleRegenerate} className="mt-4">
@@ -287,7 +287,7 @@ export function StoryboardPreview({ onBack, onSplitComplete }: StoryboardPreview
           <span className="text-sm font-medium">{t("故事板已生成")}</span>
         </div>
         <span className="text-xs text-muted-foreground">
-          {storyboardConfig.sceneCount} 场景 · {storyboardConfig.aspectRatio} · {storyboardConfig.resolution}
+          {t("{{v0}} 场景 · {{v1}} · {{v2}}", { v0: storyboardConfig.sceneCount, v1: storyboardConfig.aspectRatio, v2: storyboardConfig.resolution })}
         </span>
       </div>
 
@@ -352,18 +352,18 @@ export function StoryboardPreview({ onBack, onSplitComplete }: StoryboardPreview
                 {isSplitting ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    {storyboardConfig.sceneCount === 1 ? '处理中...' : '切割中...'}
+                    {storyboardConfig.sceneCount === 1 ? t("处理中...") : t("切割中...")}
                   </>
                 ) : (
                   <>
                     <Scissors className="h-4 w-4 mr-2" />
-                    {storyboardConfig.sceneCount === 1 ? '下一步' : '切割场景'}
+                    {storyboardConfig.sceneCount === 1 ? t("下一步") : t("切割场景")}
                   </>
                 )}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{storyboardConfig.sceneCount === 1 ? '直接进入场景编辑' : '按固定网格切割为独立场景'}</p>
+              <p>{storyboardConfig.sceneCount === 1 ? t("直接进入场景编辑") : t("按固定网格切割为独立场景")}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

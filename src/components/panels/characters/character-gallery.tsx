@@ -180,14 +180,14 @@ export function CharacterGallery({ onCharacterSelect, selectedCharacterId }: Cha
   };
 
   const handleDeleteFolder = (id: string) => {
-    if (confirm("确定要删除此文件夹吗？文件夹内的角色将移动到上级目录。")) {
+    if (confirm(t("确定要删除此文件夹吗？文件夹内的角色将移动到上级目录。"))) {
       deleteFolder(id);
       toast.success(t("文件夹已删除"));
     }
   };
 
   const handleDeleteCharacter = (char: Character) => {
-    if (confirm(`确定要删除角色 "${char.name}" 吗？`)) {
+    if (confirm(t("确定要删除角色 \"{{v0}}\" 吗？", { v0: char.name }))) {
       deleteCharacter(char.id);
       if (selectedCharacterId === char.id) {
         onCharacterSelect(null);
@@ -348,7 +348,7 @@ export function CharacterGallery({ onCharacterSelect, selectedCharacterId }: Cha
         {currentCharacters.length > 0 ? (
           <div>
             <div className="text-xs text-muted-foreground mb-2">
-              角色 ({currentCharacters.length})
+              {t("角色 ({{v0}})", { v0: currentCharacters.length })}
             </div>
             <div className={cn(
               viewMode === "grid" 
@@ -399,7 +399,7 @@ export function CharacterGallery({ onCharacterSelect, selectedCharacterId }: Cha
                         <div className="text-center">
                           <p className="text-sm font-medium truncate">{char.name}</p>
                           <p className="text-xs text-muted-foreground">
-                            {char.views.length > 0 ? `${char.views.length} 视图` : "未生成"}
+                            {char.views.length > 0 ? t("{{v0}} 视图", { v0: char.views.length }) : t("未生成")}
                           </p>
                         </div>
                       </>
@@ -420,7 +420,7 @@ export function CharacterGallery({ onCharacterSelect, selectedCharacterId }: Cha
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{char.name}</p>
                           <p className="text-xs text-muted-foreground truncate">
-                            {char.description || "暂无描述"}
+                            {char.description || t("暂无描述")}
                           </p>
                         </div>
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -441,7 +441,7 @@ export function CharacterGallery({ onCharacterSelect, selectedCharacterId }: Cha
                 <User className="h-6 w-6 text-muted-foreground" />
               </div>
               <p className="text-sm text-muted-foreground">
-                {searchQuery ? "没有找到匹配的角色" : "还没有角色"}
+                {searchQuery ? t("没有找到匹配的角色") : t("还没有角色")}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
                 {t("使用左侧控制台创建角色")}

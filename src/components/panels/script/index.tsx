@@ -330,7 +330,7 @@ export function ScriptView() {
         }
       } else {
         setStructureCompletionStatus('error');
-        toast.error(result.error || '结构补全失败');
+        toast.error(result.error || t("结构补全失败"));
       }
     } catch (e) {
       setStructureCompletionStatus('error');
@@ -470,7 +470,7 @@ export function ScriptView() {
         setViewpointAnalysisStatus('completed');
       } else {
         setViewpointAnalysisStatus('error');
-        toast.error(t("AI 视角分析未执行：{{v0}}", { v0: result.viewpointSkippedReason || '未知原因' }));
+        toast.error(t("AI 视角分析未执行：{{v0}}", { v0: result.viewpointSkippedReason || t("未知原因") }));
       }
       
       toast.success(t("第 {{v0}} 集分镜生成完成！共 {{v1}} 个分镜", { v0: episodeIndex, v1: result.shots.length }));
@@ -502,7 +502,7 @@ export function ScriptView() {
       const result = await importFullScript(text, projectId, { styleId, promptLanguage });
       
       if (!result.success) {
-        throw new Error(result.error || "导入失败");
+        throw new Error(result.error || t("导入失败"));
       }
 
       setImportStatus('ready');
@@ -580,7 +580,7 @@ export function ScriptView() {
       if (hasAI && rawCharacterCount > 0 && result.scriptData && result.projectBackground) {
         // 强制工作流：AI 视角分析未执行，不进入角色校准
         if (!viewpointResult?.viewpointAnalyzed) {
-          toast.error(t("AI 视角分析未执行，已阻止角色校准：{{v0}}", { v0: viewpointResult?.viewpointSkippedReason || '未知原因' }));
+          toast.error(t("AI 视角分析未执行，已阻止角色校准：{{v0}}", { v0: viewpointResult?.viewpointSkippedReason || t("未知原因") }));
           return;
         }
         toast.info(t("正在 AI 校准 {{v0}} 个角色...", { v0: rawCharacterCount }));
@@ -738,7 +738,7 @@ export function ScriptView() {
         setMissingTitleCount(result.totalMissing - result.calibratedCount);
         toast.success(t("校准完成！已为 {{v0}} 集生成标题", { v0: result.calibratedCount }));
       } else {
-        throw new Error(result.error || '校准失败');
+        throw new Error(result.error || t("校准失败"));
       }
     } catch (error) {
       const err = error as Error;
@@ -800,7 +800,7 @@ export function ScriptView() {
           console.warn('[handleCalibrateShots] SeriesMeta 回写失败:', e);
         }
       } else {
-        throw new Error(result.error || '分镜校准失败');
+        throw new Error(result.error || t("分镜校准失败"));
       }
     } catch (error) {
       const err = error as Error;
@@ -827,7 +827,7 @@ export function ScriptView() {
     }
 
     const scene = scriptData?.scenes.find(s => s.id === sceneId);
-    const sceneName = scene?.name || scene?.location || '场景';
+    const sceneName = scene?.name || scene?.location || t("场景");
 
     addSecondPass('shots');
     setViewpointAnalysisStatus('analyzing');
@@ -857,7 +857,7 @@ export function ScriptView() {
         removeSecondPass('shots');
         toast.success(t("「{{v0}}」分镜校准完成！已优化 {{v1}}/{{v2}} 个分镜", { v0: sceneName, v1: result.calibratedCount, v2: result.totalShots }));
       } else {
-        throw new Error(result.error || '分镜校准失败');
+        throw new Error(result.error || t("分镜校准失败"));
       }
     } catch (error) {
       const err = error as Error;
@@ -910,7 +910,7 @@ export function ScriptView() {
         setSingleShotCalibrationStatusInStore(projectId, shotId, 'completed');
         toast.success(t("分镜校准完成！"));
       } else {
-        throw new Error(result.error || '分镜校准失败');
+        throw new Error(result.error || t("分镜校准失败"));
       }
     } catch (error) {
       const err = error as Error;
@@ -950,7 +950,7 @@ export function ScriptView() {
         setMissingSynopsisCount(0);
         toast.success(t("大纲生成完成！已为 {{v0}} 集生成大纲", { v0: result.generatedCount }));
       } else {
-        throw new Error(result.error || '大纲生成失败');
+        throw new Error(result.error || t("大纲生成失败"));
       }
     } catch (error) {
       const err = error as Error;
@@ -1109,7 +1109,7 @@ export function ScriptView() {
                   gender: baseChar.gender,
                   age: stage.ageDescription,
                   personality: baseChar.personality,
-                  role: `${stage.stageDescription}\n\n原始角色背景：${baseChar.role || ''}`,
+                  role: `${stage.stageDescription}\n\n${t("原始角色背景：{{v0}}", { v0: baseChar.role || '' })}`,
                   traits: baseChar.traits,
                   appearance: baseChar.appearance,
                   relationships: baseChar.relationships,
@@ -1146,7 +1146,7 @@ export function ScriptView() {
                 consistencyElements: analysis.consistencyElements,
                 // 标记为父角色，不需要单独生成形象，只作为阶段角色的分组
                 tags: [...(baseChar.tags || []).filter(t => t !== 'protagonist'), '父角色'],
-                notes: `此角色有 ${stageCharIds.length} 个阶段版本，请分别为各阶段版本生成形象`,
+                notes: t("此角色有 {{v0}} 个阶段版本，请分别为各阶段版本生成形象", { v0: stageCharIds.length }),
               };
               
               console.log(`[StageAnalysis] 为角色 ${analysis.characterName} 创建了 ${analysis.stages.length} 个阶段角色`);
@@ -1343,7 +1343,7 @@ export function ScriptView() {
       
       if (!baseUrl || !model) {
         toast.error(t("请先在设置中配置「剧本分析」的 Base URL 和模型"));
-        setParseStatus(projectId, "error", "缺少 Base URL 或模型配置");
+        setParseStatus(projectId, "error", t("缺少 Base URL 或模型配置"));
         return;
       }
 
@@ -1405,7 +1405,7 @@ export function ScriptView() {
       const model = featureConfig.models?.[0];
       if (!baseUrl || !model) {
         toast.error(t("请先在设置中配置「剧本分析」的 Base URL 和模型"));
-        setParseStatus(projectId, "error", "缺少 Base URL 或模型配置");
+        setParseStatus(projectId, "error", t("缺少 Base URL 或模型配置"));
         return;
       }
 
@@ -1424,7 +1424,7 @@ export function ScriptView() {
         result.episodes = [{
           id: "default",
           index: 1,
-          title: result.title || "第1集",
+          title: result.title || t("第1集"),
           sceneIds: result.scenes.map((s) => s.id),
         }];
       }
@@ -1517,7 +1517,7 @@ export function ScriptView() {
         const model = featureConfig.models?.[0];
         if (!baseUrl || !model) {
           toast.error(t("请先在设置中配置「剧本分析」的 Base URL 和模型"));
-          setShotStatus(projectId, "error", "缺少 Base URL 或模型配置");
+          setShotStatus(projectId, "error", t("缺少 Base URL 或模型配置"));
           return;
         }
 
@@ -1646,7 +1646,7 @@ export function ScriptView() {
         const invalidViewpoints = scene.viewpoints!.filter(vp => !vp.name || !vp.id);
         if (invalidViewpoints.length > 0) {
           console.warn('[handleGoToSceneLibrary] 发现不完整的 viewpoints:', invalidViewpoints);
-          toast.warning('视角数据不完整，请重新执行"AI 分析场景视角"');
+          toast.warning(t("视角数据不完整，请重新执行\"AI 分析场景视角\""));
           return;
         }
 
@@ -1692,8 +1692,8 @@ export function ScriptView() {
         });
 
         const viewpointCount = scene.viewpoints!.length;
-        toast.success(t("已跳转到场景库，场景「{{v0}}」已填充\\n", { v0: scene.name || scene.location }) +
-          `✔ ${viewpointCount} 个 AI 分析视角已加载`
+        toast.success(t("已跳转到场景库，场景「{{v0}}」已填充", { v0: scene.name || scene.location }) +
+          "\n" + t("✔ {{v0}} 个 AI 分析视角已加载", { v0: viewpointCount })
         );
       } else {
         // 【简单路径】无视角分析（创作模式或未校准），传递基础场景信息
@@ -1746,15 +1746,15 @@ export function ScriptView() {
       // 组合故事prompt: 场景 + 动作 + 对白
       const promptParts: string[] = [];
       if (scene) {
-        promptParts.push(`场景：${scene.location || scene.name}`);
-        if (scene.time) promptParts.push(`时间：${scene.time}`);
-        if (scene.atmosphere) promptParts.push(`氛围：${scene.atmosphere}`);
+        promptParts.push(t("场景：{{v0}}", { v0: scene.location || scene.name }));
+        if (scene.time) promptParts.push(t("时间：{{v0}}", { v0: scene.time }));
+        if (scene.atmosphere) promptParts.push(t("氛围：{{v0}}", { v0: scene.atmosphere }));
       }
       if (shot.actionSummary) {
-        promptParts.push(`\n动作：${shot.actionSummary}`);
+        promptParts.push("\n" + t("动作：{{v0}}", { v0: shot.actionSummary }));
       }
       if (shot.dialogue) {
-        promptParts.push(`对白：「${shot.dialogue}」`);
+        promptParts.push(t("对白：「{{v0}}」", { v0: shot.dialogue }));
       }
 
       const storyPrompt = promptParts.join("\n");
@@ -1796,17 +1796,17 @@ export function ScriptView() {
 
       // 组合故事prompt: 场景信息 + 所有分镜内容
       const promptParts: string[] = [];
-      promptParts.push(`场景：${scene.location || scene.name}`);
-      if (scene.time) promptParts.push(`时间：${scene.time}`);
-      if (scene.atmosphere) promptParts.push(`氛围：${scene.atmosphere}`);
+      promptParts.push(t("场景：{{v0}}", { v0: scene.location || scene.name }));
+      if (scene.time) promptParts.push(t("时间：{{v0}}", { v0: scene.time }));
+      if (scene.atmosphere) promptParts.push(t("氛围：{{v0}}", { v0: scene.atmosphere }));
 
       if (sceneShots.length > 0) {
-        promptParts.push(`\n--- 分镜列表 (${sceneShots.length}个) ---`);
+        promptParts.push("\n" + t("--- 分镜列表 ({{v0}}个) ---", { v0: sceneShots.length }));
         sceneShots.forEach((shot, idx) => {
           const shotDesc = [
-            `\n[分镜${idx + 1}]`,
-            shot.actionSummary ? `动作：${shot.actionSummary}` : null,
-            shot.dialogue ? `对白：「${shot.dialogue}」` : null,
+            "\n" + t("[分镜{{v0}}]", { v0: idx + 1 }),
+            shot.actionSummary ? t("动作：{{v0}}", { v0: shot.actionSummary }) : null,
+            shot.dialogue ? t("对白：「{{v0}}」", { v0: shot.dialogue }) : null,
           ].filter(Boolean).join(" ");
           promptParts.push(shotDesc);
         });
@@ -1910,7 +1910,7 @@ export function ScriptView() {
       return {
         found: false,
         name: '',
-        message: '请先配置 AI 接口',
+        message: t("请先配置 AI 接口"),
       };
     }
     
@@ -1919,7 +1919,7 @@ export function ScriptView() {
       return {
         found: false,
         name: '',
-        message: '请先导入剧本',
+        message: t("请先导入剧本"),
       };
     }
     
@@ -1949,7 +1949,7 @@ export function ScriptView() {
       return {
         found: false,
         name: '',
-        message: '查找失败，请重试',
+        message: t("查找失败，请重试"),
       };
     }
   }, [scriptProject?.projectBackground, episodeRawScripts, scriptData?.characters]);
@@ -1960,7 +1960,7 @@ export function ScriptView() {
     if (!featureConfig) {
       return {
         found: false,
-        message: '请先配置 AI 接口',
+        message: t("请先配置 AI 接口"),
       };
     }
     
@@ -1968,7 +1968,7 @@ export function ScriptView() {
     if (!background) {
       return {
         found: false,
-        message: '请先导入剧本',
+        message: t("请先导入剧本"),
       };
     }
     
@@ -1996,7 +1996,7 @@ export function ScriptView() {
       console.error('[handleAIFindScene] 错误:', error);
       return {
         found: false,
-        message: '查找失败，请重试',
+        message: t("查找失败，请重试"),
       };
     }
   }, [scriptProject?.projectBackground, episodeRawScripts, scriptData?.scenes]);
@@ -2231,7 +2231,7 @@ export function ScriptView() {
         
         // 将挑选的 Shot 转换为 addScenesFromScript 需要的格式，并追加到 splitScenes
         const scenesToAdd = result.selectedShots.map((shot, idx) => ({
-          promptZh: shot.visualDescription || shot.actionSummary || `预告片分镜`,
+          promptZh: shot.visualDescription || shot.actionSummary || t("预告片分镜"),
           promptEn: shot.imagePrompt || shot.visualPrompt || '',
           imagePrompt: shot.imagePrompt || shot.visualPrompt || '',
           imagePromptZh: shot.imagePromptZh || shot.visualDescription || '',
@@ -2247,7 +2247,7 @@ export function ScriptView() {
           dialogue: shot.dialogue || '',
           actionSummary: shot.actionSummary || '',
           cameraMovement: shot.cameraMovement || '',
-          sceneName: `预告片 #${idx + 1}`,
+          sceneName: t("预告片 #{{v0}}", { v0: idx + 1 }),
           sceneLocation: '',
           // 叙事驱动字段
           narrativeFunction: (shot as any).narrativeFunction || '',
@@ -2302,9 +2302,9 @@ export function ScriptView() {
           shotIds: [],
           status: 'error',
           generatedAt: undefined,
-          error: result.error || '挑选失败',
+          error: result.error || t("挑选失败"),
         });
-        toast.error(result.error || '预告片生成失败');
+        toast.error(result.error || t("预告片生成失败"));
       }
     } catch (error) {
       const err = error as Error;
@@ -2348,9 +2348,9 @@ export function ScriptView() {
           </h2>
           <span className="text-xs text-muted-foreground">
             {parseStatus === "parsing"
-              ? "解析中..."
+              ? t("解析中...")
               : scriptProject?.shotStatus === "generating"
-              ? "分镜生成中..."
+              ? t("分镜生成中...")
               : parseStatus === "ready" && scriptData
               ? `${scriptData.title}`
               : ""}

@@ -264,13 +264,13 @@ export function ScriptInput({
                 <p className="text-xs text-green-600">{t("✓ 导入成功！可在右侧点击集名生成分镜")}</p>
                 {(missingTitleCount ?? 0) > 0 && (
                   <p className="text-xs text-amber-600">
-                    ⚠ {missingTitleCount} 集缺少标题，可使用AI校准生成
+                    {t("⚠ {{v0}} 集缺少标题，可使用AI校准生成", { v0: missingTitleCount })}
                   </p>
                 )}
               </div>
             )}
             {importStatus === "error" && importError && (
-              <p className="text-xs text-destructive">导入失败：{importError}</p>
+              <p className="text-xs text-destructive">{t("导入失败：{{v0}}", { v0: importError })}</p>
             )}
             
             {/* 持久进度状态显示 - 在执行过程中始终可见 */}
@@ -285,7 +285,7 @@ export function ScriptInput({
                 <div className="flex items-center gap-3 text-primary">
                   <Loader2 className="h-6 w-6 animate-spin" />
                   <span className="text-lg font-bold">
-                    {secondPassTypes && secondPassTypes.size > 0 ? '🔄 二次校准中...' : '正在处理中...'}
+                    {secondPassTypes && secondPassTypes.size > 0 ? t("🔄 二次校准中...") : t("正在处理中...")}
                   </span>
                 </div>
                 <div className="space-y-2">
@@ -443,7 +443,7 @@ export function ScriptInput({
               {isGenerating ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  生成中...
+                  {t("生成中...")}
                 </>
               ) : (
                 <>
@@ -528,7 +528,7 @@ export function ScriptInput({
                 <SelectContent>
                   {PROMPT_LANGUAGE_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
+                      {t(opt.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -553,7 +553,7 @@ export function ScriptInput({
                     <SelectItem value="auto">{t("自动")}</SelectItem>
                     {SCENE_COUNT_OPTIONS.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
+                        {t(opt.label)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -616,7 +616,7 @@ export function ScriptInput({
                       <SelectItem value="auto">{t("自动")}</SelectItem>
                       {SHOT_COUNT_OPTIONS.map((opt) => (
                         <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
+                          {t(opt.label)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -659,7 +659,7 @@ export function ScriptInput({
                 <SelectContent>
                   {PROMPT_LANGUAGE_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
+                      {t(opt.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -700,7 +700,7 @@ export function ScriptInput({
                   <SelectContent>
                     {DURATION_OPTIONS.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
+                        {t(opt.label)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -732,7 +732,7 @@ export function ScriptInput({
                     <SelectItem value="auto">{t("自动")}</SelectItem>
                     {SCENE_COUNT_OPTIONS.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
+                        {t(opt.label)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -795,7 +795,7 @@ export function ScriptInput({
                       <SelectItem value="auto">{t("自动")}</SelectItem>
                       {SHOT_COUNT_OPTIONS.map((opt) => (
                         <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
+                          {t(opt.label)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -830,7 +830,7 @@ export function ScriptInput({
               {isImporting ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  导入中...
+                  {t("导入中...")}
                 </>
               ) : (
                 <>
@@ -852,12 +852,12 @@ export function ScriptInput({
               {isCalibrating || calibrationStatus === 'calibrating' ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  AI校准中...
+                  {t("AI校准中...")}
                 </>
               ) : (
                 <>
                   <RefreshCw className="h-4 w-4 mr-2" />
-                  AI校准（生成{missingTitleCount}集标题）
+                  {t("AI校准（生成{{v0}}集标题）", { v0: missingTitleCount })}
                 </>
               )}
             </Button>
@@ -874,14 +874,14 @@ export function ScriptInput({
               {isGeneratingSynopsis || synopsisStatus === 'generating' ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  生成大纲中...
+                  {t("生成大纲中...")}
                 </>
               ) : (
                 <>
                   <BookOpen className="h-4 w-4 mr-2" />
                   {(missingSynopsisCount ?? 0) > 0 
-                    ? `生成大纲（${missingSynopsisCount}集缺失）`
-                    : '重新生成大纲'
+                    ? t("生成大纲（{{v0}}集缺失）", { v0: missingSynopsisCount })
+                    : t("重新生成大纲")
                   }
                 </>
               )}
@@ -899,7 +899,7 @@ export function ScriptInput({
               {parseStatus === "parsing" ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  解析中...
+                  {t("解析中...")}
                 </>
               ) : (
                 <>

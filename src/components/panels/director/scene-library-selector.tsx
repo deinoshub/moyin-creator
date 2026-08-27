@@ -146,7 +146,7 @@ export function SceneLibrarySelector({
   
   // 显示文本
   const displayText = useMemo(() => {
-    if (!selectedScene) return isEndFrame ? '尾帧场景' : '场景参考';
+    if (!selectedScene) return isEndFrame ? t("尾帧场景") : t("场景参考");
     if (selectedSubView) {
       return `${selectedScene.name}-${selectedViewpoint?.viewpointName || selectedViewpoint?.name}-${selectedSubView.viewpointName || selectedSubView.name}`;
     }
@@ -183,7 +183,7 @@ export function SceneLibrarySelector({
       <PopoverContent className="w-[720px] p-3" align="start">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm font-medium">
-            {isEndFrame ? '选择尾帧场景参考' : '选择场景参考'}
+            {isEndFrame ? t("选择尾帧场景参考") : t("选择场景参考")}
           </p>
           {hasSelection && (
             <button

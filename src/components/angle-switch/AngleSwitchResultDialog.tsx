@@ -120,14 +120,14 @@ export function AngleSwitchResultDialog({
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="text-xs text-center mt-1 text-muted-foreground">{currentLabel}</div>
+              <div className="text-xs text-center mt-1 text-muted-foreground">{t(currentLabel)}</div>
             </div>
           </div>
 
           {/* 历史记录 */}
           {history.length > 0 && (
             <div>
-              <div className="text-xs text-muted-foreground mb-2">历史记录 ({history.length}张)</div>
+              <div className="text-xs text-muted-foreground mb-2">{t("历史记录 ({{v0}}张)", { v0: history.length })}</div>
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {history.map((item, index) => (
                   <button

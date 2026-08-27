@@ -217,7 +217,7 @@ export function ApiKeyEditorDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>编辑 {providerName} Keys</DialogTitle>
+          <DialogTitle>{t("编辑 {{v0}} Keys", { v0: providerName })}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
@@ -327,7 +327,7 @@ export function ApiKeyEditorDialog({
           {/* Bottom action bar */}
           <div className="flex items-center justify-between pt-3 border-t">
             <span className="text-xs text-muted-foreground">
-              💡 支持多个 Key 轮换使用
+              {t("💡 支持多个 Key 轮换使用")}
             </span>
             <div className="flex items-center gap-2">
               {hasMultipleKeys && (

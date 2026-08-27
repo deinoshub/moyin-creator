@@ -115,7 +115,7 @@ async function fetchUpdateManifest() {
 
   const response = await net.fetch(requestUrl.toString())
   if (!response.ok) {
-    throw new Error(`版本清单请求失败 (${response.status})`)
+    throw new Error(t("版本清单请求失败 ({{v0}})", { v0: response.status }))
   }
 
   const rawManifest = await response.json() as Partial<UpdateManifest>
@@ -286,10 +286,10 @@ function pathsConflict(source: string, dest: string): string | null {
     return null // Same path is OK, handled elsewhere
   }
   if (isSubdirectory(source, dest)) {
-    return '目标路径不能是当前路径的子目录'
+    return t("目标路径不能是当前路径的子目录")
   }
   if (isSubdirectory(dest, source)) {
-    return '当前路径不能是目标路径的子目录'
+    return t("当前路径不能是目标路径的子目录")
   }
   return null
 }
@@ -611,7 +611,7 @@ async function fetchBuffer(url: string, timeoutMs: number = 45000) {
     })
 
     if (!response.ok) {
-      throw new Error(`请求失败: ${response.status}`)
+      throw new Error(t("请求失败: {{v0}}", { v0: response.status }))
     }
 
     const arrayBuffer = await response.arrayBuffer()
@@ -626,7 +626,7 @@ async function fetchBuffer(url: string, timeoutMs: number = 45000) {
     }
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error(`请求超时 (${Math.round(timeoutMs / 1000)}s)`)
+      throw new Error(t("请求超时 ({{v0}}s)", { v0: Math.round(timeoutMs / 1000) }))
     }
     throw error
   } finally {
@@ -776,7 +776,7 @@ async function uploadImageHostFromMain({
           ? errorMessage
           : typeof messageField === 'string'
             ? messageField
-            : text || `上传失败: ${response.status}`
+            : text || t("上传失败: {{v0}}", { v0: response.status })
         return { success: false, error: message }
       }
 
@@ -802,17 +802,17 @@ async function uploadImageHostFromMain({
         platform: provider.platform,
         responsePreview: trimmedText.substring(0, 200),
       })
-      return { success: false, error: `图床 ${provider.name} 上传成功但未返回 URL` }
+      return { success: false, error: t("图床 {{v0}} 上传成功但未返回 URL", { v0: provider.name }) }
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         return { success: false, error: t("上传超时，请稍后重试") }
       }
-      return { success: false, error: error instanceof Error ? error.message : '上传失败' }
+      return { success: false, error: error instanceof Error ? error.message : t("上传失败") }
     } finally {
       clearTimeout(timeout)
     }
   } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : '上传失败' }
+    return { success: false, error: error instanceof Error ? error.message : t("上传失败") }
   }
 }
 

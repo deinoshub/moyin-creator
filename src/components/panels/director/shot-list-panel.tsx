@@ -94,7 +94,7 @@ export function ShotListPanel({ onGenerateImage }: ShotListPanelProps) {
 
     if (shotsToProcess.length === 0) return;
 
-    if (allStartFramesGenerated && !confirm("确定要重新生成所有首帧吗？")) {
+    if (allStartFramesGenerated && !confirm(t("确定要重新生成所有首帧吗？"))) {
       return;
     }
 
@@ -102,7 +102,7 @@ export function ShotListPanel({ onGenerateImage }: ShotListPanelProps) {
       isVisible: true,
       current: 0,
       total: shotsToProcess.length,
-      message: "准备中...",
+      message: t("准备中..."),
     });
 
     for (let i = 0; i < shotsToProcess.length; i++) {
@@ -112,7 +112,7 @@ export function ShotListPanel({ onGenerateImage }: ShotListPanelProps) {
       setBatchProgress((prev) => ({
         ...prev,
         current: i + 1,
-        message: `生成镜头 ${i + 1}/${shotsToProcess.length}`,
+        message: t("生成镜头 {{v0}}/{{v1}}", { v0: i + 1, v1: shotsToProcess.length }),
       }));
 
       try {
@@ -143,7 +143,7 @@ export function ShotListPanel({ onGenerateImage }: ShotListPanelProps) {
   // Get scene name
   const getSceneName = (sceneRefId: string) => {
     const scene = scriptData?.scenes.find((s) => String(s.id) === sceneRefId);
-    return scene?.name || scene?.location || `场景 ${sceneRefId}`;
+    return scene?.name || scene?.location || t("场景 {{v0}}", { v0: sceneRefId });
   };
 
   if (shots.length === 0) {
@@ -217,7 +217,7 @@ export function ShotListPanel({ onGenerateImage }: ShotListPanelProps) {
             disabled={batchProgress.isVisible || !onGenerateImage}
           >
             <Sparkles className="w-3 h-3 mr-1" />
-            {allStartFramesGenerated ? "重新生成" : "批量生成"}
+            {allStartFramesGenerated ? t("重新生成") : t("批量生成")}
           </Button>
         </div>
       </div>
@@ -283,7 +283,7 @@ export function ShotListPanel({ onGenerateImage }: ShotListPanelProps) {
                     {/* Label */}
                     <div className="p-1.5 bg-background">
                       <p className="text-[10px] text-muted-foreground line-clamp-1">
-                        {shot.shotSize || shot.cameraMovement || "镜头"}
+                        {shot.shotSize || shot.cameraMovement || t("镜头")}
                       </p>
                     </div>
                   </div>
@@ -338,7 +338,7 @@ export function ShotListPanel({ onGenerateImage }: ShotListPanelProps) {
                                 {String(globalIdx + 1).padStart(2, "0")}
                               </span>
                               <span className="text-xs truncate">
-                                {shot.shotSize || "镜头"}
+                                {shot.shotSize || t("镜头")}
                               </span>
                             </div>
                             <p className="text-[10px] text-muted-foreground truncate">

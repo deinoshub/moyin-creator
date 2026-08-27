@@ -96,7 +96,7 @@ export function AssetSidebar({ activeSection, onSectionChange }: AssetSidebarPro
                 <ChevronRight className="w-3 h-3" />
               )}
               <mod.icon className="w-3.5 h-3.5" />
-              {mod.label}
+              {t(mod.label)}
             </button>
 
             {/* 子项 */}
@@ -114,7 +114,7 @@ export function AssetSidebar({ activeSection, onSectionChange }: AssetSidebarPro
                     onClick={() => onSectionChange(child.id)}
                   >
                     <child.icon className="w-3.5 h-3.5" />
-                    {child.label}
+                    {t(child.label)}
                   </button>
                 ))}
               </div>

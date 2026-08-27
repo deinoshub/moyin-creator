@@ -212,7 +212,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
         <div className="flex items-center gap-2">
           {getStatusIcon()}
           <span className="font-medium text-sm">
-            场景 {scene.sceneId}
+            {t("场景 {{v0}}", { v0: scene.sceneId })}
           </span>
           {/* Mood badge */}
           {isPreview && !progress && (
@@ -227,7 +227,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
                       "text-white"
                     )}
                   >
-                    {scene.mood}
+                    {t(scene.mood)}
                   </Badge>
                 ) : (
                   <Button
@@ -256,7 +256,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
                         )}
                         onClick={() => handleSetMood(preset.label)}
                       >
-                        {preset.label}
+                        {t(preset.label)}
                       </Badge>
                     ))}
                   </div>
@@ -296,7 +296,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
                 "text-white"
               )}
             >
-              {scene.mood}
+              {t(scene.mood)}
             </Badge>
           )}
         </div>
@@ -367,7 +367,7 @@ export function SceneCard({ scene, progress, isPreview, showImage, onRetryImage,
             isPreview && !progress && "cursor-text hover:bg-muted/50 rounded px-1 -mx-1"
           )}
           onDoubleClick={handleNarrationDoubleClick}
-          title={isPreview && !progress ? "双击编辑" : undefined}
+          title={isPreview && !progress ? t("双击编辑") : undefined}
         >
           {scene.narration}
         </p>

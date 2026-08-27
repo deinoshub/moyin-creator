@@ -100,7 +100,7 @@ export function CharacterDetail({ character }: CharacterDetailProps) {
   };
 
   const handleDelete = () => {
-    if (confirm(`确定要删除角色 "${character.name}" 吗？`)) {
+    if (confirm(t("确定要删除角色 \"{{v0}}\" 吗？", { v0: character.name }))) {
       deleteCharacter(character.id);
       selectCharacter(null);
       toast.success(t("角色已删除"));
@@ -237,7 +237,7 @@ export function CharacterDetail({ character }: CharacterDetailProps) {
             {currentView ? (
                 <LocalImage 
                   src={currentView.imageUrl} 
-                  alt={`${character.name} - ${VIEW_LABELS[currentView.viewType] || currentView.viewType}`}
+                  alt={`${character.name} - ${t(VIEW_LABELS[currentView.viewType] || currentView.viewType)}`}
                   className="w-full h-full object-contain"
                 />
               ) : character.thumbnailUrl ? (
@@ -273,7 +273,7 @@ export function CharacterDetail({ character }: CharacterDetailProps) {
                   >
                     <LocalImage 
                       src={view.imageUrl} 
-                      alt={VIEW_LABELS[view.viewType] || view.viewType}
+                      alt={t(VIEW_LABELS[view.viewType] || view.viewType)}
                       className="w-full h-full object-cover"
                     />
                   </button>
@@ -292,12 +292,12 @@ export function CharacterDetail({ character }: CharacterDetailProps) {
             <div className="flex flex-wrap gap-1.5">
               {character.gender && (
                 <Badge variant="secondary" className="text-xs">
-                  {GENDER_LABELS[character.gender] || character.gender}
+                  {t(GENDER_LABELS[character.gender] || character.gender)}
                 </Badge>
               )}
               {character.age && (
                 <Badge variant="secondary" className="text-xs">
-                  {AGE_LABELS[character.age] || character.age}
+                  {t(AGE_LABELS[character.age] || character.age)}
                 </Badge>
               )}
               {character.personality && (
@@ -368,7 +368,7 @@ export function CharacterDetail({ character }: CharacterDetailProps) {
                 </div>
               ) : (
                 <p className="text-xs bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 rounded p-2 text-indigo-800 dark:text-indigo-200">
-                  {character.notes || '点击编辑添加备注...'}
+                  {character.notes || t("点击编辑添加备注...")}
                 </p>
               )}
             </div>
@@ -417,7 +417,7 @@ export function CharacterDetail({ character }: CharacterDetailProps) {
                     <img
                       key={i}
                       src={img}
-                      alt={`参考图 ${i + 1}`}
+                      alt={t("参考图 {{v0}}", { v0: i + 1 })}
                       className="w-10 h-10 object-cover rounded border"
                     />
                   ))}
@@ -437,7 +437,7 @@ export function CharacterDetail({ character }: CharacterDetailProps) {
               onClick={() => setShowWardrobe(true)}
             >
               <Shirt className="h-4 w-4 mr-2" />
-              衣橱 ({variationCount})
+              {t("衣橱 ({{v0}})", { v0: variationCount })}
             </Button>
 
             {currentView && (

@@ -122,7 +122,7 @@ export function EditableTextField({
         value ? "text-foreground/80" : "text-muted-foreground/50 italic",
         multiline && "line-clamp-2"
       )}>
-        {value || placeholder || "双击编辑..."}
+        {value || placeholder || t("双击编辑...")}
       </p>
     </div>
   );

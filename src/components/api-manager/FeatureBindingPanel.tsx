@@ -393,7 +393,7 @@ export function FeatureBindingPanel() {
           {t("服务映射")}
         </h3>
         <span className="text-xs text-muted-foreground">
-          已配置: {configuredCount}/{FEATURE_CONFIGS.length}
+          {t("已配置: {{v0}}/{{v1}}", { v0: configuredCount, v1: FEATURE_CONFIGS.length })}
         </span>
       </div>
 
@@ -470,7 +470,7 @@ export function FeatureBindingPanel() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <Label className="font-medium text-foreground cursor-pointer">
-                        {feature.name}
+                        {t(feature.name)}
                       </Label>
                       {configured ? (
                         <Check className="h-3 w-3 text-primary shrink-0" />
@@ -479,22 +479,22 @@ export function FeatureBindingPanel() {
                       )}
                       {validBindings.length > 0 && (
                         <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded">
-                          {validBindings.length} 个模型
+                          {t("{{v0}} 个模型", { v0: validBindings.length })}
                         </span>
                       )}
                       {isFreedomFeature && (
                         <span className="text-xs bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
-                          可用 {selectableOptionKeys.length}
+                          {t("可用 {{v0}}", { v0: selectableOptionKeys.length })}
                         </span>
                       )}
                       {isFreedomFeature && invalidBindings.length > 0 && (
                         <span className="text-xs bg-amber-500/15 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded">
-                          暂不可用 {invalidBindings.length}
+                          {t("暂不可用 {{v0}}", { v0: invalidBindings.length })}
                         </span>
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground truncate">
-                      {feature.description}
+                      {t(feature.description)}
                     </p>
                   </div>
                 </div>
@@ -526,7 +526,7 @@ export function FeatureBindingPanel() {
                       {feature.recommendation && (
                         <div className="flex items-start gap-2 px-3 py-2.5 rounded-md bg-red-500/10 border border-red-500/30">
                           <span className="text-sm font-bold text-red-600 dark:text-red-400 leading-relaxed">
-                            {feature.recommendation}
+                            {t(feature.recommendation)}
                           </span>
                         </div>
                       )}
@@ -558,7 +558,7 @@ export function FeatureBindingPanel() {
                               ))}
                             </div>
                             <span className="text-[11px] text-blue-600/80 dark:text-blue-400/80">
-                              建议在 memefast.top 后台为以上分组都添加 Key，Key 越多可用性越高。
+                              {t("建议在 memefast.top 后台为以上分组都添加 Key，Key 越多可用性越高。")}
                             </span>
                           </div>
                         );

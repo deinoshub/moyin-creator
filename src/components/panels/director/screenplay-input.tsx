@@ -529,11 +529,11 @@ export function ScreenplayInput({ onGenerateStoryboard }: ScreenplayInputProps) 
           {EXAMPLE_PROMPTS.map((example, i) => (
             <button
               key={i}
-              onClick={() => handleExampleClick(example)}
+              onClick={() => handleExampleClick(t(example))}
               className="text-xs px-2 py-1 rounded-full bg-muted hover:bg-muted/80 transition-colors truncate max-w-[150px]"
               disabled={isSubmitting}
             >
-              {example.substring(0, 15)}...
+              {t(example).substring(0, 15)}...
             </button>
           ))}
         </div>
@@ -590,10 +590,10 @@ export function ScreenplayInput({ onGenerateStoryboard }: ScreenplayInputProps) 
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="2K">
-                2K (最多 {SCENE_LIMITS['2K']} 场景)
+                {t("2K (最多 {{v0}} 场景)", { v0: SCENE_LIMITS['2K'] })}
               </SelectItem>
               <SelectItem value="4K">
-                4K (最多 {SCENE_LIMITS['4K']} 场景)
+                {t("4K (最多 {{v0}} 场景)", { v0: SCENE_LIMITS['4K'] })}
               </SelectItem>
             </SelectContent>
           </Select>
@@ -623,7 +623,7 @@ export function ScreenplayInput({ onGenerateStoryboard }: ScreenplayInputProps) 
             <SelectContent>
               {getMaxSceneOptions().map((n) => (
                 <SelectItem key={n} value={String(n)}>
-                  {n} 个场景
+                  {t("{{v0}} 个场景", { v0: n })}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -661,7 +661,7 @@ export function ScreenplayInput({ onGenerateStoryboard }: ScreenplayInputProps) 
           </Label>
           {selectedCharacters.length > 0 && (
             <span className="text-xs text-muted-foreground">
-              {selectedCharacters.length} 个
+              {t("{{v0}} 个", { v0: selectedCharacters.length })}
             </span>
           )}
         </div>
@@ -890,12 +890,12 @@ export function ScreenplayInput({ onGenerateStoryboard }: ScreenplayInputProps) 
           {isSubmitting ? (
             <>
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
-              生成中...
+              {t("生成中...")}
             </>
           ) : (
             <>
               <Wand2 className="h-4 w-4 mr-2" />
-              {onGenerateStoryboard ? "生成故事板" : "生成剧本"}
+              {onGenerateStoryboard ? t("生成故事板") : t("生成剧本")}
             </>
           )}
         </Button>

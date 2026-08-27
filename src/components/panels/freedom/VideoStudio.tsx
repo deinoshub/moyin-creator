@@ -81,27 +81,27 @@ function getVeoUploadValidationError(
 
   if (capability.mode === 'single') {
     if (capability.minFiles > 0 && !singleUpload && !firstFrameUpload) {
-      return '当前模型需要上传 1 张图片';
+      return t("当前模型需要上传 1 张图片");
     }
     return null;
   }
 
   if (capability.mode === 'first_last') {
     if (capability.minFiles > 0 && !firstFrameUpload) {
-      return '当前模型需要上传首帧图片';
+      return t("当前模型需要上传首帧图片");
     }
     if (!firstFrameUpload && lastFrameUpload) {
-      return '请先上传首帧图，再上传尾帧图';
+      return t("请先上传首帧图，再上传尾帧图");
     }
     return null;
   }
 
   if (capability.mode === 'multi') {
     if (referenceUploads.length < capability.minFiles) {
-      return `当前模型至少需要 ${capability.minFiles} 张参考图`;
+      return t("当前模型至少需要 {{v0}} 张参考图", { v0: capability.minFiles });
     }
     if (referenceUploads.length > capability.maxFiles) {
-      return `当前模型最多支持 ${capability.maxFiles} 张参考图`;
+      return t("当前模型最多支持 {{v0}} 张参考图", { v0: capability.maxFiles });
     }
   }
 
@@ -226,7 +226,7 @@ export function VideoStudio() {
     try {
       setSingleUpload(await toAsset(file));
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '读取文件失败';
+      const message = err instanceof Error ? err.message : t("读取文件失败");
       toast.error(message);
     }
   }, [toAsset]);
@@ -238,7 +238,7 @@ export function VideoStudio() {
     try {
       setFirstFrameUpload(await toAsset(file));
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '读取文件失败';
+      const message = err instanceof Error ? err.message : t("读取文件失败");
       toast.error(message);
     }
   }, [toAsset]);
@@ -250,7 +250,7 @@ export function VideoStudio() {
     try {
       setLastFrameUpload(await toAsset(file));
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '读取文件失败';
+      const message = err instanceof Error ? err.message : t("读取文件失败");
       toast.error(message);
     }
   }, [toAsset]);
@@ -267,7 +267,7 @@ export function VideoStudio() {
       const asset = await toAsset(file);
       setReferenceUploads((prev) => [...prev, asset]);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '读取文件失败';
+      const message = err instanceof Error ? err.message : t("读取文件失败");
       toast.error(message);
     }
   }, [referenceUploads.length, toAsset, veoCapability.maxFiles]);
@@ -391,7 +391,7 @@ export function VideoStudio() {
 
       toast.success(t("视频生成成功！已保存到素材库"));
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '未知错误';
+      const message = err instanceof Error ? err.message : t("未知错误");
       toast.error(t("生成失败: {{v0}}", { v0: message }));
     } finally {
       setVideoGenerating(false);
@@ -500,7 +500,7 @@ export function VideoStudio() {
                 ) : (
                   <div className="space-y-2">
                     {veoCapability.mode === 'single' && renderUploadSlot(
-                      '参考图',
+                      t("参考图"),
                       singleUpload || firstFrameUpload,
                       () => singleInputRef.current?.click(),
                       () => {
@@ -513,14 +513,14 @@ export function VideoStudio() {
                     {veoCapability.mode === 'first_last' && (
                       <div className="grid grid-cols-2 gap-2">
                         {renderUploadSlot(
-                          '首帧图',
+                          t("首帧图"),
                           firstFrameUpload,
                           () => firstInputRef.current?.click(),
                           () => setFirstFrameUpload(null),
                           veoCapability.minFiles > 0,
                         )}
                         {renderUploadSlot(
-                          '尾帧图',
+                          t("尾帧图"),
                           lastFrameUpload,
                           () => lastInputRef.current?.click(),
                           () => setLastFrameUpload(null),
@@ -536,7 +536,7 @@ export function VideoStudio() {
                             <div key={asset.id} className="relative rounded border overflow-hidden">
                               <img
                                 src={asset.dataUrl}
-                                alt={`参考图 ${index + 1}`}
+                                alt={t("参考图 {{v0}}", { v0: index + 1 })}
                                 className="h-20 w-full object-cover"
                               />
                               <button
@@ -560,7 +560,7 @@ export function VideoStudio() {
                           )}
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          已上传 {referenceUploads.length}/{veoCapability.maxFiles} 张参考图
+                          {t("已上传 {{v0}}/{{v1}} 张参考图", { v0: referenceUploads.length, v1: veoCapability.maxFiles })}
                         </p>
                       </div>
                     )}
@@ -644,7 +644,7 @@ export function VideoStudio() {
             <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
               <Button size="sm" variant="secondary" asChild>
                 <a href={videoResult} download target="_blank" rel="noopener">
-                  <Download className="h-4 w-4 mr-1" /> 下载
+                  <Download className="h-4 w-4 mr-1" /> {t("下载")}
                 </a>
               </Button>
             </div>

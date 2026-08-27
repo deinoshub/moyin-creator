@@ -300,7 +300,7 @@ export function SClassSceneCard({
     const dragData = {
       id: scene.videoMediaId || `scene-${scene.id}-video`,
       type: 'video',
-      name: `分镜 ${scene.id + 1} - AI视频`,
+      name: t("分镜 {{v0}} - AI视频", { v0: scene.id + 1 }),
       url: scene.videoUrl,
       thumbnailUrl: scene.imageDataUrl,
       duration: 5,
@@ -311,7 +311,7 @@ export function SClassSceneCard({
     
     const dragImage = document.createElement('div');
     dragImage.className = 'bg-primary text-white px-2 py-1 rounded text-xs';
-    dragImage.textContent = `分镜 ${scene.id + 1} 视频`;
+    dragImage.textContent = t("分镜 {{v0}} 视频", { v0: scene.id + 1 });
     dragImage.style.position = 'absolute';
     dragImage.style.top = '-1000px';
     document.body.appendChild(dragImage);
@@ -345,7 +345,7 @@ export function SClassSceneCard({
       {/* 分镜编号和控制栏 */}
       <div className="flex items-center justify-between px-3 py-1.5 bg-muted/30 border-b">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-muted-foreground">分镜 #{scene.id + 1}</span>
+          <span className="text-sm font-bold text-muted-foreground">{t("分镜 #{{v0}}", { v0: scene.id + 1 })}</span>
           {(scene.sceneName || scene.sceneLocation) && (
             <TooltipProvider>
               <Tooltip>
@@ -357,8 +357,8 @@ export function SClassSceneCard({
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs">
-                    {scene.sceneName && <p>场景: {scene.sceneName}</p>}
-                    {scene.sceneLocation && <p>地点: {scene.sceneLocation}</p>}
+                    {scene.sceneName && <p>{t("场景: {{v0}}", { v0: scene.sceneName })}</p>}
+                    {scene.sceneLocation && <p>{t("地点: {{v0}}", { v0: scene.sceneLocation })}</p>}
                   </div>
                 </TooltipContent>
               </Tooltip>
@@ -380,7 +380,7 @@ export function SClassSceneCard({
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>删除分镜 #{scene.id + 1}？</AlertDialogTitle>
+                <AlertDialogTitle>{t("删除分镜 #{{v0}}？", { v0: scene.id + 1 })}</AlertDialogTitle>
                 <AlertDialogDescription>
                   {t("此操作将删除该分镜的所有内容，无法撤销。")}
                 </AlertDialogDescription>
@@ -447,7 +447,7 @@ export function SClassSceneCard({
               onClick={() => {
                 setSelectedFrameTarget('start');
                 if (hasImage && resolvedImageUrl) {
-                  setPreviewItem({ type: 'image', url: resolvedImageUrl, name: `分镜 ${scene.id + 1} 首帧` });
+                  setPreviewItem({ type: 'image', url: resolvedImageUrl, name: t("分镜 {{v0}} 首帧", { v0: scene.id + 1 }) });
                 } else {
                   firstFrameInputRef.current?.click();
                 }
@@ -457,7 +457,7 @@ export function SClassSceneCard({
                 <>
                   <img
                     src={resolvedImageUrl || ''}
-                    alt={`分镜 ${scene.id + 1} 首帧`}
+                    alt={t("分镜 {{v0}} 首帧", { v0: scene.id + 1 })}
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
@@ -511,13 +511,13 @@ export function SClassSceneCard({
               {isImageGenerating && (
                 <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-1">
                   <Loader2 className="h-4 w-4 text-white animate-spin" />
-                  <span className="text-[10px] text-white">生成中 {scene.imageProgress}%</span>
+                  <span className="text-[10px] text-white">{t("生成中 {{v0}}%", { v0: scene.imageProgress })}</span>
                   <button
                     onClick={(e) => { e.stopPropagation(); onStopImageGeneration?.(scene.id); }}
                     className="mt-1 px-2 py-0.5 rounded bg-red-600/80 hover:bg-red-600 text-white text-[9px] flex items-center gap-0.5 transition-colors"
                     title={t("停止生成")}
                   >
-                    <Square className="h-2.5 w-2.5" />停止
+                    <Square className="h-2.5 w-2.5" />{t("停止")}
                   </button>
                 </div>
               )}
@@ -550,7 +550,7 @@ export function SClassSceneCard({
                       : "bg-muted text-muted-foreground/60 hover:bg-muted/80"
                   )}
                 >
-                  {scene.needsEndFrame ? '需要' : '可选'}
+                  {scene.needsEndFrame ? t("需要") : t("可选")}
                 </button>
               </div>
               <div className="flex items-center gap-1">
@@ -607,7 +607,7 @@ export function SClassSceneCard({
               onClick={() => {
                 setSelectedFrameTarget('end');
                 if (hasEndFrame && resolvedEndFrameUrl) {
-                  setPreviewItem({ type: 'image', url: resolvedEndFrameUrl, name: `分镜 ${scene.id + 1} 尾帧` });
+                  setPreviewItem({ type: 'image', url: resolvedEndFrameUrl, name: t("分镜 {{v0}} 尾帧", { v0: scene.id + 1 }) });
                 } else {
                   endFrameInputRef.current?.click();
                 }
@@ -617,7 +617,7 @@ export function SClassSceneCard({
                 <>
                   <img
                     src={resolvedEndFrameUrl || ''}
-                    alt={`分镜 ${scene.id + 1} 尾帧`}
+                    alt={t("分镜 {{v0}} 尾帧", { v0: scene.id + 1 })}
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
@@ -665,13 +665,13 @@ export function SClassSceneCard({
               ) : scene.endFrameStatus === 'generating' ? (
                 <div className="w-full h-full flex flex-col items-center justify-center gap-1 bg-orange-500/10">
                   <Loader2 className="h-4 w-4 text-orange-500 animate-spin" />
-                  <span className="text-[10px] text-orange-500">生成中 {scene.endFrameProgress}%</span>
+                  <span className="text-[10px] text-orange-500">{t("生成中 {{v0}}%", { v0: scene.endFrameProgress })}</span>
                   <button
                     onClick={(e) => { e.stopPropagation(); onStopEndFrameGeneration?.(scene.id); }}
                     className="mt-0.5 px-2 py-0.5 rounded bg-red-600/80 hover:bg-red-600 text-white text-[9px] flex items-center gap-0.5 transition-colors"
                     title={t("停止生成")}
                   >
-                    <Square className="h-2.5 w-2.5" />停止
+                    <Square className="h-2.5 w-2.5" />{t("停止")}
                   </button>
                 </div>
               ) : scene.needsEndFrame ? (
@@ -769,7 +769,7 @@ export function SClassSceneCard({
                 disabled={isGeneratingAny || isImageGenerating}
               >
                 {isImageGenerating ? (
-                  <><Loader2 className="h-3 w-3 mr-1 animate-spin" />生成中 {scene.imageProgress}%</>
+                  <><Loader2 className="h-3 w-3 mr-1 animate-spin" />{t("生成中 {{v0}}%", { v0: scene.imageProgress })}</>
                 ) : (
                   <><ImageIcon className="h-3 w-3 mr-1" />{t("生成图片")}</>
                 )}
@@ -796,7 +796,7 @@ export function SClassSceneCard({
                 disabled={isGeneratingAny || isVideoGenerating}
               >
                 {isVideoGenerating ? (
-                  <><Loader2 className="h-3 w-3 mr-1 animate-spin" />生成中 {scene.videoProgress}%</>
+                  <><Loader2 className="h-3 w-3 mr-1 animate-spin" />{t("生成中 {{v0}}%", { v0: scene.videoProgress })}</>
                 ) : isVideoReady ? (
                   <><RefreshCw className="h-3 w-3 mr-1" />{t("重新生成")}</>
                 ) : (
@@ -821,7 +821,7 @@ export function SClassSceneCard({
             <div className="flex items-center gap-1">
               <div 
                 className="flex-1 aspect-video max-w-[120px] bg-muted rounded overflow-hidden cursor-pointer relative"
-                onClick={() => setPreviewItem({ type: 'video', url: scene.videoUrl!, name: `分镜 ${scene.id + 1} 视频` })}
+                onClick={() => setPreviewItem({ type: 'video', url: scene.videoUrl!, name: t("分镜 {{v0}} 视频", { v0: scene.id + 1 }) })}
                 draggable={!!canDragVideo}
                 onDragStart={handleVideoDragStart}
               >
@@ -869,8 +869,8 @@ export function SClassSceneCard({
             )}>
               <AlertCircle className="h-3 w-3" />
               {isVideoModerationSkipped 
-                ? '内容审核跳过'
-                : (scene.videoError || '生成失败')}
+                ? t("内容审核跳过")
+                : (scene.videoError || t("生成失败"))}
             </span>
           )}
         </div>
@@ -892,7 +892,7 @@ export function SClassSceneCard({
                   ? "bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/20"
                   : "bg-muted text-muted-foreground/40 border-transparent"
               )}>
-                <Edit3 className="h-2.5 w-2.5" /> 剧本
+                <Edit3 className="h-2.5 w-2.5" /> {t("剧本")}
               </span>
               <span className={cn(
                 "text-[9px] px-1.5 py-0.5 rounded-full inline-flex items-center gap-0.5 border",
@@ -900,7 +900,7 @@ export function SClassSceneCard({
                   ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/20"
                   : "bg-muted text-muted-foreground/40 border-transparent"
               )}>
-                <ImageIcon className="h-2.5 w-2.5" /> 首帧
+                <ImageIcon className="h-2.5 w-2.5" /> {t("首帧")}
               </span>
               <span className={cn(
                 "text-[9px] px-1.5 py-0.5 rounded-full inline-flex items-center gap-0.5 border",
@@ -910,7 +910,7 @@ export function SClassSceneCard({
                     ? "bg-orange-500/5 text-orange-400/60 border-dashed border-orange-400/30"
                     : "bg-muted text-muted-foreground/40 border-transparent"
               )}>
-                ◉ 尾帧
+                ◉ {t("尾帧")}
               </span>
               <span className={cn(
                 "text-[9px] px-1.5 py-0.5 rounded-full inline-flex items-center gap-0.5 border",
@@ -918,7 +918,7 @@ export function SClassSceneCard({
                   ? "bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20"
                   : "bg-muted text-muted-foreground/40 border-transparent"
               )}>
-                <Play className="h-2.5 w-2.5" /> 视频
+                <Play className="h-2.5 w-2.5" /> {t("视频")}
               </span>
             </div>
           </button>
@@ -960,10 +960,10 @@ export function SClassSceneCard({
                     />
                     <div className="flex gap-1 justify-end mt-1">
                       <Button variant="outline" size="sm" onClick={handleCancelEdit} className="h-5 px-2 text-[10px]">
-                        <X className="h-2.5 w-2.5 mr-0.5" />取消
+                        <X className="h-2.5 w-2.5 mr-0.5" />{t("取消")}
                       </Button>
                       <Button size="sm" onClick={handleSavePrompt} className="h-5 px-2 text-[10px]">
-                        <Check className="h-2.5 w-2.5 mr-0.5" />保存
+                        <Check className="h-2.5 w-2.5 mr-0.5" />{t("保存")}
                       </Button>
                     </div>
                   </>
@@ -973,7 +973,7 @@ export function SClassSceneCard({
                     onClick={() => !isGeneratingAny && startEditing('image')}
                   >
                     <p className="text-[11px] text-muted-foreground flex-1 line-clamp-2 min-h-[1.5em]">
-                      {scene.imagePromptZh || scene.imagePrompt || "点击添加首帧描述..."}
+                      {scene.imagePromptZh || scene.imagePrompt || t("点击添加首帧描述...")}
                     </p>
                     {!isGeneratingAny && <Edit3 className="h-2.5 w-2.5 text-blue-500/50 shrink-0 mt-0.5" />}
                   </div>
@@ -984,7 +984,7 @@ export function SClassSceneCard({
               <div className="border-l-[3px] border-orange-500 pl-3 py-1 space-y-1">
                 <Label className="text-[10px] text-orange-600 dark:text-orange-400 flex items-center gap-1 font-medium">
                   <span>◉</span>
-                  尾帧提示词{scene.needsEndFrame ? '' : '（可选）'}
+                  {scene.needsEndFrame ? t("尾帧提示词") : t("尾帧提示词（可选）")}
                 </Label>
                 {editingPrompt === 'endFrame' ? (
                   <>
@@ -997,10 +997,10 @@ export function SClassSceneCard({
                     />
                     <div className="flex gap-1 justify-end mt-1">
                       <Button variant="outline" size="sm" onClick={handleCancelEdit} className="h-5 px-2 text-[10px]">
-                        <X className="h-2.5 w-2.5 mr-0.5" />取消
+                        <X className="h-2.5 w-2.5 mr-0.5" />{t("取消")}
                       </Button>
                       <Button size="sm" onClick={handleSavePrompt} className="h-5 px-2 text-[10px]">
-                        <Check className="h-2.5 w-2.5 mr-0.5" />保存
+                        <Check className="h-2.5 w-2.5 mr-0.5" />{t("保存")}
                       </Button>
                     </div>
                   </>
@@ -1018,7 +1018,7 @@ export function SClassSceneCard({
                       "text-[11px] flex-1 line-clamp-2 min-h-[1.5em]",
                       "text-orange-600 dark:text-orange-400"
                     )}>
-                      {scene.endFramePromptZh || scene.endFramePrompt || (scene.needsEndFrame ? "点击添加尾帧描述..." : "点击添加尾帧描述...（可选）")}
+                      {scene.endFramePromptZh || scene.endFramePrompt || (scene.needsEndFrame ? t("点击添加尾帧描述...") : t("点击添加尾帧描述...（可选）"))}
                     </p>
                     {!isGeneratingAny && <Edit3 className="h-2.5 w-2.5 text-orange-500/50 shrink-0 mt-0.5" />}
                   </div>
@@ -1043,10 +1043,10 @@ export function SClassSceneCard({
                     />
                     <div className="flex gap-1 justify-end mt-1">
                       <Button variant="outline" size="sm" onClick={handleCancelEdit} className="h-5 px-2 text-[10px]">
-                        <X className="h-2.5 w-2.5 mr-0.5" />取消
+                        <X className="h-2.5 w-2.5 mr-0.5" />{t("取消")}
                       </Button>
                       <Button size="sm" onClick={handleSavePrompt} className="h-5 px-2 text-[10px]">
-                        <Check className="h-2.5 w-2.5 mr-0.5" />保存
+                        <Check className="h-2.5 w-2.5 mr-0.5" />{t("保存")}
                       </Button>
                     </div>
                   </>
@@ -1056,7 +1056,7 @@ export function SClassSceneCard({
                     onClick={() => !isGeneratingAny && startEditing('video')}
                   >
                     <p className="text-[11px] text-green-600 dark:text-green-400 flex-1 line-clamp-2 min-h-[1.5em]">
-                      {scene.videoPromptZh || scene.videoPrompt || "点击添加动作描述..."}
+                      {scene.videoPromptZh || scene.videoPrompt || t("点击添加动作描述...")}
                     </p>
                     {!isGeneratingAny && <Edit3 className="h-2.5 w-2.5 text-green-500/50 shrink-0 mt-0.5" />}
                   </div>
@@ -1071,35 +1071,35 @@ export function SClassSceneCard({
             >
               <p className="text-[10px] truncate flex items-center gap-1.5">
                 <span className="shrink-0 inline-flex items-center gap-0.5 text-violet-600 dark:text-violet-400 font-medium">
-                  <Edit3 className="h-2.5 w-2.5" /> 剧本:
+                  <Edit3 className="h-2.5 w-2.5" /> {t("剧本:")}
                 </span>
-                <span className="text-muted-foreground">{scene.actionSummary || '未设置'}</span>
+                <span className="text-muted-foreground">{scene.actionSummary || t("未设置")}</span>
               </p>
               <p className="text-[10px] truncate flex items-center gap-1.5">
                 <span className="shrink-0 inline-flex items-center gap-0.5 text-blue-600 dark:text-blue-400 font-medium">
-                  <ImageIcon className="h-2.5 w-2.5" /> 首帧:
+                  <ImageIcon className="h-2.5 w-2.5" /> {t("首帧:")}
                 </span>
-                <span className="text-muted-foreground">{scene.imagePromptZh || scene.imagePrompt || '未设置'}</span>
+                <span className="text-muted-foreground">{scene.imagePromptZh || scene.imagePrompt || t("未设置")}</span>
               </p>
               {(scene.needsEndFrame || scene.endFramePromptZh || scene.endFramePrompt) && (
                 <p className="text-[10px] truncate flex items-center gap-1.5">
                   <span className="shrink-0 inline-flex items-center gap-0.5 text-orange-600 dark:text-orange-400 font-medium">
-                    ◉ 尾帧:
+                    ◉ {t("尾帧:")}
                   </span>
-                  <span className="text-orange-600/70 dark:text-orange-400/70">{scene.endFramePromptZh || scene.endFramePrompt || '未设置'}</span>
+                  <span className="text-orange-600/70 dark:text-orange-400/70">{scene.endFramePromptZh || scene.endFramePrompt || t("未设置")}</span>
                 </p>
               )}
               <p className="text-[10px] truncate flex items-center gap-1.5">
                 <span className="shrink-0 inline-flex items-center gap-0.5 text-green-600 dark:text-green-400 font-medium">
-                  <Play className="h-2.5 w-2.5" /> 视频:
+                  <Play className="h-2.5 w-2.5" /> {t("视频:")}
                 </span>
                 <span className="text-muted-foreground">
-                  {scene.videoPromptZh || scene.videoPrompt || '未设置'}
+                  {scene.videoPromptZh || scene.videoPrompt || t("未设置")}
                 {scene.cameraMovement && scene.cameraMovement !== 'none' && (
-                    <span className="ml-1 text-green-500/50">[{CAMERA_MOVEMENT_PRESETS.find(p => p.id === scene.cameraMovement)?.label || scene.cameraMovement}]</span>
+                    <span className="ml-1 text-green-500/50">[{t(CAMERA_MOVEMENT_PRESETS.find(p => p.id === scene.cameraMovement)?.label || scene.cameraMovement)}]</span>
                   )}
                   {scene.specialTechnique && scene.specialTechnique !== 'none' && (
-                    <span className="ml-1 text-purple-500/50">[{SPECIAL_TECHNIQUE_PRESETS.find(p => p.id === scene.specialTechnique)?.label || scene.specialTechnique}]</span>
+                    <span className="ml-1 text-purple-500/50">[{t(SPECIAL_TECHNIQUE_PRESETS.find(p => p.id === scene.specialTechnique)?.label || scene.specialTechnique)}]</span>
                   )}
                   {scene.duration && <span className="ml-1 text-green-500/50">{scene.duration}s</span>}
                 </span>
@@ -1133,7 +1133,7 @@ export function SClassSceneCard({
                 <SelectContent>
                   {CAMERA_MOVEMENT_PRESETS.map((p) => (
                     <SelectItem key={p.id} value={p.id} className="text-[11px]">
-                      {p.label}
+                      {t(p.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -1152,7 +1152,7 @@ export function SClassSceneCard({
                 <SelectContent>
                   {SPECIAL_TECHNIQUE_PRESETS.map((p) => (
                     <SelectItem key={p.id} value={p.id} className="text-[11px]">
-                      {p.label}
+                      {t(p.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -1171,7 +1171,7 @@ export function SClassSceneCard({
                 <SelectContent>
                   {CAMERA_ANGLE_PRESETS.map((p) => (
                     <SelectItem key={p.id} value={p.id} className="text-[11px]">
-                      {p.emoji} {p.label}
+                      {p.emoji} {t(p.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -1190,7 +1190,7 @@ export function SClassSceneCard({
                 <SelectContent>
                   {FOCAL_LENGTH_PRESETS.map((p) => (
                     <SelectItem key={p.id} value={p.id} className="text-[11px]">
-                      {p.label}
+                      {t(p.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -1210,7 +1210,7 @@ export function SClassSceneCard({
                   <SelectItem value="none" className="text-[11px]">{t("无技法")}</SelectItem>
                   {PHOTOGRAPHY_TECHNIQUE_PRESETS.map((p) => (
                     <SelectItem key={p.id} value={p.id} className="text-[11px]">
-                      {p.emoji} {p.label}
+                      {p.emoji} {t(p.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -133,8 +133,8 @@ export function CinematographyProfilePicker({
         {/* 媒介适配提示 */}
         {showAdaptHint && (
           <div className="text-xs mb-3 px-2 py-1.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-            ⓘ 当前视觉风格为「{MEDIA_TYPE_LABELS[mediaType]}」媒介，摄影参数将自动适配
-            {isFieldSkipped(mediaType, 'cameraRig') && '（器材/景深/转焦将被跳过）'}
+            {t("当前视觉风格为「{{v0}}」媒介，摄影参数将自动适配", { v0: t(MEDIA_TYPE_LABELS[mediaType]) })}
+            {isFieldSkipped(mediaType, 'cameraRig') && t("（器材/景深/转焦将被跳过）")}
           </div>
         )}
 
@@ -142,25 +142,25 @@ export function CinematographyProfilePicker({
         <ScrollArea className="flex-1 mb-3">
           <div className="space-y-2 text-xs">
             <ParamRow
-              label="💡 灯光"
+              label={t("💡 灯光")}
               value={`${previewProfile.defaultLighting.style} · ${previewProfile.defaultLighting.direction} · ${previewProfile.defaultLighting.colorTemperature}`}
             />
             <ParamRow
-              label="🔭 焦点"
+              label={t("🔭 焦点")}
               value={`${previewProfile.defaultFocus.depthOfField} · ${previewProfile.defaultFocus.focusTransition}`}
             />
             <ParamRow
-              label="🎥 器材"
+              label={t("🎥 器材")}
               value={`${previewProfile.defaultRig.cameraRig} · ${previewProfile.defaultRig.movementSpeed}`}
             />
             {previewProfile.defaultAtmosphere.effects.length > 0 && (
               <ParamRow
-                label="🌫️ 氛围"
+                label={t("🌫️ 氛围")}
                 value={`${previewProfile.defaultAtmosphere.effects.join(" + ")} (${previewProfile.defaultAtmosphere.intensity})`}
               />
             )}
             <ParamRow
-              label="⏱️ 速度"
+              label={t("⏱️ 速度")}
               value={previewProfile.defaultSpeed.playbackSpeed}
             />
           </div>
@@ -204,12 +204,12 @@ export function CinematographyProfilePicker({
                 {selectedProfile ? (
                   <>
                     <span>{selectedProfile.emoji}</span>
-                    <span>{selectedProfile.name}</span>
+                    <span>{t(selectedProfile.name)}</span>
                   </>
                 ) : (
                   <>
                     <Camera className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">{placeholder}</span>
+                    <span className="text-muted-foreground">{t(placeholder)}</span>
                   </>
                 )}
               </div>

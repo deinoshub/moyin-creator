@@ -14,6 +14,7 @@
 
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { t } from "@/i18n";
 import {
   HORIZONTAL_DIRECTIONS,
   ELEVATION_ANGLES,
@@ -463,7 +464,11 @@ export function AngleController({
       {/* 底部信息栏 */}
       <div className="flex items-center gap-2 px-3 py-1.5 bg-[#1a1a1a] rounded-full border border-white/5 shadow-lg">
         <span className="text-[10px] text-[#ccff00] font-mono">
-          {getAngleLabel(direction, elevation, shotSize)}
+          {[
+            HORIZONTAL_DIRECTIONS.find((d) => d.id === direction)?.label,
+            ELEVATION_ANGLES.find((e) => e.id === elevation)?.label,
+            SHOT_SIZES.find((s) => s.id === shotSize)?.label,
+          ].filter(Boolean).map((label) => t(label!)).join(" ")}
         </span>
         <div className="w-px h-3 bg-white/10" />
         <div className="flex gap-1">
@@ -481,7 +486,7 @@ export function AngleController({
       
       {!compact && (
         <div className="text-[9px] text-zinc-500 font-mono">
-          [拖拽] 旋转 · [滚轮] 缩放
+          {t("[拖拽] 旋转 · [滚轮] 缩放")}
         </div>
       )}
     </div>

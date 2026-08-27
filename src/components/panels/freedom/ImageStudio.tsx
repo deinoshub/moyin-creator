@@ -277,11 +277,11 @@ export function ImageStudio() {
             />
             <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
               <Button size="sm" variant="secondary" onClick={() => setSaveToPropsOpen(true)}>
-                <Archive className="h-4 w-4 mr-1" /> 保存到道具库
+                <Archive className="h-4 w-4 mr-1" /> {t("保存到道具库")}
               </Button>
               <Button size="sm" variant="secondary" asChild>
                 <a href={imageResult} download target="_blank" rel="noopener">
-                  <Download className="h-4 w-4 mr-1" /> 下载
+                  <Download className="h-4 w-4 mr-1" /> {t("下载")}
                 </a>
               </Button>
             </div>

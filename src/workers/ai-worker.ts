@@ -686,12 +686,12 @@ async function handleExecuteScreenplayImages(command: { type: string; payload: {
         completedCount: 0,
         failedCount: screenplay.scenes.length,
         totalCount: screenplay.scenes.length,
-        error: '未配置图片生成 API Key，请在服务映射中配置',
+        error: t("未配置图片生成 API Key，请在服务映射中配置"),
       },
     });
     // Also report failure for each scene
     for (const scene of screenplay.scenes) {
-      reportSceneFailed(screenplay.id, scene.sceneId, '未配置图片生成 API Key', false);
+      reportSceneFailed(screenplay.id, scene.sceneId, t("未配置图片生成 API Key"), false);
     }
     return;
   }

@@ -231,7 +231,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
     setBatchProgress(projectId, {
       current: 0,
       total: pendingShots.length,
-      message: `正在生成 0/${pendingShots.length}`,
+      message: t("正在生成 {{v0}}/{{v1}}", { v0: 0, v1: pendingShots.length }),
     });
 
     await batchGenerateShotImages(
@@ -256,7 +256,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
         setBatchProgress(projectId, {
           current: completed,
           total: pendingShots.length,
-          message: `正在生成 ${completed}/${pendingShots.length}`,
+          message: t("正在生成 {{v0}}/{{v1}}", { v0: completed, v1: pendingShots.length }),
         });
       },
       (shotId, error) => {
@@ -268,7 +268,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
         setBatchProgress(projectId, {
           current: completed,
           total: pendingShots.length,
-          message: `正在生成 ${completed}/${pendingShots.length}`,
+          message: t("正在生成 {{v0}}/{{v1}}", { v0: completed, v1: pendingShots.length }),
         });
       }
     );
@@ -305,7 +305,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
       {/* Header with batch actions */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          图片: {stats.imagesCompleted}/{stats.total} · 视频: {stats.videosCompleted}/{stats.total}
+          {t("图片")}: {stats.imagesCompleted}/{stats.total} · {t("视频")}: {stats.videosCompleted}/{stats.total}
         </div>
         <Button
           size="sm"
@@ -315,7 +315,7 @@ export function ShotList({ projectId, shots, styleId }: ShotListProps) {
           {isGenerating ? (
             <>
               <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-              生成中...
+              {t("生成中...")}
             </>
           ) : (
             <>
@@ -378,7 +378,7 @@ function ShotCard({
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-sm">镜头 {shot.index}</span>
+            <span className="font-medium text-sm">{t("镜头 {{v0}}", { v0: shot.index })}</span>
             <span className="text-xs text-muted-foreground">{shot.shotSize}</span>
           </div>
           <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
@@ -435,7 +435,7 @@ function ShotCard({
               disabled={isGenerating}
             >
               <ImageIcon className="h-3 w-3 mr-1" />
-              {shot.imageStatus === 'completed' ? '重新生成' : '生成图片'}
+              {shot.imageStatus === 'completed' ? t("重新生成") : t("生成图片")}
             </Button>
 
             {shot.imageStatus === 'completed' && (
@@ -447,7 +447,7 @@ function ShotCard({
                 disabled={isGenerating || shot.videoStatus === 'generating'}
               >
                 <Video className="h-3 w-3 mr-1" />
-                {shot.videoStatus === 'completed' ? '重新生成' : '生成视频'}
+                {shot.videoStatus === 'completed' ? t("重新生成") : t("生成视频")}
               </Button>
             )}
           </div>

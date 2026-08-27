@@ -93,7 +93,7 @@ export function QuadGridDialog({
         <DialogHeader className="pb-2">
           <DialogTitle className="text-sm text-white flex items-center gap-2">
             <Grid2X2 className="h-4 w-4 text-cyan-400" />
-            四宫格生成 - {frameType === "start" ? "首帧" : "尾帧"}
+            {t("四宫格生成 - {{v0}}", { v0: t(frameType === "start" ? "首帧" : "尾帧") })}
           </DialogTitle>
           <DialogDescription className="text-xs text-zinc-400">
             {t("基于当前图片生成4张一致性变体，继承人物/场景/光色")}
@@ -134,10 +134,10 @@ export function QuadGridDialog({
                   )}
                 >
                   <div className="text-xs font-medium text-white">
-                    {option.label}
+                    {t(option.label)}
                   </div>
                   <div className="text-[10px] text-zinc-500 mt-0.5">
-                    {option.description}
+                    {t(option.description)}
                   </div>
                 </button>
               ))}
@@ -148,7 +148,7 @@ export function QuadGridDialog({
           {selectedOption && (
             <div className="p-3 rounded bg-zinc-800/50 border border-zinc-700">
               <div className="text-[10px] text-zinc-500 mb-2">
-                将生成 2×2 四宫格：
+                {t("将生成 2×2 四宫格：")}
               </div>
               <div className="grid grid-cols-2 gap-1.5">
                 {selectedOption.variations.map((v, i) => (
@@ -156,7 +156,7 @@ export function QuadGridDialog({
                     key={i}
                     className="text-[10px] text-zinc-300 bg-zinc-700/50 px-2 py-1 rounded"
                   >
-                    {i + 1}. {v}
+                    {i + 1}. {t(v)}
                   </div>
                 ))}
               </div>

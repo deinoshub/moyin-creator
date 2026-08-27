@@ -36,7 +36,7 @@ export function DefaultStylesGrid() {
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-foreground">{t("默认风格")}</h2>
           <span className="text-xs text-muted-foreground">
-            {STYLE_CATEGORIES.reduce((n, c) => n + c.styles.length, 0)} 个预设
+            {t("{{v0}} 个预设", { v0: STYLE_CATEGORIES.reduce((n, c) => n + c.styles.length, 0) })}
           </span>
         </div>
 
@@ -52,7 +52,7 @@ export function DefaultStylesGrid() {
               ) : (
                 <ChevronRight className="w-3.5 h-3.5" />
               )}
-              {category.name}
+              {t(category.name)}
               <span className="text-muted-foreground/60 ml-1">({category.styles.length})</span>
             </button>
 
@@ -62,8 +62,8 @@ export function DefaultStylesGrid() {
                 {category.styles.map((style: StylePreset) => (
                   <StyleCard
                     key={style.id}
-                    name={style.name}
-                    description={style.description}
+                    name={t(style.name)}
+                    description={t(style.description)}
                     category={style.category}
                     isSelected={selectedId === style.id}
                     onClick={() => setSelectedId(style.id)}

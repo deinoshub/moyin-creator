@@ -77,7 +77,7 @@ export function StyleCard({
             "w-full h-full flex flex-col items-center justify-center",
             CATEGORY_COLORS[category] || 'bg-muted/30'
           )}>
-            <div className="text-lg font-bold">{CATEGORY_LABELS[category] || category}</div>
+            <div className="text-lg font-bold">{t(CATEGORY_LABELS[category] || category)}</div>
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">

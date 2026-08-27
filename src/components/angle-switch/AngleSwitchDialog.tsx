@@ -92,7 +92,7 @@ export function AngleSwitchDialog({
       <DialogContent className="max-w-sm p-4 bg-zinc-900 border-zinc-800">
         <DialogHeader className="pb-2">
           <DialogTitle className="text-sm text-white">
-            视角切换 - {frameType === "start" ? "首帧" : "尾帧"}
+            {t("视角切换 - {{v0}}", { v0: t(frameType === "start" ? "首帧" : "尾帧") })}
           </DialogTitle>
           <DialogDescription className="sr-only">
             {t("通过3D球面控制器选择目标视角，拖拽旋转、滚轮缩放")}
@@ -128,7 +128,7 @@ export function AngleSwitchDialog({
               {isGenerating ? (
                 <><Loader2 className="h-3 w-3 mr-1 animate-spin" />{t("生成中")}</>
               ) : (
-                "生成"
+                t("生成")
               )}
             </Button>
           </div>

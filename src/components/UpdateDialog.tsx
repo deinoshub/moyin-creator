@@ -48,7 +48,7 @@ export function UpdateDialog({
     }
     const result = await window.appUpdater.openExternalLink(url);
     if (!result.success) {
-      toast.error(result.error || "打开下载链接失败");
+      toast.error(result.error || t("打开下载链接失败"));
       return;
     }
     onOpenChange(false);
@@ -60,9 +60,9 @@ export function UpdateDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="max-w-xl">
         <AlertDialogHeader>
-          <AlertDialogTitle>发现新版本 v{updateInfo.latestVersion}</AlertDialogTitle>
+          <AlertDialogTitle>{t("发现新版本 v{{v0}}", { v0: updateInfo.latestVersion })}</AlertDialogTitle>
           <AlertDialogDescription>
-            当前版本 v{updateInfo.currentVersion}，可升级到 v{updateInfo.latestVersion}。
+            {t("当前版本 v{{v0}}，可升级到 v{{v1}}。", { v0: updateInfo.currentVersion, v1: updateInfo.latestVersion })}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -73,7 +73,7 @@ export function UpdateDialog({
                 <p className="text-sm font-medium text-foreground">{t("更新说明")}</p>
                 {formattedPublishedAt && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    发布时间：{formattedPublishedAt}
+                    {t("发布时间：{{v0}}", { v0: formattedPublishedAt })}
                   </p>
                 )}
               </div>
@@ -82,7 +82,7 @@ export function UpdateDialog({
               </div>
             </div>
             <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-6">
-              {updateInfo.releaseNotes?.trim() || "本次发布未填写更新说明。"}
+              {updateInfo.releaseNotes?.trim() || t("本次发布未填写更新说明。")}
             </p>
           </div>
 

@@ -164,7 +164,7 @@ export function AddProviderDialog({
     });
 
     onOpenChange(false);
-    toast.success(isMemefastAppend ? `已追加 Key 到 ${name}` : `已添加 ${name}`);
+    toast.success(isMemefastAppend ? t("已追加 Key 到 {{v0}}", { v0: name }) : t("已添加 {{v0}}", { v0: name }));
   };
 
   // Filter out already existing platforms (except custom and memefast which allow repeat add)
@@ -193,7 +193,7 @@ export function AddProviderDialog({
               {availablePlatforms.map((preset) => (
                   <SelectItem key={preset.platform} value={preset.platform}>
                     <span className="flex items-center gap-2">
-                      {preset.name}
+                      {t(preset.name)}
                       {preset.recommended && (
                         <span className="text-[10px] px-1.5 py-0.5 bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded font-medium">
                           {t("推荐")}
@@ -219,7 +219,7 @@ export function AddProviderDialog({
           {/* Base URL (only for custom or editable) */}
           {(isCustom || platform) && (
             <div className="space-y-2">
-              <Label>Base URL {!isCustom && "(可选修改)"}</Label>
+              <Label>Base URL {!isCustom && t("(可选修改)")}</Label>
               <Input
                 value={baseUrl}
                 onChange={(e) => setBaseUrl(e.target.value)}
@@ -258,7 +258,7 @@ export function AddProviderDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             {t("取消")}
           </Button>
-          <Button onClick={handleSubmit}>{isMemefastAppend ? "追加 Key" : "添加"}</Button>
+          <Button onClick={handleSubmit}>{isMemefastAppend ? t("追加 Key") : t("添加")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

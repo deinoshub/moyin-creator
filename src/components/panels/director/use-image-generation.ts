@@ -191,7 +191,7 @@ export async function callImageGenerationApi(
       }
 
       if (status === 'failed' || status === 'error') {
-        const errorMsg = statusData.error || statusData.message || statusData.data?.error || '图片生成失败';
+        const errorMsg = statusData.error || statusData.message || statusData.data?.error || t("图片生成失败");
         throw new Error(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg));
       }
 

@@ -145,7 +145,7 @@ export function StyleEditor({ styleId, onClose }: StyleEditorProps) {
       }));
       toast.success(t("风格提取完成"));
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "提取失败";
+      const msg = err instanceof Error ? err.message : t("提取失败");
       toast.error(msg);
     } finally {
       setExtracting(false);
@@ -183,7 +183,7 @@ export function StyleEditor({ styleId, onClose }: StyleEditorProps) {
           <ArrowLeft className="w-4 h-4" />
         </Button>
         <h2 className="text-sm font-semibold flex-1">
-          {isNew ? "新建风格" : "编辑风格"}
+          {isNew ? t("新建风格") : t("编辑风格")}
         </h2>
         <Button size="sm" onClick={handleSave} disabled={!form.name.trim()}>
           <Save className="w-3.5 h-3.5 mr-1.5" />
@@ -197,7 +197,7 @@ export function StyleEditor({ styleId, onClose }: StyleEditorProps) {
           {/* 风格名称 */}
           <div className="space-y-1.5">
             <Label className="text-xs">
-              风格名称 <span className="text-destructive">*</span>
+              {t("风格名称")} <span className="text-destructive">*</span>
             </Label>
             <Input
               value={form.name}
@@ -234,7 +234,7 @@ export function StyleEditor({ styleId, onClose }: StyleEditorProps) {
               )}
             </Button>
             <p className="text-[10px] text-muted-foreground mt-1">
-              从上方描述 + 参考图中智能分离"视觉风格"和"场景内容"，使用「图片理解」服务
+              {t("从上方描述 + 参考图中智能分离\"视觉风格\"和\"场景内容\"，使用「图片理解」服务")}
             </p>
           </div>
 
@@ -295,7 +295,7 @@ export function StyleEditor({ styleId, onClose }: StyleEditorProps) {
                     <div key={i} className="relative aspect-square rounded-md overflow-hidden border border-border group">
                       <LocalImage
                         src={img}
-                        alt={`参考图 ${i + 1}`}
+                        alt={t("参考图 {{v0}}", { v0: i + 1 })}
                         className="w-full h-full object-cover"
                       />
                       <button
@@ -326,7 +326,7 @@ export function StyleEditor({ styleId, onClose }: StyleEditorProps) {
                 disabled={uploading}
               >
                 <ImagePlus className="w-3.5 h-3.5 mr-1.5" />
-                {uploading ? "上传中..." : "添加参考图"}
+                {uploading ? t("上传中...") : t("添加参考图")}
               </Button>
             </div>
           </div>

@@ -62,20 +62,20 @@ export function AddImageHostDialog({
 
   const selectedPreset = IMAGE_HOST_PRESETS.find((p) => p.platform === platform);
   const apiKeyLabel = platform === "imgurl"
-    ? "上传 Tokens"
+    ? t("上传 Tokens")
     : platform === "scdn"
-      ? "API Key（无需填写）"
+      ? t("API Key（无需填写）")
     : platform === "catbox"
-      ? "Userhash（可选）"
+      ? t("Userhash（可选）")
       : "API Keys";
-  const apiKeyRequiredMessage = platform === "imgurl" ? "请输入上传 Token" : "请输入 API Key";
+  const apiKeyRequiredMessage = platform === "imgurl" ? t("请输入上传 Token") : t("请输入 API Key");
   const apiKeyPlaceholder = platform === "imgurl"
-    ? "输入上传 Token / Authorization 值（每行一个；如需 Bearer，请手动填写完整值）"
+    ? t("输入上传 Token / Authorization 值（每行一个；如需 Bearer，请手动填写完整值）")
     : platform === "scdn"
-      ? "留空即可，SCDN 支持直接上传"
+      ? t("留空即可，SCDN 支持直接上传")
     : platform === "catbox"
-      ? "可留空匿名上传；如需绑定到 Catbox 账号，请填写 userhash"
-    : "输入 API Keys（每行一个，或用逗号分隔）";
+      ? t("可留空匿名上传；如需绑定到 Catbox 账号，请填写 userhash")
+    : t("输入 API Keys（每行一个，或用逗号分隔）");
 
   useEffect(() => {
     if (open) {
@@ -175,7 +175,7 @@ export function AddImageHostDialog({
               <SelectContent>
                 {IMAGE_HOST_PRESETS.map((preset) => (
                   <SelectItem key={preset.platform} value={preset.platform}>
-                    {preset.name}
+                    {t(preset.name)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -209,7 +209,7 @@ export function AddImageHostDialog({
             />
             {platform === "imgbb" && (
               <p className="text-xs text-red-500">
-                ImgBB 当前可用性存在问题，默认保持关闭；建议优先使用 Catbox。
+                {t("ImgBB 当前可用性存在问题，默认保持关闭；建议优先使用 Catbox。")}
               </p>
             )}
             {platform === "imgurl" && (
@@ -224,7 +224,7 @@ export function AddImageHostDialog({
             )}
             {platform === "catbox" && (
               <p className="text-xs text-muted-foreground">
-                Catbox 为海外图床；如果当前网络连不上，建议改用 SCDN 图床或自定义图床。
+                {t("Catbox 为海外图床；如果当前网络连不上，建议改用 SCDN 图床或自定义图床。")}
               </p>
             )}
           </div>

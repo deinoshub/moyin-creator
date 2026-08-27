@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useFreedomStore, type HistoryEntry } from '@/stores/freedom-store';
 import { cn } from '@/lib/utils';
-import { t } from "@/i18n";
+import { t, getDateLocale } from "@/i18n";
 
 interface GenerationHistoryProps {
   type: 'image' | 'video' | 'cinema';
@@ -36,7 +36,7 @@ export function GenerationHistory({ type, onSelect, className }: GenerationHisto
   return (
     <div className={cn('flex flex-col h-full', className)}>
       <div className="flex items-center justify-between px-3 py-2 border-b">
-        <span className="text-sm font-medium">历史记录 ({history.length})</span>
+        <span className="text-sm font-medium">{t("历史记录 ({{v0}})", { v0: history.length })}</span>
         <Button
           variant="ghost"
           size="sm"
@@ -78,7 +78,7 @@ export function GenerationHistory({ type, onSelect, className }: GenerationHisto
                 <p className="text-xs text-muted-foreground truncate">{entry.model}</p>
                 <p className="text-xs mt-0.5 line-clamp-2">{entry.prompt}</p>
                 <p className="text-[10px] text-muted-foreground mt-1">
-                  {new Date(entry.createdAt).toLocaleString('zh-CN', {
+                  {new Date(entry.createdAt).toLocaleString(getDateLocale(), {
                     month: '2-digit',
                     day: '2-digit',
                     hour: '2-digit',

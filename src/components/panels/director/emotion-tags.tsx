@@ -84,7 +84,7 @@ export function EmotionTags({ value, onChange, disabled }: EmotionTagsProps) {
               )}
             >
               <span>{tag.emoji}</span>
-              <span>{tag.label}</span>
+              <span>{t(tag.label)}</span>
             </button>
           );
         })}
@@ -107,7 +107,7 @@ export function EmotionTags({ value, onChange, disabled }: EmotionTagsProps) {
               >
                 <span className="text-muted-foreground text-[10px]">{index + 1}.</span>
                 <span>{tagInfo.emoji}</span>
-                <span>{tagInfo.label}</span>
+                <span>{t(tagInfo.label)}</span>
                 {!disabled && (
                   <button
                     onClick={() => removeTag(tagId)}
@@ -141,9 +141,9 @@ export function EmotionTags({ value, onChange, disabled }: EmotionTagsProps) {
             <p className="text-xs text-muted-foreground">
               {t("按顺序添加标签，视频将按此顺序呈现情绪变化")}
             </p>
-            {renderTagGroup("基础情绪", EMOTION_PRESETS.basic)}
-            {renderTagGroup("氛围情绪", EMOTION_PRESETS.atmosphere)}
-            {renderTagGroup("语气情绪", EMOTION_PRESETS.tone)}
+            {renderTagGroup(t("基础情绪"), EMOTION_PRESETS.basic)}
+            {renderTagGroup(t("氛围情绪"), EMOTION_PRESETS.atmosphere)}
+            {renderTagGroup(t("语气情绪"), EMOTION_PRESETS.tone)}
           </div>
         </PopoverContent>
       </Popover>
@@ -156,7 +156,10 @@ export function EmotionTags({ value, onChange, disabled }: EmotionTagsProps) {
       )}
       {value.length > 1 && (
         <p className="text-xs text-muted-foreground">
-          情绪将按 {value.map((t, i) => getTagInfo(t)?.label).filter(Boolean).join(" → ")} 顺序变化
+          {t("情绪将按 {{v0}} 顺序变化", { v0: value.map((tagId) => {
+            const info = getTagInfo(tagId);
+            return info ? t(info.label) : null;
+          }).filter(Boolean).join(" → ") })}
         </p>
       )}
     </div>

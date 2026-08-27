@@ -87,17 +87,17 @@ export function MediaLibrarySelector({
         >
           <ImageIcon className="h-3 w-3" />
           <span className="max-w-[80px] truncate">
-            {isEndFrame ? '从素材库' : '从素材库'}
+            {t("从素材库")}
           </span>
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-[480px] p-3" align="start">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm font-medium">
-            选择图片应用到{isEndFrame ? '尾帧' : '首帧'}
+            {t("选择图片应用到{{v0}}", { v0: isEndFrame ? t("尾帧") : t("首帧") })}
           </p>
           <span className="text-xs text-muted-foreground">
-            共 {filteredImages.length} 张图片
+            {t("共 {{v0}} 张图片", { v0: filteredImages.length })}
           </span>
         </div>
         

@@ -198,11 +198,11 @@ export function StylePicker({
                       ? 'bg-primary/20 text-primary'
                       : CATEGORY_COLORS[selectedStyle.category] || 'bg-muted'
                   )}>
-                    {selectedStyle.id.startsWith('custom_style_') ? '★' : selectedStyle.category === '3d' ? '3D' : selectedStyle.category === '2d' ? '2D' : selectedStyle.category === 'real' ? '真' : '定'}
+                    {selectedStyle.id.startsWith('custom_style_') ? '★' : selectedStyle.category === '3d' ? '3D' : selectedStyle.category === '2d' ? '2D' : selectedStyle.category === 'real' ? t("真人") : t("定格")}
                   </span>
                 )}
                 <span className={!selectedStyle ? "text-muted-foreground" : ""}>
-                  {selectedStyle?.name || placeholder}
+                  {selectedStyle ? t(selectedStyle.name) : t(placeholder)}
                 </span>
               </div>
               <svg
@@ -260,7 +260,7 @@ function StyleItem({ style, isSelected, isCustom, onSelect, onHover, onLeave }: 
         "w-10 h-10 rounded flex items-center justify-center text-[10px] font-bold flex-shrink-0",
         isCustom ? 'bg-primary/20 text-primary' : CATEGORY_COLORS[style.category] || 'bg-muted'
       )}>
-        {isCustom ? '★' : style.category === '3d' ? '3D' : style.category === '2d' ? '2D' : style.category === 'real' ? '真' : '定'}
+        {isCustom ? '★' : style.category === '3d' ? '3D' : style.category === '2d' ? '2D' : style.category === 'real' ? t("真人") : t("定格")}
       </span>
       {/* 名称 */}
       <span className="flex-1 text-left text-sm truncate">{t(style.name)}</span>

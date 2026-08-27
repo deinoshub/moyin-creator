@@ -86,7 +86,7 @@ export function SceneDetail({ scene }: SceneDetailProps) {
   };
 
   const handleDelete = () => {
-    if (confirm(`确定要删除场景 "${scene.name}" 吗？`)) {
+    if (confirm(t("确定要删除场景 \"{{v0}}\" 吗？", { v0: scene.name }))) {
       deleteScene(scene.id);
       selectScene(null);
       toast.success(t("场景已删除"));
@@ -250,11 +250,11 @@ export function SceneDetail({ scene }: SceneDetailProps) {
             <div className="flex flex-wrap gap-1.5">
               <Badge variant="secondary" className="text-xs gap-1">
                 <Sun className="h-3 w-3" />
-                {timeLabel}
+                {t(timeLabel)}
               </Badge>
               <Badge variant="secondary" className="text-xs gap-1">
                 <Wind className="h-3 w-3" />
-                {atmosphereLabel}
+                {t(atmosphereLabel)}
               </Badge>
             </div>
 
@@ -296,7 +296,7 @@ export function SceneDetail({ scene }: SceneDetailProps) {
                 </div>
               ) : (
                 <p className="text-xs whitespace-pre-wrap bg-muted rounded p-2 max-h-[100px] overflow-y-auto">
-                  {scene.location || '点击编辑添加地点描述...'}
+                  {scene.location || t("点击编辑添加地点描述...")}
                 </p>
               )}
             </div>
@@ -339,7 +339,7 @@ export function SceneDetail({ scene }: SceneDetailProps) {
                 </div>
               ) : (
                 <p className="text-xs text-muted-foreground bg-muted rounded p-2 max-h-[80px] overflow-y-auto">
-                  {scene.visualPrompt || '点击编辑添加视觉提示词...'}
+                  {scene.visualPrompt || t("点击编辑添加视觉提示词...")}
                 </p>
               )}
             </div>
@@ -385,7 +385,7 @@ export function SceneDetail({ scene }: SceneDetailProps) {
                 </div>
               ) : (
                 <p className="text-xs bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded p-2 text-amber-800 dark:text-amber-200">
-                  {scene.notes || '点击编辑添加备注...'}
+                  {scene.notes || t("点击编辑添加备注...")}
                 </p>
               )}
             </div>

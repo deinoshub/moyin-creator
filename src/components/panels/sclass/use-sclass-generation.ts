@@ -462,7 +462,7 @@ export function useSClassGeneration() {
         };
       } catch (error) {
         const err = error as Error;
-        const errorMsg = err.message || "视频生成失败";
+        const errorMsg = err.message || t("视频生成失败");
         const isModeration = isContentModerationError(err);
 
         console.error("[SClassGen] Group generation failed:", err);
@@ -470,7 +470,7 @@ export function useSClassGeneration() {
         updateGroupVideoStatus(group.id, {
           videoStatus: "failed",
           videoProgress: 0,
-          videoError: isModeration ? `内容审核未通过: ${errorMsg}` : errorMsg,
+          videoError: isModeration ? t("内容审核未通过: {{v0}}", { v0: errorMsg }) : errorMsg,
         });
 
         return {

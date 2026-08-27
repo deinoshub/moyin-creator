@@ -187,7 +187,7 @@ export function GroupRefManager({
 
         // 配额检查（单类型）
         if (limits.current + i >= limits.max) {
-          toast.error(t("{{v0}}引用已达上限 {{v1}} 个", { v0: type === "video" ? "视频" : "音频", v1: limits.max }));
+          toast.error(t("{{v0}}引用已达上限 {{v1}} 个", { v0: type === "video" ? t("视频") : t("音频"), v1: limits.max }));
           break;
         }
 
@@ -226,7 +226,7 @@ export function GroupRefManager({
         };
 
         addAssetRef(group.id, asset);
-        toast.success(t("已添加 {{v0}}引用: {{v1}}", { v0: type === "video" ? "视频" : "音频", v1: file.name }));
+        toast.success(t("已添加 {{v0}}引用: {{v1}}", { v0: type === "video" ? t("视频") : t("音频"), v1: file.name }));
       }
     },
     [group.id, videoRefs.length, audioRefs.length, addAssetRef]
@@ -265,21 +265,21 @@ export function GroupRefManager({
       <div className="flex items-center gap-4 flex-wrap">
         <span className="text-xs font-medium text-muted-foreground">{t("@引用素材")}</span>
         <QuotaBar
-          label="图片"
+          label={t("图片")}
           icon={<ImageIcon className="h-3 w-3 text-blue-500" />}
           current={imageCount}
           max={SEEDANCE_LIMITS.maxImages}
           color="bg-blue-500"
         />
         <QuotaBar
-          label="视频"
+          label={t("视频")}
           icon={<Film className="h-3 w-3 text-purple-500" />}
           current={videoRefs.length}
           max={SEEDANCE_LIMITS.maxVideos}
           color="bg-purple-500"
         />
         <QuotaBar
-          label="音频"
+          label={t("音频")}
           icon={<Music className="h-3 w-3 text-green-500" />}
           current={audioRefs.length}
           max={SEEDANCE_LIMITS.maxAudios}
@@ -291,7 +291,7 @@ export function GroupRefManager({
             ? "bg-red-500/10 text-red-500 font-medium"
             : "bg-muted text-muted-foreground"
         )}>
-          总 {totalFiles}/{SEEDANCE_LIMITS.maxTotalFiles}
+          {t("总 {{v0}}/{{v1}}", { v0: totalFiles, v1: SEEDANCE_LIMITS.maxTotalFiles })}
         </div>
       </div>
 
@@ -434,8 +434,8 @@ function AutoImageSection({
       >
         <ImageIcon className="h-3 w-3 text-blue-500" />
         <span>
-          自动收集 {totalCount} 张图片
-          {truncated && <span className="text-amber-500 ml-1">(超出限制已截断至 {SEEDANCE_LIMITS.maxImages})</span>}
+          {t("自动收集 {{v0}} 张图片", { v0: totalCount })}
+          {truncated && <span className="text-amber-500 ml-1">{t("(超出限制已截断至 {{v0}})", { v0: SEEDANCE_LIMITS.maxImages })}</span>}
         </span>
         <span className="text-[10px]">{expanded ? "▼" : "▶"}</span>
       </button>
@@ -445,7 +445,7 @@ function AutoImageSection({
           {/* 首帧图 */}
           {frameRefs.length > 0 && (
             <RefGroup
-              label="首帧"
+              label={t("首帧")}
               icon={<Clapperboard className="h-3 w-3 text-blue-400" />}
               refs={frameRefs}
             />
@@ -453,7 +453,7 @@ function AutoImageSection({
           {/* 角色图 */}
           {charRefs.length > 0 && (
             <RefGroup
-              label="角色"
+              label={t("角色")}
               icon={<User className="h-3 w-3 text-amber-400" />}
               refs={charRefs}
             />
@@ -461,7 +461,7 @@ function AutoImageSection({
           {/* 场景图 */}
           {sceneRefs.length > 0 && (
             <RefGroup
-              label="场景"
+              label={t("场景")}
               icon={<MapPin className="h-3 w-3 text-teal-400" />}
               refs={sceneRefs}
             />
@@ -542,8 +542,8 @@ function UploadZone({
       <Plus className={cn("h-3 w-3", isVideo ? "text-purple-400" : "text-green-400")} />
       <span className="text-xs text-muted-foreground">
         {isVideo
-          ? "拖放或点击上传视频 (MP4/WebM, ≤15s)"
-          : "拖放或点击上传音频 (MP3/WAV, ≤15s)"}
+          ? t("拖放或点击上传视频 (MP4/WebM, ≤15s)")
+          : t("拖放或点击上传音频 (MP3/WAV, ≤15s)")}
       </span>
     </div>
   );

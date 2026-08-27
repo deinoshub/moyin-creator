@@ -487,7 +487,7 @@ export function ModelSelector({ type, value, onChange, className }: ModelSelecto
             className={cn('w-full justify-between h-10', className)}
           >
             <span className="truncate">
-              {selectedModel ? selectedModel.name : value ? getModelDisplayName(value) : '选择模型...'}
+              {selectedModel ? selectedModel.name : value ? getModelDisplayName(value) : t("选择模型...")}
             </span>
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -515,7 +515,7 @@ export function ModelSelector({ type, value, onChange, className }: ModelSelecto
                       {brand.displayName}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
-                      可用 {brandAvailableCounts[brandId] ?? brandModels.length}
+                      {t("可用 {{v0}}", { v0: brandAvailableCounts[brandId] ?? brandModels.length })}
                     </span>
                   </div>
                   {brandModels.map((model) => (
@@ -547,7 +547,7 @@ export function ModelSelector({ type, value, onChange, className }: ModelSelecto
                   <Settings className="h-5 w-5 mx-auto mb-1 opacity-50" />
                   <p>{t("暂无可用模型")}</p>
                   <p className="text-xs">
-                    请先在设置 → 服务映射 → {type === 'image' ? '自由板块-图片' : '自由板块-视频'} 中勾选模型
+                    {t("请先在设置 → 服务映射 → {{v0}} 中勾选模型", { v0: type === 'image' ? t("自由板块-图片") : t("自由板块-视频") })}
                   </p>
                 </div>
               )}

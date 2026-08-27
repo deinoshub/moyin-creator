@@ -51,7 +51,7 @@ export function ExportPanel({ projectName, scriptData, shots, targetDuration }: 
     }
 
     setIsExporting(true);
-    setProgress({ current: 0, total: 0, message: '准备导出...' });
+    setProgress({ current: 0, total: 0, message: t("准备导出...") });
 
     try {
       const success = await exportProjectToFolder(
@@ -86,7 +86,7 @@ export function ExportPanel({ projectName, scriptData, shots, targetDuration }: 
     }
 
     setIsExporting(true);
-    setProgress({ current: 0, total: 0, message: '准备下载...' });
+    setProgress({ current: 0, total: 0, message: t("准备下载...") });
 
     try {
       await exportProjectFiles(
@@ -183,7 +183,7 @@ export function ExportPanel({ projectName, scriptData, shots, targetDuration }: 
       <div className="text-xs text-muted-foreground space-y-1">
         <div className="flex items-center gap-1">
           <FileJson className="h-3 w-3" />
-          包含 manifest.json 元数据文件
+          {t("包含 manifest.json 元数据文件")}
         </div>
         <div>{t("文件夹结构: images/, videos/, manifest.json")}</div>
       </div>
@@ -198,7 +198,7 @@ export function ExportPanel({ projectName, scriptData, shots, targetDuration }: 
           {isExporting ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              导出中...
+              {t("导出中...")}
             </>
           ) : (
             <>

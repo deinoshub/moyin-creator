@@ -99,7 +99,7 @@ export function QuadGridResultDialog({
         <DialogHeader className="pb-2">
           <DialogTitle className="text-sm text-white flex items-center gap-2">
             <Grid2X2 className="h-4 w-4 text-cyan-400" />
-            四宫格结果 - {frameType === "start" ? "首帧" : "尾帧"}
+            {t("四宫格结果 - {{v0}}", { v0: t(frameType === "start" ? "首帧" : "尾帧") })}
           </DialogTitle>
           <DialogDescription className="text-xs text-zinc-400">
             {t("点击选择图片，可应用到当前分镜或复制到其他分镜")}
@@ -124,7 +124,7 @@ export function QuadGridResultDialog({
             {/* 四宫格结果 */}
             <div className="flex-1">
               <div className="text-[10px] text-zinc-500 mb-1">
-                四宫格结果 ({result.variationType})
+                {t("四宫格结果 ({{v0}})", { v0: result.variationType })}
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {result.images.map((img, index) => (
@@ -144,7 +144,7 @@ export function QuadGridResultDialog({
                       className="w-full h-full object-cover"
                     />
                     <span className="absolute bottom-1 left-1 text-[9px] bg-black/60 text-white px-1 py-0.5 rounded">
-                      {index + 1}. {result.variationLabels[index]}
+                      {index + 1}. {t(result.variationLabels[index])}
                     </span>
                     {selectedIndex === index && (
                       <span className="absolute top-1 right-1 text-[9px] bg-cyan-500 text-black px-1 py-0.5 rounded">
@@ -227,7 +227,7 @@ export function QuadGridResultDialog({
             className="h-8 text-xs bg-cyan-500 hover:bg-cyan-600 text-black"
           >
             <Check className="h-3 w-3 mr-1" />
-            应用到{frameType === "start" ? "首帧" : "尾帧"}
+            {t("应用到{{v0}}", { v0: t(frameType === "start" ? "首帧" : "尾帧") })}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -64,7 +64,7 @@ export function SoundEffectTags({
 
   const getTagLabel = (tagId: SoundEffectTag) => {
     const tag = ALL_SOUND_EFFECTS.find((t) => t.id === tagId);
-    return tag?.label || tagId;
+    return tag ? t(tag.label) : tagId;
   };
 
   return (
@@ -99,13 +99,13 @@ export function SoundEffectTags({
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-2" align="start">
-              <p className="text-sm font-medium mb-2">选择音效 ({value.length}/{maxTags})</p>
+              <p className="text-sm font-medium mb-2">{t("选择音效 ({{v0}}/{{v1}})", { v0: value.length, v1: maxTags })}</p>
               <div className="max-h-[240px] overflow-y-auto space-y-2">
                 {(Object.keys(SOUND_EFFECT_PRESETS) as Array<keyof typeof SOUND_EFFECT_PRESETS>).map(
                   (category) => (
                     <div key={category}>
                       <p className="text-[10px] text-muted-foreground mb-1">
-                        {CATEGORY_LABELS[category]}
+                        {t(CATEGORY_LABELS[category])}
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {SOUND_EFFECT_PRESETS[category].map((tag) => {
@@ -124,7 +124,7 @@ export function SoundEffectTags({
                                 isDisabledTag && "opacity-50 cursor-not-allowed"
                               )}
                             >
-                              {tag.label}
+                              {t(tag.label)}
                             </button>
                           );
                         })}

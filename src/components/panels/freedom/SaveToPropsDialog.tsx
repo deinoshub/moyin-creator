@@ -61,7 +61,7 @@ export function SaveToPropsDialog({
   };
 
   const handleSave = async () => {
-    const name = propName.trim() || `道具_${Date.now()}`;
+    const name = propName.trim() || t("道具_{{v0}}", { v0: Date.now() });
     setSaving(true);
     try {
       // 尝试持久化到本地存储（Electron），浏览器端回退为原始URL
@@ -233,7 +233,7 @@ export function SaveToPropsDialog({
             {saving ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                保存中...
+                {t("保存中...")}
               </>
             ) : (
               <>

@@ -102,12 +102,12 @@ export function SimpleTimeline() {
             // Use the data directly from the drag event (includes full info)
             addClip({
               mediaId: data.id || `clip-${Date.now()}`,
-              name: data.name || '视频片段',
+              name: data.name || t("视频片段"),
               url: data.url,
               thumbnailUrl: data.thumbnailUrl,
               duration: data.duration || 5,
             });
-            toast.success(t("已添加: {{v0}}", { v0: data.name || '视频片段' }));
+            toast.success(t("已添加: {{v0}}", { v0: data.name || t("视频片段") }));
             handled = true;
           } else if (data.type === "video" && data.id) {
             // Fallback: try to get from media store if URL not provided
@@ -207,7 +207,7 @@ export function SimpleTimeline() {
             <ChevronRight className="h-4 w-4" />
           </Button>
           <span className="text-xs text-muted-foreground">
-            时间线 ({clips.length} 个片段)
+            {t("时间线 ({{v0}} 个片段)", { v0: clips.length })}
           </span>
         </div>
         <div className="flex items-center gap-1">
@@ -261,7 +261,7 @@ export function SimpleTimeline() {
 
           {/* Clip count display */}
           <span className="text-xs text-muted-foreground">
-            {isPreviewPlaying && playlist.length > 0 ? `${currentIndex + 1}/${playlist.length}` : `${clips.length} 个片段`}
+            {isPreviewPlaying && playlist.length > 0 ? `${currentIndex + 1}/${playlist.length}` : t("{{v0}} 个片段", { v0: clips.length })}
           </span>
         </div>
 

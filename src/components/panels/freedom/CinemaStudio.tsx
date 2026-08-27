@@ -176,7 +176,7 @@ export function CinemaStudio() {
             <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
               <Button size="sm" variant="secondary" asChild>
                 <a href={cinemaResult} download target="_blank" rel="noopener">
-                  <Download className="h-4 w-4 mr-1" /> 下载
+                  <Download className="h-4 w-4 mr-1" /> {t("下载")}
                 </a>
               </Button>
             </div>

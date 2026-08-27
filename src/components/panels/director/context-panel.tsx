@@ -105,7 +105,7 @@ export function DirectorContextPanel() {
     return [{
       id: "default",
       index: 1,
-      title: scriptData.title || "第1集",
+      title: scriptData.title || t("第1集"),
       sceneIds: scriptData.scenes.map((s) => s.id),
     }];
   }, [scriptData]);
@@ -465,7 +465,7 @@ export function DirectorContextPanel() {
       photographyTechnique: shot.photographyTechnique,
     }]);
     
-    const matchInfo = sceneMatch ? ` (匹配: ${sceneMatch.matchedSceneName})` : '';
+    const matchInfo = sceneMatch ? t(" (匹配: {{v0}})", { v0: sceneMatch.matchedSceneName }) : '';
     toast.success(t("已添加分镜到编辑列表{{v0}}", { v0: matchInfo }));
   };
 
@@ -477,7 +477,7 @@ export function DirectorContextPanel() {
       const fallbackPromptZh = scene.visualPrompt?.trim()
         || [scene.location, scene.atmosphere].filter(Boolean).join(' - ')
         || scene.name
-        || '场景描述';
+        || t("场景描述");
       const fallbackPromptEn = scene.visualPromptEn?.trim() || '';
       const matchedScene = sceneLibraryScenes.find((s) =>
         !s.parentSceneId &&
@@ -489,7 +489,7 @@ export function DirectorContextPanel() {
       );
 
       addScenesAndSyncStyle([{
-        sceneName: scene.name || scene.location || '未命名场景',
+        sceneName: scene.name || scene.location || t("未命名场景"),
         sceneLocation: scene.location || '',
         promptZh: fallbackPromptZh,
         promptEn: fallbackPromptEn,
@@ -516,7 +516,7 @@ export function DirectorContextPanel() {
         sceneReferenceImage: matchedScene?.referenceImage || matchedScene?.referenceImageBase64,
       }]);
 
-      const matchInfo = matchedScene ? `（已匹配场景库：${matchedScene.name}）` : '';
+      const matchInfo = matchedScene ? t("（已匹配场景库：{{v0}}）", { v0: matchedScene.name }) : '';
       toast.success(t("该场景暂无分镜，已创建 1 条场景分镜{{v0}}", { v0: matchInfo }));
       return;
     }
@@ -606,7 +606,7 @@ export function DirectorContextPanel() {
     });
     
     addScenesAndSyncStyle(scenesToAdd);
-    const matchInfo = matchedCount > 0 ? ` (${matchedCount}个已匹配场景库)` : '';
+    const matchInfo = matchedCount > 0 ? t(" ({{v0}}个已匹配场景库)", { v0: matchedCount }) : '';
     toast.success(t("已添加 {{v0}} 个分镜到编辑列表{{v1}}", { v0: scenesToAdd.length, v1: matchInfo }));
   };
 
@@ -742,7 +742,7 @@ export function DirectorContextPanel() {
             )}
           </div>
           <span className="text-xs text-muted-foreground">
-            进度: {overallProgress}
+            {t("进度: {{v0}}", { v0: overallProgress })}
           </span>
         </div>
         <p className="text-xs text-muted-foreground mt-2">
@@ -752,7 +752,7 @@ export function DirectorContextPanel() {
         {splitScenes.length > 0 && (
           <div className="mt-2 px-2 py-1 bg-green-500/10 rounded text-xs text-green-600 flex items-center gap-1">
             <Plus className="h-3 w-3" />
-            <span>已添加 {splitScenes.length} 个分镜到编辑列表</span>
+            <span>{t("已添加 {{v0}} 个分镜到编辑列表", { v0: splitScenes.length })}</span>
           </div>
         )}
       </div>
@@ -881,7 +881,7 @@ export function DirectorContextPanel() {
                                         {String(shot.index).padStart(2, "0")}
                                       </span>
                                       <span className="text-xs flex-1 truncate">
-                                        {shot.shotSize || "镜头"} - {shot.actionSummary?.slice(0, 20)}...
+                                        {shot.shotSize || t("镜头")} - {shot.actionSummary?.slice(0, 20)}...
                                       </span>
                                       <StatusIcon
                                         status={getShotCompletionStatus(shot)}

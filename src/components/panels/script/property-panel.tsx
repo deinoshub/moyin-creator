@@ -75,7 +75,7 @@ function StatusBadge({ status }: { status?: CompletionStatus }) {
   const { label, className } = config[status || "pending"];
   return (
     <span className={`px-2 py-0.5 rounded text-xs ${className}`}>
-      {label}
+      {t(label)}
     </span>
   );
 }
@@ -158,25 +158,25 @@ export function PropertyPanel({
     if (!scene) return;
     
     const lines: string[] = [];
-    lines.push(`# 场景设定：${scene.name || scene.location}`);
+    lines.push(t("# 场景设定：{{v0}}", { v0: scene.name || scene.location }));
     lines.push('');
     
     // 基础信息
-    lines.push(`## 基础信息`);
-    lines.push(`地点：${scene.location}`);
-    if (scene.time) lines.push(`时间：${scene.time}`);
-    if (scene.atmosphere) lines.push(`氛围：${scene.atmosphere}`);
+    lines.push(t("## 基础信息"));
+    lines.push(t("地点：{{v0}}", { v0: scene.location }));
+    if (scene.time) lines.push(t("时间：{{v0}}", { v0: scene.time }));
+    if (scene.atmosphere) lines.push(t("氛围：{{v0}}", { v0: scene.atmosphere }));
     lines.push('');
     
     // 场景设计（AI校准后）
     if (scene.architectureStyle || scene.lightingDesign || scene.colorPalette || scene.eraDetails) {
-      lines.push(`## 场景设计`);
-      if (scene.architectureStyle) lines.push(`建筑风格：${scene.architectureStyle}`);
-      if (scene.lightingDesign) lines.push(`光影设计：${scene.lightingDesign}`);
-      if (scene.colorPalette) lines.push(`色彩基调：${scene.colorPalette}`);
-      if (scene.eraDetails) lines.push(`时代特征：${scene.eraDetails}`);
-      if (scene.keyProps && scene.keyProps.length > 0) lines.push(`关键道具：${scene.keyProps.join('、')}`);
-      if (scene.spatialLayout) lines.push(`空间布局：${scene.spatialLayout}`);
+      lines.push(t("## 场景设计"));
+      if (scene.architectureStyle) lines.push(t("建筑风格：{{v0}}", { v0: scene.architectureStyle }));
+      if (scene.lightingDesign) lines.push(t("光影设计：{{v0}}", { v0: scene.lightingDesign }));
+      if (scene.colorPalette) lines.push(t("色彩基调：{{v0}}", { v0: scene.colorPalette }));
+      if (scene.eraDetails) lines.push(t("时代特征：{{v0}}", { v0: scene.eraDetails }));
+      if (scene.keyProps && scene.keyProps.length > 0) lines.push(t("关键道具：{{v0}}", { v0: scene.keyProps.join('、') }));
+      if (scene.spatialLayout) lines.push(t("空间布局：{{v0}}", { v0: scene.spatialLayout }));
       lines.push('');
     }
     
@@ -184,39 +184,39 @@ export function PropertyPanel({
     const includeZhScenePrompt = promptLanguage !== 'en';
     const includeEnScenePrompt = promptLanguage !== 'zh';
     if ((includeZhScenePrompt && scene.visualPrompt) || (includeEnScenePrompt && scene.visualPromptEn)) {
-      lines.push(`## 视觉提示词`);
-      if (includeZhScenePrompt && scene.visualPrompt) lines.push(`中文：${scene.visualPrompt}`);
+      lines.push(t("## 视觉提示词"));
+      if (includeZhScenePrompt && scene.visualPrompt) lines.push(t("中文：{{v0}}", { v0: scene.visualPrompt }));
       if (includeEnScenePrompt && scene.visualPromptEn) lines.push(`English: ${scene.visualPromptEn}`);
       lines.push('');
     }
     
     // 多视角联合图（AI视角分析的产出）
     if (scene.viewpoints && scene.viewpoints.length > 0) {
-      lines.push(`## 多视角联合图（AI分析）`);
-      lines.push(`视角数量：${scene.viewpoints.length} 个`);
+      lines.push(t("## 多视角联合图（AI分析）"));
+      lines.push(t("视角数量：{{v0}} 个", { v0: scene.viewpoints.length }));
       lines.push('');
       scene.viewpoints.forEach((vp, idx) => {
-        lines.push(`### 视角 ${idx + 1}: ${vp.name}`);
+        lines.push(t("### 视角 {{v0}}: {{v1}}", { v0: idx + 1, v1: vp.name }));
         lines.push(`- ID: ${vp.id}`);
-        if (vp.nameEn) lines.push(`- 英文名: ${vp.nameEn}`);
-        if (vp.keyProps && vp.keyProps.length > 0) lines.push(`- 关键道具: ${vp.keyProps.join('、')}`);
-        if (vp.shotIds && vp.shotIds.length > 0) lines.push(`- 关联分镜ID: ${vp.shotIds.join(', ')}`);
-        lines.push(`- 网格位置: ${vp.gridIndex}`);
+        if (vp.nameEn) lines.push(t("- 英文名: {{v0}}", { v0: vp.nameEn }));
+        if (vp.keyProps && vp.keyProps.length > 0) lines.push(t("- 关键道具: {{v0}}", { v0: vp.keyProps.join('、') }));
+        if (vp.shotIds && vp.shotIds.length > 0) lines.push(t("- 关联分镜ID: {{v0}}", { v0: vp.shotIds.join(', ') }));
+        lines.push(t("- 网格位置: {{v0}}", { v0: vp.gridIndex }));
         lines.push('');
       });
     }
     
     // 出场统计
     if (scene.importance || scene.appearanceCount || scene.episodeNumbers?.length) {
-      lines.push(`## 出场统计`);
+      lines.push(t("## 出场统计"));
       if (scene.importance) {
         const importanceLabel = scene.importance === 'main' ? '主场景' : 
                                scene.importance === 'secondary' ? '次要场景' : '过渡场景';
-        lines.push(`重要程度：${importanceLabel}`);
+        lines.push(t("重要程度：{{v0}}", { v0: t(importanceLabel) }));
       }
-      if (scene.appearanceCount) lines.push(`出场次数：${scene.appearanceCount} 次`);
+      if (scene.appearanceCount) lines.push(t("出场次数：{{v0}} 次", { v0: scene.appearanceCount }));
       if (scene.episodeNumbers && scene.episodeNumbers.length > 0) {
-        lines.push(`出现集数：第 ${scene.episodeNumbers.join(', ')} 集`);
+        lines.push(t("出现集数：第 {{v0}} 集", { v0: scene.episodeNumbers.join(', ') }));
       }
       lines.push('');
     }
@@ -238,64 +238,64 @@ export function PropertyPanel({
     
     // 格式化角色数据
     const lines: string[] = [];
-    lines.push(`# 角色设定：${character.name}`);
+    lines.push(t("# 角色设定：{{v0}}", { v0: character.name }));
     lines.push('');
     
     // 基本信息（优先显示）
     if (character.gender || character.age) {
-      lines.push(`## 基本信息`);
+      lines.push(t("## 基本信息"));
       const basicInfo: string[] = [];
-      if (character.gender) basicInfo.push(`性别：${character.gender}`);
-      if (character.age) basicInfo.push(`年龄：${character.age}`);
+      if (character.gender) basicInfo.push(t("性别：{{v0}}", { v0: character.gender }));
+      if (character.age) basicInfo.push(t("年龄：{{v0}}", { v0: character.age }));
       lines.push(basicInfo.join(' | '));
       lines.push('');
     }
     
     // 身份/背景（主要描述）
     if (character.role) {
-      lines.push(`## 身份/背景`);
+      lines.push(t("## 身份/背景"));
       lines.push(character.role);
       lines.push('');
     }
     
     // 性格特征
     if (character.personality) {
-      lines.push(`## 性格特征`);
+      lines.push(t("## 性格特征"));
       lines.push(character.personality);
       lines.push('');
     }
     
     // 核心特质
     if (character.traits) {
-      lines.push(`## 核心特质`);
+      lines.push(t("## 核心特质"));
       lines.push(character.traits);
       lines.push('');
     }
     
     // 外貌特征
     if (character.appearance) {
-      lines.push(`## 外貌特征`);
+      lines.push(t("## 外貌特征"));
       lines.push(character.appearance);
       lines.push('');
     }
     
     // 技能/能力
     if (character.skills) {
-      lines.push(`## 技能/能力`);
+      lines.push(t("## 技能/能力"));
       lines.push(character.skills);
       lines.push('');
     }
     
     // 关键行为/事迹
     if (character.keyActions) {
-      lines.push(`## 关键行为/事迹`);
+      lines.push(t("## 关键行为/事迹"));
       lines.push(character.keyActions);
       lines.push('');
     }
     
     // 人物关系
     if (character.relationships) {
-      lines.push(`## 人物关系`);
+      lines.push(t("## 人物关系"));
       lines.push(character.relationships);
       lines.push('');
     }
@@ -303,55 +303,55 @@ export function PropertyPanel({
     // === 6层身份锚点（角色一致性）===
     if (character.identityAnchors) {
       const anchors = character.identityAnchors;
-      lines.push(`## 6层身份锚点`);
+      lines.push(t("## 6层身份锚点"));
       
       // ① 骨相层
       const boneFeatures: string[] = [];
-      if (anchors.faceShape) boneFeatures.push(`脸型: ${anchors.faceShape}`);
-      if (anchors.jawline) boneFeatures.push(`下颌线: ${anchors.jawline}`);
-      if (anchors.cheekbones) boneFeatures.push(`颧骨: ${anchors.cheekbones}`);
+      if (anchors.faceShape) boneFeatures.push(t("脸型: {{v0}}", { v0: anchors.faceShape }));
+      if (anchors.jawline) boneFeatures.push(t("下颌线: {{v0}}", { v0: anchors.jawline }));
+      if (anchors.cheekbones) boneFeatures.push(t("颧骨: {{v0}}", { v0: anchors.cheekbones }));
       if (boneFeatures.length > 0) {
-        lines.push(`① 骨相层：${boneFeatures.join(', ')}`);
+        lines.push(t("① 骨相层：{{v0}}", { v0: boneFeatures.join(', ') }));
       }
       
       // ② 五官层
       const facialFeatures: string[] = [];
-      if (anchors.eyeShape) facialFeatures.push(`眼型: ${anchors.eyeShape}`);
-      if (anchors.eyeDetails) facialFeatures.push(`眼部细节: ${anchors.eyeDetails}`);
-      if (anchors.noseShape) facialFeatures.push(`鼻型: ${anchors.noseShape}`);
-      if (anchors.lipShape) facialFeatures.push(`唇型: ${anchors.lipShape}`);
+      if (anchors.eyeShape) facialFeatures.push(t("眼型: {{v0}}", { v0: anchors.eyeShape }));
+      if (anchors.eyeDetails) facialFeatures.push(t("眼部细节: {{v0}}", { v0: anchors.eyeDetails }));
+      if (anchors.noseShape) facialFeatures.push(t("鼻型: {{v0}}", { v0: anchors.noseShape }));
+      if (anchors.lipShape) facialFeatures.push(t("唇型: {{v0}}", { v0: anchors.lipShape }));
       if (facialFeatures.length > 0) {
-        lines.push(`② 五官层：${facialFeatures.join(', ')}`);
+        lines.push(t("② 五官层：{{v0}}", { v0: facialFeatures.join(', ') }));
       }
       
       // ③ 辨识标记层（最强锚点）
       if (anchors.uniqueMarks && anchors.uniqueMarks.length > 0) {
-        lines.push(`③ 辨识标记层（最强锚点）：${anchors.uniqueMarks.join('; ')}`);
+        lines.push(t("③ 辨识标记层（最强锚点）：{{v0}}", { v0: anchors.uniqueMarks.join('; ') }));
       }
       
       // ④ 色彩锚点层
       if (anchors.colorAnchors) {
         const colors: string[] = [];
-        if (anchors.colorAnchors.iris) colors.push(`虹膜: ${anchors.colorAnchors.iris}`);
-        if (anchors.colorAnchors.hair) colors.push(`发色: ${anchors.colorAnchors.hair}`);
-        if (anchors.colorAnchors.skin) colors.push(`肤色: ${anchors.colorAnchors.skin}`);
-        if (anchors.colorAnchors.lips) colors.push(`唇色: ${anchors.colorAnchors.lips}`);
+        if (anchors.colorAnchors.iris) colors.push(t("虹膜: {{v0}}", { v0: anchors.colorAnchors.iris }));
+        if (anchors.colorAnchors.hair) colors.push(t("发色: {{v0}}", { v0: anchors.colorAnchors.hair }));
+        if (anchors.colorAnchors.skin) colors.push(t("肤色: {{v0}}", { v0: anchors.colorAnchors.skin }));
+        if (anchors.colorAnchors.lips) colors.push(t("唇色: {{v0}}", { v0: anchors.colorAnchors.lips }));
         if (colors.length > 0) {
-          lines.push(`④ 色彩锚点层（Hex）：${colors.join(', ')}`);
+          lines.push(t("④ 色彩锚点层（Hex）：{{v0}}", { v0: colors.join(', ') }));
         }
       }
       
       // ⑤ 皮肤纹理层
       if (anchors.skinTexture) {
-        lines.push(`⑤ 皮肤纹理层：${anchors.skinTexture}`);
+        lines.push(t("⑤ 皮肤纹理层：{{v0}}", { v0: anchors.skinTexture }));
       }
       
       // ⑥ 发型锚点层
       const hairFeatures: string[] = [];
-      if (anchors.hairStyle) hairFeatures.push(`发型: ${anchors.hairStyle}`);
-      if (anchors.hairlineDetails) hairFeatures.push(`发际线: ${anchors.hairlineDetails}`);
+      if (anchors.hairStyle) hairFeatures.push(t("发型: {{v0}}", { v0: anchors.hairStyle }));
+      if (anchors.hairlineDetails) hairFeatures.push(t("发际线: {{v0}}", { v0: anchors.hairlineDetails }));
       if (hairFeatures.length > 0) {
-        lines.push(`⑥ 发型锚点层：${hairFeatures.join(', ')}`);
+        lines.push(t("⑥ 发型锚点层：{{v0}}", { v0: hairFeatures.join(', ') }));
       }
       
       lines.push('');
@@ -359,26 +359,26 @@ export function PropertyPanel({
     
     // === 负面提示词 ===
     if (character.negativePrompt) {
-      lines.push(`## 负面提示词`);
+      lines.push(t("## 负面提示词"));
       if (character.negativePrompt.avoid && character.negativePrompt.avoid.length > 0) {
-        lines.push(`要避免：${character.negativePrompt.avoid.join(', ')}`);
+        lines.push(t("要避免：{{v0}}", { v0: character.negativePrompt.avoid.join(', ') }));
       }
       if (character.negativePrompt.styleExclusions && character.negativePrompt.styleExclusions.length > 0) {
-        lines.push(`风格排除：${character.negativePrompt.styleExclusions.join(', ')}`);
+        lines.push(t("风格排除：{{v0}}", { v0: character.negativePrompt.styleExclusions.join(', ') }));
       }
       lines.push('');
     }
     
     // 角色标签
     if (character.tags && character.tags.length > 0) {
-      lines.push(`## 角色标签`);
-      lines.push(character.tags.map(t => `#${t}`).join(' '));
+      lines.push(t("## 角色标签"));
+      lines.push(character.tags.map(tag => `#${tag}`).join(' '));
       lines.push('');
     }
     
     // 角色备注
     if (character.notes) {
-      lines.push(`## 角色备注`);
+      lines.push(t("## 角色备注"));
       lines.push(character.notes);
       lines.push('');
     }
@@ -407,36 +407,36 @@ export function PropertyPanel({
     
     // 格式化分镜数据
     const lines: string[] = [];
-    lines.push(`# 第${episode.index}集：${episode.title.replace(/^第\d+集[：:]?/, '')}`);
+    lines.push(t("# 第{{v0}}集：{{v1}}", { v0: episode.index, v1: episode.title.replace(/^第\d+集[：:]?/, '') }));
     lines.push('');
     if (episode.synopsis) {
-      lines.push(`## 本集大纲`);
+      lines.push(t("## 本集大纲"));
       lines.push(episode.synopsis);
       lines.push('');
     }
-    lines.push(`## 分镜列表 (共 ${episodeShots.length} 个)`);
+    lines.push(t("## 分镜列表 (共 {{v0}} 个)", { v0: episodeShots.length }));
     lines.push('');
     
     episodeShots.forEach((s, idx) => {
-      lines.push(`### 分镜 ${String(idx + 1).padStart(2, '0')}`);
+      lines.push(t("### 分镜 {{v0}}", { v0: String(idx + 1).padStart(2, '0') }));
       if (s.shotSize || s.cameraMovement) {
-        lines.push(`**镜头**: ${[s.shotSize, s.cameraMovement].filter(Boolean).join(' | ')}`);
+        lines.push(t("**镜头**: {{v0}}", { v0: [s.shotSize, s.cameraMovement].filter(Boolean).join(' | ') }));
       }
       if ((s as any).visualDescription) {
-        lines.push(`**视觉描述**: ${(s as any).visualDescription}`);
+        lines.push(t("**视觉描述**: {{v0}}", { v0: (s as any).visualDescription }));
       }
       if (s.actionSummary) {
-        lines.push(`**动作**: ${s.actionSummary}`);
+        lines.push(t("**动作**: {{v0}}", { v0: s.actionSummary }));
       }
       if (s.dialogue) {
-        lines.push(`**对白**: 「${s.dialogue}」`);
+        lines.push(t("**对白**: 「{{v0}}」", { v0: s.dialogue }));
       }
       if (s.characterNames && s.characterNames.length > 0) {
-        lines.push(`**出场角色**: ${s.characterNames.join('、')}`);
+        lines.push(t("**出场角色**: {{v0}}", { v0: s.characterNames.join('、') }));
       }
       if (s.emotionTags && s.emotionTags.length > 0) {
-        const tags = s.emotionTags.map(t => emotionLabels[t] || t).join('、');
-        lines.push(`**情绪**: ${tags}`);
+        const tags = s.emotionTags.map(tag => t(emotionLabels[tag] || tag)).join('、');
+        lines.push(t("**情绪**: {{v0}}", { v0: tags }));
       }
       if (promptLanguage !== 'zh' && (s as any).visualPrompt) {
         lines.push(`**英文Prompt**: ${(s as any).visualPrompt}`);
@@ -444,31 +444,31 @@ export function PropertyPanel({
       // 三层提示词系统
       if (s.imagePromptZh || s.imagePrompt) {
         if (promptLanguage === 'zh') {
-          lines.push(`**首帧提示词**: ${s.imagePromptZh || ''}`);
+          lines.push(t("**首帧提示词**: {{v0}}", { v0: s.imagePromptZh || '' }));
         } else if (promptLanguage === 'en') {
-          lines.push(`**首帧提示词**: ${s.imagePrompt || ''}`);
+          lines.push(t("**首帧提示词**: {{v0}}", { v0: s.imagePrompt || '' }));
         } else {
-          lines.push(`**首帧提示词**: ${s.imagePromptZh || ''} ${s.imagePrompt ? `(EN: ${s.imagePrompt})` : ''}`);
+          lines.push(t("**首帧提示词**: {{v0}}", { v0: `${s.imagePromptZh || ''} ${s.imagePrompt ? `(EN: ${s.imagePrompt})` : ''}` }));
         }
       }
       if (s.videoPromptZh || s.videoPrompt) {
         if (promptLanguage === 'zh') {
-          lines.push(`**视频提示词**: ${s.videoPromptZh || ''}`);
+          lines.push(t("**视频提示词**: {{v0}}", { v0: s.videoPromptZh || '' }));
         } else if (promptLanguage === 'en') {
-          lines.push(`**视频提示词**: ${s.videoPrompt || ''}`);
+          lines.push(t("**视频提示词**: {{v0}}", { v0: s.videoPrompt || '' }));
         } else {
-          lines.push(`**视频提示词**: ${s.videoPromptZh || ''} ${s.videoPrompt ? `(EN: ${s.videoPrompt})` : ''}`);
+          lines.push(t("**视频提示词**: {{v0}}", { v0: `${s.videoPromptZh || ''} ${s.videoPrompt ? `(EN: ${s.videoPrompt})` : ''}` }));
         }
       }
       if (s.needsEndFrame) {
-        lines.push(`**需要尾帧**: 是`);
+        lines.push(t("**需要尾帧**: 是"));
         if (s.endFramePromptZh || s.endFramePrompt) {
           if (promptLanguage === 'zh') {
-            lines.push(`**尾帧提示词**: ${s.endFramePromptZh || ''}`);
+            lines.push(t("**尾帧提示词**: {{v0}}", { v0: s.endFramePromptZh || '' }));
           } else if (promptLanguage === 'en') {
-            lines.push(`**尾帧提示词**: ${s.endFramePrompt || ''}`);
+            lines.push(t("**尾帧提示词**: {{v0}}", { v0: s.endFramePrompt || '' }));
           } else {
-            lines.push(`**尾帧提示词**: ${s.endFramePromptZh || ''} ${s.endFramePrompt ? `(EN: ${s.endFramePrompt})` : ''}`);
+            lines.push(t("**尾帧提示词**: {{v0}}", { v0: `${s.endFramePromptZh || ''} ${s.endFramePrompt ? `(EN: ${s.endFramePrompt})` : ''}` }));
           }
         }
       }
@@ -508,58 +508,58 @@ export function PropertyPanel({
     };
     const cameraLabels = (id: string) => {
       const preset = CAMERA_MOVEMENT_PRESETS.find(p => p.id === id);
-      return preset ? preset.label : (cameraLabelsLegacy[id] || id);
+      return preset ? t(preset.label) : t(cameraLabelsLegacy[id] || id);
     };
     const specialTechniqueLabel = (id: string) => {
       const preset = SPECIAL_TECHNIQUE_PRESETS.find(p => p.id === id);
-      return preset ? preset.label : id;
+      return preset ? t(preset.label) : id;
     };
 
     const lines: string[] = [];
     lines.push('═══════════════════════════════════════');
-    lines.push(`分镜 ${shot.index} - 三层提示词数据`);
+    lines.push(t("分镜 {{v0}} - 三层提示词数据", { v0: shot.index }));
     lines.push('═══════════════════════════════════════');
     lines.push('');
 
     // 基础信息
-    lines.push('【基础信息】');
+    lines.push(t("【基础信息】"));
     if (shot.shotSize) {
-      lines.push(`景别: ${shotSizeLabels[shot.shotSize] || shot.shotSize} (${shot.shotSize})`);
+      lines.push(t("景别: {{v0}} ({{v1}})", { v0: t(shotSizeLabels[shot.shotSize] || shot.shotSize), v1: shot.shotSize }));
     }
     if (shot.cameraMovement) {
-      lines.push(`镜头运动: ${cameraLabels(shot.cameraMovement)}`);
+      lines.push(t("镜头运动: {{v0}}", { v0: cameraLabels(shot.cameraMovement) }));
     }
     if (shot.specialTechnique && shot.specialTechnique !== 'none') {
-      lines.push(`特殊拍摄: ${specialTechniqueLabel(shot.specialTechnique)}`);
+      lines.push(t("特殊拍摄: {{v0}}", { v0: specialTechniqueLabel(shot.specialTechnique) }));
     }
     if (shot.duration) {
-      lines.push(`时长: ${shot.duration}秒`);
+      lines.push(t("时长: {{v0}}秒", { v0: shot.duration }));
     }
     if (shot.characterNames && shot.characterNames.length > 0) {
-      lines.push(`出场角色: ${shot.characterNames.join('、')}`);
+      lines.push(t("出场角色: {{v0}}", { v0: shot.characterNames.join('、') }));
     }
     // 对白字段始终显示，无对白时明确标注“无”，防止AI视频模型幻觉
-    lines.push(`对白: ${shot.dialogue ? `「${shot.dialogue}」` : '无'}`);
+    lines.push(t("对白: {{v0}}", { v0: shot.dialogue ? `「${shot.dialogue}」` : t("无") }));
     if (shot.actionSummary) {
-      lines.push(`动作描述: ${shot.actionSummary}`);
+      lines.push(t("动作描述: {{v0}}", { v0: shot.actionSummary }));
     }
     lines.push('');
 
     // 视觉描述
     if ((shot as any).visualDescription) {
-      lines.push('【视觉描述】');
+      lines.push(t("【视觉描述】"));
       lines.push((shot as any).visualDescription);
       lines.push('');
     }
 
     // 音频设计
     if (shot.ambientSound || shot.soundEffect) {
-      lines.push('【音频设计】');
+      lines.push(t("【音频设计】"));
       if (shot.ambientSound) {
-        lines.push(`环境音: ${shot.ambientSound}`);
+        lines.push(t("环境音: {{v0}}", { v0: shot.ambientSound }));
       }
       if (shot.soundEffect) {
-        lines.push(`音效: ${shot.soundEffect}`);
+        lines.push(t("音效: {{v0}}", { v0: shot.soundEffect }));
       }
       lines.push('');
     }
@@ -569,37 +569,37 @@ export function PropertyPanel({
                          (shot as any).visualFocus || (shot as any).cameraPosition || 
                          (shot as any).characterBlocking || (shot as any).rhythm;
     if (hasNarrative) {
-      lines.push('【叙事驱动设计】基于《电影语言的语法》');
+      lines.push(t("【叙事驱动设计】基于《电影语言的语法》"));
       if ((shot as any).narrativeFunction) {
-        lines.push(`叙事功能: ${(shot as any).narrativeFunction}`);
+        lines.push(t("叙事功能: {{v0}}", { v0: (shot as any).narrativeFunction }));
       }
       if ((shot as any).shotPurpose) {
-        lines.push(`镜头目的: ${(shot as any).shotPurpose}`);
+        lines.push(t("镜头目的: {{v0}}", { v0: (shot as any).shotPurpose }));
       }
       if ((shot as any).visualFocus) {
-        lines.push(`视觉焦点: ${(shot as any).visualFocus}`);
+        lines.push(t("视觉焦点: {{v0}}", { v0: (shot as any).visualFocus }));
       }
       if ((shot as any).cameraPosition) {
-        lines.push(`机位描述: ${(shot as any).cameraPosition}`);
+        lines.push(t("机位描述: {{v0}}", { v0: (shot as any).cameraPosition }));
       }
       if ((shot as any).characterBlocking) {
-        lines.push(`人物布局: ${(shot as any).characterBlocking}`);
+        lines.push(t("人物布局: {{v0}}", { v0: (shot as any).characterBlocking }));
       }
       if ((shot as any).rhythm) {
-        lines.push(`节奏: ${(shot as any).rhythm}`);
+        lines.push(t("节奏: {{v0}}", { v0: (shot as any).rhythm }));
       }
       lines.push('');
     }
 
     if (!hasTri) {
-      lines.push('⚠️ 该分镜尚未生成三层提示词，请先执行"AI校准分镜"。');
+      lines.push(t("⚠️ 该分镜尚未生成三层提示词，请先执行\"AI校准分镜\"。"));
     } else {
       // ===== 首帧提示词 =====
       lines.push('───────────────────────────────────────');
-      lines.push('【首帧提示词】用于生成视频的第一帧图片');
+      lines.push(t("【首帧提示词】用于生成视频的第一帧图片"));
       lines.push('───────────────────────────────────────');
       if (promptLanguage !== 'en' && shot.imagePromptZh) {
-        lines.push(`中文: ${shot.imagePromptZh}`);
+        lines.push(t("中文: {{v0}}", { v0: shot.imagePromptZh }));
       }
       if (promptLanguage !== 'zh' && shot.imagePrompt) {
         lines.push(`English: ${shot.imagePrompt}`);
@@ -609,16 +609,16 @@ export function PropertyPanel({
         (promptLanguage === 'en' && !shot.imagePrompt) ||
         (promptLanguage === 'zh+en' && !shot.imagePrompt && !shot.imagePromptZh)
       ) {
-        lines.push('(未生成)');
+        lines.push(t("(未生成)"));
       }
       lines.push('');
 
       // ===== 视频提示词 =====
       lines.push('───────────────────────────────────────');
-      lines.push('【视频提示词】用于图生视频，描述动作和运动');
+      lines.push(t("【视频提示词】用于图生视频，描述动作和运动"));
       lines.push('───────────────────────────────────────');
       if (promptLanguage !== 'en' && shot.videoPromptZh) {
-        lines.push(`中文: ${shot.videoPromptZh}`);
+        lines.push(t("中文: {{v0}}", { v0: shot.videoPromptZh }));
       }
       if (promptLanguage !== 'zh' && shot.videoPrompt) {
         lines.push(`English: ${shot.videoPrompt}`);
@@ -628,18 +628,18 @@ export function PropertyPanel({
         (promptLanguage === 'en' && !shot.videoPrompt) ||
         (promptLanguage === 'zh+en' && !shot.videoPrompt && !shot.videoPromptZh)
       ) {
-        lines.push('(未生成)');
+        lines.push(t("(未生成)"));
       }
       lines.push('');
 
       // ===== 尾帧提示词 =====
       lines.push('───────────────────────────────────────');
-      lines.push('【尾帧提示词】用于生成视频的最后一帧（如需要）');
+      lines.push(t("【尾帧提示词】用于生成视频的最后一帧（如需要）"));
       lines.push('───────────────────────────────────────');
       if (shot.needsEndFrame) {
-        lines.push('需要尾帧: ✓ 是');
+        lines.push(t("需要尾帧: ✓ 是"));
         if (promptLanguage !== 'en' && shot.endFramePromptZh) {
-          lines.push(`中文: ${shot.endFramePromptZh}`);
+          lines.push(t("中文: {{v0}}", { v0: shot.endFramePromptZh }));
         }
         if (promptLanguage !== 'zh' && shot.endFramePrompt) {
           lines.push(`English: ${shot.endFramePrompt}`);
@@ -649,10 +649,10 @@ export function PropertyPanel({
           (promptLanguage === 'en' && !shot.endFramePrompt) ||
           (promptLanguage === 'zh+en' && !shot.endFramePrompt && !shot.endFramePromptZh)
         ) {
-          lines.push('(未生成)');
+          lines.push(t("(未生成)"));
         }
       } else {
-        lines.push('需要尾帧: ✗ 否（此分镜不需要单独的尾帧）');
+        lines.push(t("需要尾帧: ✗ 否（此分镜不需要单独的尾帧）"));
       }
     }
 
@@ -751,7 +751,7 @@ export function PropertyPanel({
               <Clapperboard className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1">
-              <h3 className="font-medium">第{episode.index}集</h3>
+              <h3 className="font-medium">{t("第{{v0}}集", { v0: episode.index })}</h3>
               <p className="text-sm text-muted-foreground">{episode.title.replace(/^第\d+集[：:]？/, '')}</p>
             </div>
           </div>
@@ -795,11 +795,11 @@ export function PropertyPanel({
           <div className="bg-muted/30 p-3 rounded-lg">
             <div className="text-xs text-muted-foreground mb-2">{t("场景统计")}</div>
             <div className="text-sm">
-              本集共 <span className="font-medium text-primary">{episode.scenes?.length || 0}</span> 个场景
+              {t("本集共")} <span className="font-medium text-primary">{episode.scenes?.length || 0}</span> {t("个场景")}
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              分镜状态：{episode.shotGenerationStatus === 'completed' ? '✅ 已生成' : 
-                episode.shotGenerationStatus === 'generating' ? '⏳ 生成中...' : '⏹ 未生成'}
+              {t("分镜状态")}：{episode.shotGenerationStatus === 'completed' ? t("✅ 已生成") : 
+                episode.shotGenerationStatus === 'generating' ? t("⏳ 生成中...") : t("⏹ 未生成")}
             </div>
           </div>
 
@@ -841,7 +841,7 @@ export function PropertyPanel({
                   ) : (
                     <>
                       <Copy className="h-4 w-4 mr-2" />
-                      复制分镜数据 ({episodeShots.length})
+                      {t("复制分镜数据")} ({episodeShots.length})
                     </>
                   )}
                 </Button>
@@ -941,14 +941,14 @@ export function PropertyPanel({
               {character.stageInfo && (
                 <div className="p-2 bg-blue-500/10 border border-blue-500/20 rounded-lg space-y-1">
                   <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
-                    🎭 阶段角色：{character.stageInfo.stageName}
+                    {t("🎭 阶段角色：{{v0}}", { v0: character.stageInfo.stageName })}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    适用集数：第{character.stageInfo.episodeRange[0]}-{character.stageInfo.episodeRange[1]}集
+                    {t("适用集数：第{{v0}}-{{v1}}集", { v0: character.stageInfo.episodeRange[0], v1: character.stageInfo.episodeRange[1] })}
                   </div>
                   {character.stageInfo.ageDescription && (
                     <div className="text-xs text-muted-foreground">
-                      年龄：{character.stageInfo.ageDescription}
+                      {t("年龄")}：{character.stageInfo.ageDescription}
                     </div>
                   )}
                 </div>
@@ -1023,7 +1023,7 @@ export function PropertyPanel({
                   <div className="flex flex-wrap gap-1">
                     {character.tags.map((tag, i) => (
                       <span key={i} className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs">
-                        {tag}
+                        {t(tag)}
                       </span>
                     ))}
                   </div>
@@ -1047,10 +1047,10 @@ export function PropertyPanel({
               <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg space-y-2">
                 <div className="text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1 font-medium">
                   <CheckCircle2 className="h-3 w-3" />
-                  已创建 {character.stageCharacterIds.length} 个阶段版本
+                  {t("已创建 {{v0}} 个阶段版本", { v0: character.stageCharacterIds.length })}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  请在中栏点击各阶段版本（如「{character.name}（青年版）」），然后去角色库生成形象
+                  {t("请在中栏点击各阶段版本（如「{{v0}}（青年版）」），然后去角色库生成形象", { v0: character.name })}
                 </div>
               </div>
             ) : (
@@ -1060,7 +1060,7 @@ export function PropertyPanel({
                 onClick={() => onGoToCharacterLibrary?.(character.id)}
               >
                 <ArrowRight className="h-4 w-4 mr-2" />
-                {character.characterLibraryId ? '查看角色库形象' : '去角色库生成形象'}
+                {character.characterLibraryId ? t("查看角色库形象") : t("去角色库生成形象")}
               </Button>
             )}
             
@@ -1096,7 +1096,7 @@ export function PropertyPanel({
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>{t("确认删除")}</AlertDialogTitle>
-              <AlertDialogDescription>确定要删除角色「{character.name}」吗？</AlertDialogDescription>
+              <AlertDialogDescription>{t("确定要删除角色「{{v0}}」吗？", { v0: character.name })}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t("取消")}</AlertDialogCancel>
@@ -1283,7 +1283,7 @@ export function PropertyPanel({
                     </div>
                     
                     <div className="text-xs text-muted-foreground mb-2">
-                      AI 分析 {viewpoints.length} 个视角
+                      {t("AI 分析 {{v0}} 个视角", { v0: viewpoints.length })}
                     </div>
                     
                     {/* 视角列表 */}
@@ -1299,14 +1299,14 @@ export function PropertyPanel({
                           <span className="flex-1 truncate">{vp.name}</span>
                           {vp.shotIndexes && vp.shotIndexes.length > 0 && (
                             <span className="text-muted-foreground">
-                              分镜 #{vp.shotIndexes.map(i => String(i).padStart(2, '0')).join(',#')}
+                              {t("分镜")} #{vp.shotIndexes.map(i => String(i).padStart(2, '0')).join(',#')}
                             </span>
                           )}
                         </div>
                       ))}
                       {viewpoints.length > 6 && (
                         <div className="text-xs text-muted-foreground text-center py-1">
-                          还有 {viewpoints.length - 6} 个视角...
+                          {t("还有 {{v0}} 个视角...", { v0: viewpoints.length - 6 })}
                         </div>
                       )}
                     </div>
@@ -1325,14 +1325,14 @@ export function PropertyPanel({
                         scene.importance === 'secondary' ? 'bg-yellow-500/10 text-yellow-600' :
                         'bg-muted text-muted-foreground'
                       }`}>
-                        {scene.importance === 'main' ? '主场景' : scene.importance === 'secondary' ? '次要场景' : '过渡场景'}
+                        {t(scene.importance === 'main' ? '主场景' : scene.importance === 'secondary' ? '次要场景' : '过渡场景')}
                       </span>
                     )}
                     {scene.appearanceCount && (
-                      <span className="text-xs text-muted-foreground">出场 {scene.appearanceCount} 次</span>
+                      <span className="text-xs text-muted-foreground">{t("出场 {{v0}} 次", { v0: scene.appearanceCount })}</span>
                     )}
                     {scene.episodeNumbers && scene.episodeNumbers.length > 0 && (
-                      <span className="text-xs text-muted-foreground">第 {scene.episodeNumbers.join(', ')} 集</span>
+                      <span className="text-xs text-muted-foreground">{t("第 {{v0}} 集", { v0: scene.episodeNumbers.join(', ') })}</span>
                     )}
                   </div>
                 </>
@@ -1361,7 +1361,7 @@ export function PropertyPanel({
               ) : (
                 <Copy className="h-4 w-4 mr-2" />
               )}
-              {copiedScene ? '已复制' : '复制场景数据'}
+              {copiedScene ? t("已复制") : t("复制场景数据")}
             </Button>
             <Button
               variant="secondary"
@@ -1386,7 +1386,7 @@ export function PropertyPanel({
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>{t("确认删除")}</AlertDialogTitle>
-              <AlertDialogDescription>确定要删除场景「{scene.name || scene.location}」吗？其下所有分镜也将被删除。</AlertDialogDescription>
+              <AlertDialogDescription>{t("确定要删除场景「{{v0}}」吗？其下所有分镜也将被删除。", { v0: scene.name || scene.location })}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t("取消")}</AlertDialogCancel>
@@ -1410,7 +1410,7 @@ export function PropertyPanel({
               <Film className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1">
-              <h3 className="font-medium">分镜 {String(shot.index).padStart(2, "0")}</h3>
+              <h3 className="font-medium">{t("分镜 {{v0}}", { v0: String(shot.index).padStart(2, "0") })}</h3>
               <StatusBadge status={shotStatus} />
             </div>
             {!isEditing ? (
@@ -1456,7 +1456,7 @@ export function PropertyPanel({
                     <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {CAMERA_MOVEMENT_PRESETS.map(p => (
-                        <SelectItem key={p.id} value={p.id} className="text-xs">{p.label}</SelectItem>
+                        <SelectItem key={p.id} value={p.id} className="text-xs">{t(p.label)}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -1468,7 +1468,7 @@ export function PropertyPanel({
                   <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {SPECIAL_TECHNIQUE_PRESETS.map(p => (
-                      <SelectItem key={p.id} value={p.id} className="text-xs">{p.label}</SelectItem>
+                      <SelectItem key={p.id} value={p.id} className="text-xs">{t(p.label)}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -1493,12 +1493,12 @@ export function PropertyPanel({
                 )}
                 {shot.cameraMovement && shot.cameraMovement !== 'none' && (
                   <span className="px-2 py-0.5 bg-muted rounded text-xs">
-                    {CAMERA_MOVEMENT_PRESETS.find(p => p.id === shot.cameraMovement)?.label || shot.cameraMovement}
+                    {t(CAMERA_MOVEMENT_PRESETS.find(p => p.id === shot.cameraMovement)?.label || shot.cameraMovement)}
                   </span>
                 )}
                 {shot.specialTechnique && shot.specialTechnique !== 'none' && (
                   <span className="px-2 py-0.5 bg-purple-500/10 text-purple-600 rounded text-xs">
-                    {SPECIAL_TECHNIQUE_PRESETS.find(p => p.id === shot.specialTechnique)?.label || shot.specialTechnique}
+                    {t(SPECIAL_TECHNIQUE_PRESETS.find(p => p.id === shot.specialTechnique)?.label || shot.specialTechnique)}
                   </span>
                 )}
                 {(shot as any).duration && (
@@ -1587,7 +1587,7 @@ export function PropertyPanel({
                           key={i}
                           className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded text-xs"
                         >
-                          {emotionLabels[tag] || tag}
+                          {t(emotionLabels[tag] || tag)}
                         </span>
                       );
                     })}
@@ -1668,7 +1668,7 @@ export function PropertyPanel({
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>{t("确认删除")}</AlertDialogTitle>
-              <AlertDialogDescription>确定要删除分镜 {shot.index} 吗？</AlertDialogDescription>
+              <AlertDialogDescription>{t("确定要删除分镜 {{v0}} 吗？", { v0: shot.index })}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t("取消")}</AlertDialogCancel>

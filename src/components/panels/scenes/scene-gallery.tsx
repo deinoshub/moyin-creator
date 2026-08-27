@@ -267,14 +267,14 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
   };
 
   const handleDeleteFolder = (id: string) => {
-    if (confirm("确定要删除此文件夹吗？文件夹内的场景将移动到上级目录。")) {
+    if (confirm(t("确定要删除此文件夹吗？文件夹内的场景将移动到上级目录。"))) {
       deleteFolder(id);
       toast.success(t("文件夹已删除"));
     }
   };
 
   const handleDeleteScene = (scene: Scene) => {
-    if (confirm(`确定要删除场景 "${scene.name}" 吗？`)) {
+    if (confirm(t("确定要删除场景 \"{{v0}}\" 吗？", { v0: scene.name }))) {
       deleteScene(scene.id);
       if (selectedSceneId === scene.id) {
         onSceneSelect(null);
@@ -435,7 +435,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
         {currentScenes.length > 0 ? (
           <div>
             <div className="text-xs text-muted-foreground mb-2">
-              场景 ({rootScenes.length})
+              {t("场景 ({{v0}})", { v0: rootScenes.length })}
             </div>
             <div className={cn(
               viewMode === "grid" 
@@ -483,7 +483,7 @@ export function SceneGallery({ onSceneSelect, selectedSceneId }: SceneGalleryPro
                 <MapPin className="h-6 w-6 text-muted-foreground" />
               </div>
               <p className="text-sm text-muted-foreground">
-                {searchQuery ? "没有找到匹配的场景" : "还没有场景"}
+                {searchQuery ? t("没有找到匹配的场景") : t("还没有场景")}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
                 {t("使用左侧控制台创建场景")}
@@ -608,7 +608,7 @@ function SceneCard({
             "aspect-video rounded bg-muted flex items-center justify-center overflow-hidden mb-2 relative",
             hasChildren ? "cursor-pointer" : "cursor-zoom-in"
           )}
-          title={hasChildren ? (isExpanded ? "双击收起子场景" : "双击展开子场景") : "双击查看大图"}
+          title={hasChildren ? (isExpanded ? t("双击收起子场景") : t("双击展开子场景")) : t("双击查看大图")}
           onDoubleClick={(e) => {
             e.stopPropagation();
             if (hasChildren) {
@@ -636,7 +636,7 @@ function SceneCard({
               ) : (
                 <>
                   <Loader2 className="h-6 w-6 text-white animate-spin" />
-                  <span className="text-white text-[10px]">{generatingTask.message || '生成中...'}</span>
+                  <span className="text-white text-[10px]">{generatingTask.message || t("生成中...")}</span>
                   <div className="w-3/4 h-1 bg-white/30 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-primary rounded-full transition-all duration-300"
@@ -650,7 +650,7 @@ function SceneCard({
           {/* 子场景标识 */}
           {depth > 0 && (
             <div className="absolute top-1 left-1 bg-blue-500 text-white text-[8px] px-1 py-0.5 rounded">
-              {scene.viewpointName || '视角'}
+              {t(scene.viewpointName || "视角")}
             </div>
           )}
           {/* 显示子场景数量 + 展开/收起指示 */}
@@ -664,14 +664,14 @@ function SceneCard({
                 e.stopPropagation();
                 onToggleExpand?.();
               }}
-              title={isExpanded ? "收起子场景" : "展开子场景"}
+              title={isExpanded ? t("收起子场景") : t("展开子场景")}
             >
               {isExpanded ? (
                 <ChevronDown className="h-2.5 w-2.5" />
               ) : (
                 <ChevronRight className="h-2.5 w-2.5" />
               )}
-              {childCount} 个
+              {t("{{v0}} 个", { v0: childCount })}
             </div>
           )}
           {/* 父场景预览按钮（有子场景时双击展开，预览通过此按钮） */}
@@ -690,23 +690,23 @@ function SceneCard({
         </div>
         <div>
           <p className="text-sm font-medium truncate">
-            {depth > 0 ? `└ ${scene.viewpointName || scene.name}` : scene.name}
+            {depth > 0 ? `└ ${t(scene.viewpointName || scene.name)}` : scene.name}
           </p>
           <div className="flex items-center gap-1 mt-1">
             {depth === 0 ? (
               <>
                 <span className="text-[10px] bg-muted px-1 py-0.5 rounded flex items-center gap-0.5">
                   <Sun className="h-2.5 w-2.5" />
-                  {timeLabel}
+                  {t(timeLabel)}
                 </span>
                 <span className="text-[10px] bg-muted px-1 py-0.5 rounded flex items-center gap-0.5">
                   <Wind className="h-2.5 w-2.5" />
-                  {atmosphereLabel}
+                  {t(atmosphereLabel)}
                 </span>
               </>
             ) : (
               <span className="text-[10px] bg-blue-100 text-blue-700 px-1 py-0.5 rounded">
-                {scene.viewpointName || '视角'}
+                {t(scene.viewpointName || "视角")}
               </span>
             )}
           </div>
@@ -772,20 +772,20 @@ function SceneCard({
         {generatingTask && generatingTask.status !== 'done' ? (
           <p className="text-xs text-amber-500 truncate flex items-center gap-1">
             <Loader2 className="h-3 w-3 animate-spin" />
-            {generatingTask.message || '生成中...'}
+            {generatingTask.message || t("生成中...")}
           </p>
         ) : (
           <p className="text-xs text-muted-foreground truncate">
-            {depth > 0 ? `🎯 ${scene.viewpointName || '视角'}` : `📍 ${scene.location}`}
+            {depth > 0 ? `🎯 ${t(scene.viewpointName || "视角")}` : `📍 ${scene.location}`}
           </p>
         )}
       </div>
       <div className="flex items-center gap-1 text-[10px] flex-shrink-0">
         {depth === 0 ? (
           <>
-            <span className="bg-muted px-1 py-0.5 rounded">{timeLabel}</span>
+            <span className="bg-muted px-1 py-0.5 rounded">{t(timeLabel)}</span>
             {hasChildren && (
-              <span className="bg-green-100 text-green-700 px-1 py-0.5 rounded">{childCount} 个</span>
+              <span className="bg-green-100 text-green-700 px-1 py-0.5 rounded">{t("{{v0}} 个", { v0: childCount })}</span>
             )}
           </>
         ) : (

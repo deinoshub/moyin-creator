@@ -174,7 +174,7 @@ function PropCard({ item }: { item: PropItem }) {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("删除道具")}</AlertDialogTitle>
             <AlertDialogDescription>
-              确认删除「{item.name}」？此操作不可撤销。
+              {t("确认删除「{{v0}}」？此操作不可撤销。", { v0: item.name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -293,7 +293,7 @@ function FolderItem({
           <AlertDialogHeader>
             <AlertDialogTitle>{t("删除目录")}</AlertDialogTitle>
             <AlertDialogDescription>
-              确认删除目录「{folder.name}」？目录内的道具将移至根目录，不会被删除。
+              {t("确认删除目录「{{v0}}」？目录内的道具将移至根目录，不会被删除。", { v0: folder.name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -384,8 +384,8 @@ export function PropsLibrary() {
   const visibleItems = getPropsByFolder(selectedFolderId);
   const currentFolderName =
     selectedFolderId === 'all'
-      ? '全部道具'
-      : folders.find((f) => f.id === selectedFolderId)?.name ?? '全部道具';
+      ? t("全部道具")
+      : folders.find((f) => f.id === selectedFolderId)?.name ?? t("全部道具");
 
   return (
     <div className="h-full flex">
@@ -467,7 +467,7 @@ export function PropsLibrary() {
         <div className="px-4 py-2.5 border-b border-border shrink-0 flex items-center gap-2">
           <Package className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm font-medium">{currentFolderName}</span>
-          <span className="text-xs text-muted-foreground">({visibleItems.length} 个道具)</span>
+          <span className="text-xs text-muted-foreground">({t("{{v0}} 个道具", { v0: visibleItems.length })})</span>
         </div>
 
         {/* 道具网格 */}
@@ -478,7 +478,7 @@ export function PropsLibrary() {
               <div className="text-center">
                 <p className="text-base font-medium">{t("道具库为空")}</p>
                 <p className="text-sm mt-1">
-                  在「自由」板块的图片工作室生成图片后，<br />
+                  {t("在「自由」板块的图片工作室生成图片后，")}<br />
                   {t("点击「保存到道具库」即可添加道具")}
                 </p>
               </div>

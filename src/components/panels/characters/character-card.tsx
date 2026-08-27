@@ -209,7 +209,7 @@ export function CharacterCard({
             <div className="flex items-center gap-1">
               <ImageIcon className="h-3 w-3 text-muted-foreground" />
               <span className="text-xs text-muted-foreground">
-                {viewCount > 0 ? `${viewCount} 视图` : "未生成"}
+                {viewCount > 0 ? t("{{v0}} 视图", { v0: viewCount }) : t("未生成")}
               </span>
             </div>
             <Button
@@ -222,7 +222,7 @@ export function CharacterCard({
               }}
             >
               <Shirt className="h-3 w-3" />
-              {variationCount > 0 ? `${variationCount} 变体` : "衣橱"}
+              {variationCount > 0 ? t("{{v0}} 变体", { v0: variationCount }) : t("衣橱")}
             </Button>
           </div>
         </div>
@@ -245,9 +245,11 @@ export function CharacterCard({
                 />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span className="text-[10px] text-white capitalize">
-                    {view.viewType === 'front' ? '正面' : 
-                     view.viewType === 'side' ? '侧面' : 
-                     view.viewType === 'back' ? '背面' : '四分之三'}
+                    {t(
+                      view.viewType === 'front' ? "正面" :
+                      view.viewType === 'side' ? "侧面" :
+                      view.viewType === 'back' ? "背面" : "四分之三"
+                    )}
                   </span>
                 </div>
               </div>
@@ -279,7 +281,7 @@ export function CharacterCard({
                 )}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span className="text-[10px] text-white text-center px-1">
-                    {variation.name}
+                    {t(variation.name)}
                   </span>
                 </div>
               </div>

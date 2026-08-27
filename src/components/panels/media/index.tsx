@@ -682,7 +682,7 @@ export function MediaView() {
         <div className="flex items-center justify-between mb-2">
           <h2 className="font-semibold text-sm">{t("素材库")}</h2>
           <span className="text-xs text-muted-foreground">
-            {currentFolders.length} 文件夹, {filteredMediaItems.length} 文件
+            {t("{{v0}} 文件夹, {{v1}} 文件", { v0: currentFolders.length, v1: filteredMediaItems.length })}
           </span>
         </div>
 
@@ -757,7 +757,7 @@ export function MediaView() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {viewMode === "grid" ? "列表视图" : "网格视图"}
+                {viewMode === "grid" ? t("列表视图") : t("网格视图")}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -770,13 +770,13 @@ export function MediaView() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => { setSortBy("name"); setSortOrder("asc"); }}>
-                名称 {sortBy === "name" && (sortOrder === "asc" ? "↑" : "↓")}
+                {t("名称")} {sortBy === "name" && (sortOrder === "asc" ? "↑" : "↓")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => { setSortBy("type"); setSortOrder("asc"); }}>
-                类型 {sortBy === "type" && (sortOrder === "asc" ? "↑" : "↓")}
+                {t("类型")} {sortBy === "type" && (sortOrder === "asc" ? "↑" : "↓")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => { setSortBy("duration"); setSortOrder("asc"); }}>
-                时长 {sortBy === "duration" && (sortOrder === "asc" ? "↑" : "↓")}
+                {t("时长")} {sortBy === "duration" && (sortOrder === "asc" ? "↑" : "↓")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -816,7 +816,7 @@ export function MediaView() {
                       >
                         <div className="w-[100px] h-[100px] rounded overflow-hidden bg-primary/5 flex flex-col items-center justify-center border border-primary/20 hover:border-primary/50 gap-1">
                           <IconComp className="h-8 w-8 text-primary/70" />
-                          <span className="text-[10px] text-muted-foreground">{count} 项</span>
+                          <span className="text-[10px] text-muted-foreground">{t("{{v0}} 项", { v0: count })}</span>
                         </div>
                         <p className="text-xs mt-1 truncate text-center font-medium">{folder.name}</p>
                       </div>
@@ -830,7 +830,7 @@ export function MediaView() {
               <div>
                 {systemFolders.length > 0 && (customFolders.length > 0 || filteredMediaItems.length > 0) && (
                   <p className="text-xs text-muted-foreground mb-1.5 font-medium">
-                    {currentFolderId === null ? '自定义文件夹' : '内容'}
+                    {currentFolderId === null ? t("自定义文件夹") : t("内容")}
                   </p>
                 )}
                 <div
@@ -852,7 +852,7 @@ export function MediaView() {
                         >
                           <div className="w-[100px] h-[100px] rounded overflow-hidden bg-muted/50 flex flex-col items-center justify-center border-2 border-dashed border-muted-foreground/20 hover:border-primary/50 gap-1">
                             <Folder className="h-8 w-8 text-primary/70" />
-                            <span className="text-[10px] text-muted-foreground">{count} 项</span>
+                            <span className="text-[10px] text-muted-foreground">{t("{{v0}} 项", { v0: count })}</span>
                           </div>
                           <p className="text-xs mt-1 truncate text-center">{folder.name}</p>
                         </div>
@@ -931,7 +931,7 @@ export function MediaView() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm truncate font-medium">{folder.name}</p>
-                        <p className="text-xs text-muted-foreground">{count} 项</p>
+                        <p className="text-xs text-muted-foreground">{t("{{v0}} 项", { v0: count })}</p>
                       </div>
                     </div>
                   );
@@ -962,7 +962,7 @@ export function MediaView() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm truncate">{folder.name}</p>
-                          <p className="text-xs text-muted-foreground">{count} 项</p>
+                          <p className="text-xs text-muted-foreground">{t("{{v0}} 项", { v0: count })}</p>
                         </div>
                       </div>
                     </FolderContextMenu>
@@ -1018,7 +1018,7 @@ export function MediaView() {
                     <p className="text-xs text-muted-foreground">
                       {item.type}
                       {item.duration && ` · ${formatDuration(item.duration)}`}
-                      {item.source && item.source !== 'upload' && ' · AI生成'}
+                      {item.source && item.source !== 'upload' && ` · ${t("AI生成")}`}
                     </p>
                   </div>
                 </div>

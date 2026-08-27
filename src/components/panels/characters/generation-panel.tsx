@@ -437,7 +437,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
   const handleSavePreview = async () => {
     if (!previewUrl || !previewCharacterId) return;
 
-    toast.loading("正在保存图片到本地...", { id: 'saving-preview' });
+    toast.loading(t("正在保存图片到本地..."), { id: 'saving-preview' });
     
     try {
       // Save image to local storage
@@ -460,7 +460,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
       const aiFolderId = getOrCreateCategoryFolder('ai-image');
       addMediaFromUrl({
         url: localPath,
-        name: `角色-${name || '未命名'}`,
+        name: `${t("角色")}-${name || t("未命名")}`,
         type: 'image',
         source: 'ai-image',
         folderId: aiFolderId,
@@ -546,7 +546,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                 </SelectTrigger>
                 <SelectContent>
                   {GENDER_PRESETS.map((g) => (
-                    <SelectItem key={g.id} value={g.id}>{g.label}</SelectItem>
+                    <SelectItem key={g.id} value={g.id}>{t(g.label)}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -559,7 +559,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                 </SelectTrigger>
                 <SelectContent>
                   {AGE_PRESETS.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>{a.label}</SelectItem>
+                    <SelectItem key={a.id} value={a.id}>{t(a.label)} ({t(a.range)})</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -860,12 +860,12 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                     const showZh = effectiveLang === 'zh' || effectiveLang === 'zh+en';
                     const activePrompt = showZh ? visualPromptZh : visualPromptEn;
                     const setActivePrompt = showZh ? setVisualPromptZh : setVisualPromptEn;
-                    const langLabel = showZh ? '中文' : '英文';
+                    const langLabel = showZh ? t("中文") : t("英文");
                     if (!activePrompt) return null;
                     return (
                       <div className="space-y-2 pt-2 border-t">
                         <Label className="text-[10px] text-muted-foreground">
-                          视觉提示词（{langLabel}，修改后直接用于生成）
+                          {t("视觉提示词（{{v0}}，修改后直接用于生成）", { v0: langLabel })}
                         </Label>
                         <Textarea
                           value={activePrompt}
@@ -873,7 +873,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                             setActivePrompt(e.target.value);
                             setIsManuallyModified(true);
                           }}
-                          placeholder={`${langLabel}提示词`}
+                          placeholder={t("{{v0}}提示词", { v0: langLabel })}
                           className="min-h-[120px] text-xs resize-y"
                           disabled={isGenerating}
                         />
@@ -906,7 +906,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                 <div key={i} className="relative group">
                   <img
                     src={img}
-                    alt={`参考图 ${i + 1}`}
+                    alt={t("参考图 {{v0}}", { v0: i + 1 })}
                     className="w-14 h-14 object-cover rounded-md border"
                   />
                   <button
@@ -959,7 +959,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                     checked={selectedElements.includes(element.id)}
                     disabled={isGenerating}
                   />
-                  <span>{element.label}</span>
+                  <span>{t(element.label)}</span>
                 </div>
               ))}
             </div>
@@ -975,7 +975,7 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
               {isGenerating ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  生成中...
+                  {t("生成中...")}
                 </>
               ) : (
                 <>
@@ -993,87 +993,87 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                 const lines: string[] = [];
                 
                 // 基本信息
-                lines.push(`角色名称: ${name || '(未填写)'}`);
+                lines.push(`${t("角色名称")}: ${name || t("(未填写)")}`);
                 const genderLabel = GENDER_PRESETS.find(g => g.id === gender)?.label;
-                if (genderLabel) lines.push(`性别: ${genderLabel}`);
+                if (genderLabel) lines.push(`${t("性别")}: ${t(genderLabel)}`);
                 const ageLabel = AGE_PRESETS.find(a => a.id === age)?.label;
-                if (ageLabel) lines.push(`年龄段: ${ageLabel}`);
-                if (personality) lines.push(`性格特征: ${personality}`);
+                if (ageLabel) lines.push(`${t("年龄段")}: ${t(ageLabel)}`);
+                if (personality) lines.push(`${t("性格特征")}: ${personality}`);
                 
                 // 角色描述
                 if (description) {
                   lines.push('');
-                  lines.push(`角色描述:`);
+                  lines.push(`${t("角色描述")}:`);
                   lines.push(description);
                 }
                 
                 // AI 校准信息
                 if (hasCalibrationData) {
                   lines.push('');
-                  lines.push(`AI 校准信息: ${isManuallyModified ? '已修改' : '已校准'}`);
+                  lines.push(`${t("AI 校准信息")}: ${isManuallyModified ? t("已修改") : t("已校准")}`);
                   
                   // 6层身份锚点
                   if (identityAnchors) {
                     lines.push('');
-                    lines.push('--- 6层身份锚点 ---');
+                    lines.push(`--- ${t("6层身份锚点")} ---`);
                     
                     // ① 骨相层
                     const boneFeatures = [identityAnchors.faceShape, identityAnchors.jawline, identityAnchors.cheekbones].filter(Boolean);
                     if (boneFeatures.length > 0) {
-                      lines.push(`① 骨相层: ${boneFeatures.join(', ')}`);
+                      lines.push(`${t("① 骨相层")}: ${boneFeatures.join(', ')}`);
                     }
                     
                     // ② 五官层
                     const facialFeatures = [identityAnchors.eyeShape, identityAnchors.eyeDetails, identityAnchors.noseShape, identityAnchors.lipShape].filter(Boolean);
                     if (facialFeatures.length > 0) {
-                      lines.push(`② 五官层: ${facialFeatures.join(', ')}`);
+                      lines.push(`${t("② 五官层")}: ${facialFeatures.join(', ')}`);
                     }
                     
                     // ③ 辨识标记层
                     if (identityAnchors.uniqueMarks && identityAnchors.uniqueMarks.length > 0) {
-                      lines.push(`③ 辨识标记层: ${identityAnchors.uniqueMarks.join(', ')}`);
+                      lines.push(`${t("③ 辨识标记层")}: ${identityAnchors.uniqueMarks.join(', ')}`);
                     }
                     
                     // ④ 色彩锚点层
                     if (identityAnchors.colorAnchors) {
                       const colors: string[] = [];
-                      if (identityAnchors.colorAnchors.iris) colors.push(`瞳色:${identityAnchors.colorAnchors.iris}`);
-                      if (identityAnchors.colorAnchors.hair) colors.push(`发色:${identityAnchors.colorAnchors.hair}`);
-                      if (identityAnchors.colorAnchors.skin) colors.push(`肤色:${identityAnchors.colorAnchors.skin}`);
-                      if (identityAnchors.colorAnchors.lips) colors.push(`唇色:${identityAnchors.colorAnchors.lips}`);
+                      if (identityAnchors.colorAnchors.iris) colors.push(`${t("瞳色")}:${identityAnchors.colorAnchors.iris}`);
+                      if (identityAnchors.colorAnchors.hair) colors.push(`${t("发色")}:${identityAnchors.colorAnchors.hair}`);
+                      if (identityAnchors.colorAnchors.skin) colors.push(`${t("肤色")}:${identityAnchors.colorAnchors.skin}`);
+                      if (identityAnchors.colorAnchors.lips) colors.push(`${t("唇色")}:${identityAnchors.colorAnchors.lips}`);
                       if (colors.length > 0) {
-                        lines.push(`④ 色彩锚点层: ${colors.join(', ')}`);
+                        lines.push(`${t("④ 色彩锚点层")}: ${colors.join(', ')}`);
                       }
                     }
                     
                     // ⑤ 皮肤纹理层
                     if (identityAnchors.skinTexture) {
-                      lines.push(`⑤ 皮肤纹理层: ${identityAnchors.skinTexture}`);
+                      lines.push(`${t("⑤ 皮肤纹理层")}: ${identityAnchors.skinTexture}`);
                     }
                     
                     // ⑥ 发型锚点层
                     const hairFeatures = [identityAnchors.hairStyle, identityAnchors.hairlineDetails].filter(Boolean);
                     if (hairFeatures.length > 0) {
-                      lines.push(`⑥ 发型锚点层: ${hairFeatures.join(', ')}`);
+                      lines.push(`${t("⑥ 发型锚点层")}: ${hairFeatures.join(', ')}`);
                     }
                   }
                   
                   // 负面提示词
                   if (charNegativePrompt) {
                     lines.push('');
-                    lines.push('--- 负面提示词 ---');
+                    lines.push(`--- ${t("负面提示词")} ---`);
                     if (charNegativePrompt.avoid && charNegativePrompt.avoid.length > 0) {
-                      lines.push(`避免: ${charNegativePrompt.avoid.join(', ')}`);
+                      lines.push(`${t("避免")}: ${charNegativePrompt.avoid.join(', ')}`);
                     }
                     if (charNegativePrompt.styleExclusions && charNegativePrompt.styleExclusions.length > 0) {
-                      lines.push(`风格排除: ${charNegativePrompt.styleExclusions.join(', ')}`);
+                      lines.push(`${t("风格排除")}: ${charNegativePrompt.styleExclusions.join(', ')}`);
                     }
                   }
                   
                   // 专业视觉提示词
                   if (visualPromptEn || visualPromptZh) {
                     lines.push('');
-                    lines.push('--- 专业视觉提示词 ---');
+                    lines.push(`--- ${t("专业视觉提示词")} ---`);
                     if (visualPromptEn) lines.push(`EN: ${visualPromptEn}`);
                     if (visualPromptZh) lines.push(`ZH: ${visualPromptZh}`);
                   }
@@ -1082,32 +1082,32 @@ export function GenerationPanel({ selectedCharacter, onCharacterCreated }: Gener
                 // 年代信息
                 if (storyYear || era) {
                   lines.push('');
-                  lines.push('--- 年代信息 ---');
-                  if (storyYear) lines.push(`故事年份: ${storyYear}年`);
-                  if (era) lines.push(`时代背景: ${era}`);
+                  lines.push(`--- ${t("年代信息")} ---`);
+                  if (storyYear) lines.push(t("故事年份: {{v0}}年", { v0: storyYear }));
+                  if (era) lines.push(`${t("时代背景")}: ${era}`);
                 }
                 
                 // 视觉风格
                 const stylePreset = getStyleById(styleId);
                 const styleLabel = stylePreset?.name || styleId;
                 lines.push('');
-                lines.push(`视觉风格: ${styleLabel}`);
+                lines.push(`${t("视觉风格")}: ${styleLabel}`);
                 if (stylePreset?.prompt) {
-                  lines.push(`风格提示词: ${stylePreset.prompt.substring(0, 100)}...`);
+                  lines.push(`${t("风格提示词")}: ${stylePreset.prompt.substring(0, 100)}...`);
                 }
                 
                 // 参考图片
                 if (referenceImages.length > 0) {
-                  lines.push(`参考图片: ${referenceImages.length} 张`);
+                  lines.push(t("参考图片: {{v0}} 张", { v0: referenceImages.length }));
                 }
                 
                 // 生成内容
                 const selectedSheetElements = selectedElements.map(id => SHEET_ELEMENTS.find(e => e.id === id)).filter(Boolean);
                 if (selectedSheetElements.length > 0) {
-                  const labels = selectedSheetElements.map(e => e?.label).join(', ');
+                  const labels = selectedSheetElements.map(e => e?.label ? t(e.label) : '').join(', ');
                   const prompts = selectedSheetElements.map(e => e?.prompt).join(', ');
-                  lines.push(`生成内容: ${labels}`);
-                  lines.push(`内容提示词: ${prompts}`);
+                  lines.push(`${t("生成内容")}: ${labels}`);
+                  lines.push(`${t("内容提示词")}: ${prompts}`);
                 }
                 
                 const text = lines.join('\n');

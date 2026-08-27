@@ -146,7 +146,7 @@ export function ShotGroupPrompt({
             </TooltipTrigger>
             <TooltipContent>
               <div className="text-xs space-y-1">
-                <p className="font-medium">图片引用 ({result.refs.images.length}/{SEEDANCE_LIMITS.maxImages})</p>
+                <p className="font-medium">{t("图片引用 ({{v0}}/{{v1}})", { v0: result.refs.images.length, v1: SEEDANCE_LIMITS.maxImages })}</p>
                 {result.refs.images.map((r) => (
                   <p key={r.id} className="text-muted-foreground">
                     {r.tag}: {r.fileName}
@@ -177,8 +177,8 @@ export function ShotGroupPrompt({
             </TooltipTrigger>
             <TooltipContent>
               <p>
-                视频引用 ({result.refs.videos.length}/{SEEDANCE_LIMITS.maxVideos})
-                {result.refs.videos.length === 0 && " — 可在镜头卡片中上传"}
+                {t("视频引用 ({{v0}}/{{v1}})", { v0: result.refs.videos.length, v1: SEEDANCE_LIMITS.maxVideos })}
+                {result.refs.videos.length === 0 && t(" — 可在镜头卡片中上传")}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -204,8 +204,8 @@ export function ShotGroupPrompt({
             </TooltipTrigger>
             <TooltipContent>
               <p>
-                音频引用 ({result.refs.audios.length}/{SEEDANCE_LIMITS.maxAudios})
-                {result.refs.audios.length === 0 && " — 可在镜头卡片中上传"}
+                {t("音频引用 ({{v0}}/{{v1}})", { v0: result.refs.audios.length, v1: SEEDANCE_LIMITS.maxAudios })}
+                {result.refs.audios.length === 0 && t(" — 可在镜头卡片中上传")}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -215,7 +215,7 @@ export function ShotGroupPrompt({
         {result.dialogueSegments.length > 0 && (
           <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">
             <MessageCircle className="h-3 w-3" />
-            <span>{result.dialogueSegments.length} 段对白</span>
+            <span>{t("{{v0}} 段对白", { v0: result.dialogueSegments.length })}</span>
           </div>
         )}
 

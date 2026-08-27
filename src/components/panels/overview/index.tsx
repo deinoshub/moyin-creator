@@ -270,7 +270,7 @@ export function OverviewPanel() {
                   <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                     {section.id}
                   </span>
-                  <h4 className="text-sm font-semibold text-foreground">{section.title}</h4>
+                  <h4 className="text-sm font-semibold text-foreground">{t(section.title)}</h4>
                 </div>
                 <div className="space-y-2">
                   {section.steps.map((step, idx) => (
@@ -278,7 +278,7 @@ export function OverviewPanel() {
                       <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted text-[11px] text-muted-foreground">
                         {idx + 1}
                       </span>
-                      <p className="text-sm leading-5 text-foreground">{step}</p>
+                      <p className="text-sm leading-5 text-foreground">{t(step)}</p>
                     </div>
                   ))}
                 </div>
@@ -304,7 +304,7 @@ export function OverviewPanel() {
           </span>
         </div>
         <span className="text-[10px] text-muted-foreground">
-          {episodes.length} 集 · {meta.characters.length} 角色 · {meta.factions?.length || 0} 阵营 · {meta.keyItems?.length || 0} 物品
+          {t("{{v0}} 集 · {{v1}} 角色 · {{v2}} 阵营 · {{v3}} 物品", { v0: episodes.length, v1: meta.characters.length, v2: meta.factions?.length || 0, v3: meta.keyItems?.length || 0 })}
         </span>
       </div>
 
@@ -316,19 +316,19 @@ export function OverviewPanel() {
             <div className="p-4 space-y-4 pb-32">
               {/* 故事核心 */}
               <SectionCard icon={BookOpen} title={t("故事核心")}>
-                <FieldRow label="标题">
+                <FieldRow label={t("标题")}>
                   <EditableText value={meta.title} placeholder={t("剧名")} onSave={(v) => update({ title: v })} />
                 </FieldRow>
                 <FieldRow label="Logline">
                   <EditableText value={meta.logline} placeholder={t("一句话概括故事主线...")} onSave={(v) => update({ logline: v })} />
                 </FieldRow>
-                <FieldRow label="大纲">
+                <FieldRow label={t("大纲")}>
                   <EditableText value={meta.outline} placeholder={t("100-500字完整故事线...")} onSave={(v) => update({ outline: v })} multiline />
                 </FieldRow>
-                <FieldRow label="核心冲突">
+                <FieldRow label={t("核心冲突")}>
                   <EditableText value={meta.centralConflict} placeholder={t("主线矛盾...")} onSave={(v) => update({ centralConflict: v })} />
                 </FieldRow>
-                <FieldRow label="主题">
+                <FieldRow label={t("主题")}>
                   <div className="flex flex-wrap gap-1">
                     {meta.themes?.map((t, i) => (
                       <Badge key={i} variant="secondary" className="text-[10px]">{t}</Badge>
@@ -342,41 +342,41 @@ export function OverviewPanel() {
 
               {/* 世界观 */}
               <SectionCard icon={Globe} title={t("世界观")}>
-                <FieldRow label="时代">
+                <FieldRow label={t("时代")}>
                   <EditableText value={meta.era} placeholder={t("古代/现代/未来...")} onSave={(v) => update({ era: v })} />
                 </FieldRow>
-                <FieldRow label="类型">
+                <FieldRow label={t("类型")}>
                   <EditableText value={meta.genre} placeholder={t("武侠/商战/爱情...")} onSave={(v) => update({ genre: v })} />
                 </FieldRow>
-                <FieldRow label="时间线">
+                <FieldRow label={t("时间线")}>
                   <EditableText value={meta.timelineSetting} placeholder={t("精确时间线设定...")} onSave={(v) => update({ timelineSetting: v })} />
                 </FieldRow>
-                <FieldRow label="社会体系">
+                <FieldRow label={t("社会体系")}>
                   <EditableText value={meta.socialSystem} placeholder={t("社会/权力结构...")} onSave={(v) => update({ socialSystem: v })} />
                 </FieldRow>
-                <FieldRow label="力量体系">
+                <FieldRow label={t("力量体系")}>
                   <EditableText value={meta.powerSystem} placeholder={t("武功/魔法/科技...")} onSave={(v) => update({ powerSystem: v })} />
                 </FieldRow>
-                <FieldRow label="世界观">
+                <FieldRow label={t("世界观")}>
                   <EditableText value={meta.worldNotes} placeholder={t("补充设定...")} onSave={(v) => update({ worldNotes: v })} multiline />
                 </FieldRow>
               </SectionCard>
 
               {/* 制作设定 */}
               <SectionCard icon={Settings2} title={t("制作设定")}>
-                <FieldRow label="视觉风格">
-                  <span className="text-xs">{meta.styleId ? getStyleName(meta.styleId) : "未设置"}</span>
+                <FieldRow label={t("视觉风格")}>
+                  <span className="text-xs">{meta.styleId ? t(getStyleName(meta.styleId)) : t("未设置")}</span>
                 </FieldRow>
-                <FieldRow label="色彩基调">
+                <FieldRow label={t("色彩基调")}>
                   <EditableText value={meta.colorPalette} placeholder={t("全剧主色调...")} onSave={(v) => update({ colorPalette: v })} />
                 </FieldRow>
-                <FieldRow label="语言">
-                  <span className="text-xs">{meta.language || "中文"}</span>
+                <FieldRow label={t("语言")}>
+                  <span className="text-xs">{t(meta.language || "中文")}</span>
                 </FieldRow>
               </SectionCard>
 
               {/* 分集目录 — 子项目管理台 */}
-              <SectionCard icon={ListOrdered} title={`分集目录 (${episodes.length} 集)`}>
+              <SectionCard icon={ListOrdered} title={t("分集目录 ({{v0}} 集)", { v0: episodes.length })}>
                 {episodes.length === 0 ? (
                   <p className="text-xs text-muted-foreground italic">{t("暂无分集数据（导入剧本后自动生成）")}</p>
                 ) : (
@@ -402,13 +402,13 @@ export function OverviewPanel() {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-1.5 font-medium">
                               {statusIcon}
-                              <span>第{ep.episodeIndex}集</span>
+                              <span>{t("第{{v0}}集", { v0: ep.episodeIndex })}</span>
                               <span className="text-muted-foreground font-normal truncate max-w-[200px]">
                                 {ep.title.replace(/^第\d+集[：:]?\s*/, '')}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 text-[10px] text-muted-foreground shrink-0">
-                              {epSceneCount > 0 && <span>{epSceneCount} 场景</span>}
+                              {epSceneCount > 0 && <span>{t("{{v0}} 场景", { v0: epSceneCount })}</span>}
                               {ep.season && <Badge variant="outline" className="text-[9px] h-4 px-1">{ep.season}</Badge>}
                               {/* 编辑标题 */}
                               <Button
@@ -417,7 +417,7 @@ export function OverviewPanel() {
                                 className="h-5 w-5 opacity-0 group-hover:opacity-70"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  const newTitle = window.prompt('编辑集标题', ep.title);
+                                  const newTitle = window.prompt(t("编辑集标题"), ep.title);
                                   if (newTitle !== null && newTitle !== ep.title) {
                                     updateEpisodeBundle(projectId, ep.episodeIndex, { title: newTitle });
                                   }
@@ -495,12 +495,12 @@ export function OverviewPanel() {
                         <Input
                           value={newEpTitle}
                           onChange={(e) => setNewEpTitle(e.target.value)}
-                          placeholder={`第${episodes.length + 1}集 标题...`}
+                          placeholder={t("第{{v0}}集 标题...", { v0: episodes.length + 1 })}
                           className="h-7 text-xs flex-1"
                           autoFocus
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
-                              addEpisodeBundle(projectId, newEpTitle || `第${episodes.length + 1}集`);
+                              addEpisodeBundle(projectId, newEpTitle || t("第{{v0}}集", { v0: episodes.length + 1 }));
                               setNewEpTitle('');
                               setShowNewEpisode(false);
                             }
@@ -515,12 +515,12 @@ export function OverviewPanel() {
                           variant="default"
                           className="h-7 text-xs px-3"
                           onClick={() => {
-                            addEpisodeBundle(projectId, newEpTitle || `第${episodes.length + 1}集`);
+                            addEpisodeBundle(projectId, newEpTitle || t("第{{v0}}集", { v0: episodes.length + 1 }));
                             setNewEpTitle('');
                             setShowNewEpisode(false);
                           }}
                         >
-                          <Check className="h-3 w-3 mr-1" /> 添加
+                          <Check className="h-3 w-3 mr-1" /> {t("添加")}
                         </Button>
                         <Button
                           size="icon"
@@ -538,7 +538,7 @@ export function OverviewPanel() {
                         className="w-full h-8 text-xs"
                         onClick={() => setShowNewEpisode(true)}
                       >
-                        <Plus className="h-3 w-3 mr-1" /> 新建集
+                        <Plus className="h-3 w-3 mr-1" /> {t("新建集")}
                       </Button>
                     )}
                   </div>
@@ -555,7 +555,7 @@ export function OverviewPanel() {
           <ScrollArea className="h-full">
             <div className="p-4 space-y-4 pb-32">
               {/* 角色列表 */}
-              <SectionCard icon={Users} title={`角色 (${meta.characters.length})`}>
+              <SectionCard icon={Users} title={t("角色 ({{v0}})", { v0: meta.characters.length })}>
                 {meta.characters.length === 0 ? (
                   <p className="text-xs text-muted-foreground italic">{t("暂无角色数据")}</p>
                 ) : (
@@ -574,7 +574,7 @@ export function OverviewPanel() {
                             <Badge variant="secondary" className="text-[9px] h-4 px-1">{t("配角")}</Badge>
                           )}
                         </div>
-                        {char.age && <span className="text-muted-foreground">{char.age}岁</span>}
+                        {char.age && <span className="text-muted-foreground">{t("{{v0}}岁", { v0: char.age })}</span>}
                         {char.role && (
                           <p className="text-muted-foreground line-clamp-2">{char.role}</p>
                         )}
@@ -584,13 +584,13 @@ export function OverviewPanel() {
                 )}
                 {meta.characters.length > 20 && (
                   <p className="text-[10px] text-muted-foreground">
-                    还有 {meta.characters.length - 20} 个角色...
+                    {t("还有 {{v0}} 个角色...", { v0: meta.characters.length - 20 })}
                   </p>
                 )}
               </SectionCard>
 
               {/* 阵营 */}
-              <SectionCard icon={Shield} title={`阵营 (${meta.factions?.length || 0})`}>
+              <SectionCard icon={Shield} title={t("阵营 ({{v0}})", { v0: meta.factions?.length || 0 })}>
                 {!meta.factions?.length ? (
                   <p className="text-xs text-muted-foreground italic">{t("暂无阵营数据（AI 校准后自动填充）")}</p>
                 ) : (
@@ -610,19 +610,19 @@ export function OverviewPanel() {
               </SectionCard>
 
               {/* 关键物品 */}
-              <SectionCard icon={Gem} title={`关键物品 (${meta.keyItems?.length || 0})`}>
+              <SectionCard icon={Gem} title={t("关键物品 ({{v0}})", { v0: meta.keyItems?.length || 0 })}>
                 <NamedEntityList
                   items={meta.keyItems}
-                  emptyText="暂无关键物品（AI 分析后自动填充）"
+                  emptyText={t("暂无关键物品（AI 分析后自动填充）")}
                   onUpdate={(items) => update({ keyItems: items })}
                 />
               </SectionCard>
 
               {/* 地理 */}
-              <SectionCard icon={MapPin} title={`地理设定 (${meta.geography?.length || 0})`}>
+              <SectionCard icon={MapPin} title={t("地理设定 ({{v0}})", { v0: meta.geography?.length || 0 })}>
                 <NamedEntityList
                   items={meta.geography}
-                  emptyText="暂无地理数据（AI 分析后自动填充）"
+                  emptyText={t("暂无地理数据（AI 分析后自动填充）")}
                   onUpdate={(items) => update({ geography: items })}
                 />
               </SectionCard>

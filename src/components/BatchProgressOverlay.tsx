@@ -30,7 +30,7 @@ export function BatchProgressOverlay({
   current,
   total,
   message,
-  title = "批量生成中",
+  title = t("批量生成中"),
 }: BatchProgressOverlayProps) {
   if (!isVisible) return null;
 
@@ -58,7 +58,7 @@ export function BatchProgressOverlay({
           <div className="flex justify-between text-[10px] text-zinc-500 font-mono">
             <span>{progress}%</span>
             <span>
-              {current} of {total} completed
+              {t("{{v0}} / {{v1}} 已完成", { v0: current, v1: total })}
             </span>
           </div>
         </div>

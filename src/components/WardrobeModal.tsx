@@ -119,7 +119,7 @@ export function WardrobeModal({
             <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
               <Shirt className="w-4 h-4 text-indigo-400" />
             </div>
-            {character.name} - 造型管理
+            {t("{{v0}} - 造型管理", { v0: character.name })}
           </DialogTitle>
           <DialogDescription className="text-zinc-500">
             {t("为角色创建不同的服装、状态或造型变体，用于不同场景的镜头生成。")}
@@ -160,7 +160,7 @@ export function WardrobeModal({
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h5 className="text-sm font-medium text-zinc-300">
-                  造型变体 ({variations.length})
+                  {t("造型变体 ({{v0}})", { v0: variations.length })}
                 </h5>
                 <Button
                   size="sm"

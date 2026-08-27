@@ -45,7 +45,7 @@ import {
 import { cn, generateUUID } from "@/lib/utils";
 import { toast } from "sonner";
 import type { Project } from "@/stores/project-store";
-import { t } from "@/i18n";
+import { t, getDateLocale } from "@/i18n";
 
 export function Dashboard() {
   const { projects, createProject, deleteProject, renameProject } = useProjectStore();
@@ -175,7 +175,7 @@ export function Dashboard() {
       // all storage adapters. Any pending persist writes could then route to the
       // wrong per-project file, overwriting the copied data.
       const newProjectId = generateUUID();
-      const newProjectName = `${source.name} (副本)`;
+      const newProjectName = t("{{v0}} (副本)", { v0: source.name });
 
       // STEP 3: Copy per-project files with project ID rewriting.
       // activeProjectId still points to the source project during this step.
@@ -260,12 +260,12 @@ export function Dashboard() {
     const now = Date.now();
     const diff = now - timestamp;
     
-    if (diff < 60000) return "刚刚";
-    if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`;
-    if (diff < 86400000) return `${Math.floor(diff / 3600000)} 小时前`;
-    if (diff < 604800000) return `${Math.floor(diff / 86400000)} 天前`;
+    if (diff < 60000) return t("刚刚");
+    if (diff < 3600000) return t("{{v0}} 分钟前", { v0: Math.floor(diff / 60000) });
+    if (diff < 86400000) return t("{{v0}} 小时前", { v0: Math.floor(diff / 3600000) });
+    if (diff < 604800000) return t("{{v0}} 天前", { v0: Math.floor(diff / 86400000) });
     
-    return new Date(timestamp).toLocaleDateString("zh-CN", {
+    return new Date(timestamp).toLocaleDateString(getDateLocale(), {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -296,7 +296,7 @@ export function Dashboard() {
               onClick={toggleSelectionMode}
             >
               <CheckSquare className="w-4 h-4 mr-1.5" />
-              {selectionMode ? "退出选择" : "管理"}
+              {selectionMode ? t("退出选择") : t("管理")}
             </Button>
           )}
           <Button
@@ -317,9 +317,9 @@ export function Dashboard() {
             <div>
               <h2 className="text-xl font-bold text-foreground mb-1">{t("我的项目")}</h2>
               <p className="text-sm text-muted-foreground">
-                共 {projects.length} 个项目
+                {t("共 {{v0}} 个项目", { v0: projects.length })}
                 {selectionMode && selectedIds.size > 0 && (
-                  <span className="text-primary ml-2">· 已选 {selectedIds.size} 个</span>
+                  <span className="text-primary ml-2">{t("· 已选 {{v0}} 个", { v0: selectedIds.size })}</span>
                 )}
               </p>
             </div>
@@ -328,7 +328,7 @@ export function Dashboard() {
             {selectionMode && (
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" onClick={handleSelectAll}>
-                  {allSelected ? "取消全选" : "全选"}
+                  {allSelected ? t("取消全选") : t("全选")}
                 </Button>
                 <Button
                   variant="destructive"
@@ -337,7 +337,7 @@ export function Dashboard() {
                   onClick={() => setBatchDeleteConfirm(true)}
                 >
                   <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-                  删除选中 ({selectedIds.size})
+                  {t("删除选中 ({{v0}})", { v0: selectedIds.size })}
                 </Button>
               </div>
             )}
@@ -533,7 +533,7 @@ export function Dashboard() {
             <DialogTitle>{t("确认批量删除")}</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            即将删除 <span className="text-foreground font-medium">{selectedIds.size}</span> 个项目，
+            {t("即将删除 {{v0}} 个项目，", { v0: selectedIds.size })}
             {t("此操作不可撤销。确定继续？")}
           </p>
           <DialogFooter>

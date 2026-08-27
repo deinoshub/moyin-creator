@@ -53,7 +53,7 @@ export function ExportView() {
   const splitScenes = directorProject?.splitScenes || [];
   const scriptData = scriptProject?.scriptData;
   const targetDuration = scriptProject?.targetDuration || "60s";
-  const projectName = (scriptData?.title || activeProject?.name || '未命名项目').replace(/[^a-zA-Z0-9\u4e00-\u9fa5_-]/g, '_');
+  const projectName = (scriptData?.title || activeProject?.name || t("未命名项目")).replace(/[^a-zA-Z0-9\u4e00-\u9fa5_-]/g, '_');
 
   // === 进度计算：合并 Script shots 和 Director splitScenes 的状态 ===
   const hasSplitScenes = splitScenes.length > 0;
@@ -87,7 +87,7 @@ export function ExportView() {
   const handleExportToFolder = useCallback(async () => {
     if (isExporting) return;
     setIsExporting(true);
-    setExportProgress({ current: 0, total: 0, message: '准备导出...' });
+    setExportProgress({ current: 0, total: 0, message: t("准备导出...") });
 
     try {
       if (hasSplitScenes) {
@@ -130,7 +130,7 @@ export function ExportView() {
   const handleDownloadFiles = useCallback(async () => {
     if (isExporting) return;
     setIsExporting(true);
-    setExportProgress({ current: 0, total: 0, message: '准备下载...' });
+    setExportProgress({ current: 0, total: 0, message: t("准备下载...") });
 
     try {
       if (hasSplitScenes) {
@@ -200,7 +200,7 @@ export function ExportView() {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
-                      {scriptData?.title || activeProject?.name || "未命名项目"}
+                      {scriptData?.title || activeProject?.name || t("未命名项目")}
                     </h3>
                     <span className="px-2 py-0.5 bg-muted border border-border text-muted-foreground text-[10px] rounded uppercase font-mono tracking-wider">
                       Master Sequence
@@ -281,7 +281,7 @@ export function ExportView() {
                           {/* Hover Tooltip */}
                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-20 whitespace-nowrap">
                             <div className="bg-popover text-popover-foreground text-[10px] px-2 py-1 rounded border border-border shadow-xl">
-                              Scene {idx + 1}{hasVideo ? ' ✓视频' : hasImage ? ' ✓图片' : ''}
+                              Scene {idx + 1}{hasVideo ? t(" ✓视频") : hasImage ? t(" ✓图片") : ''}
                             </div>
                           </div>
                         </div>
@@ -317,8 +317,8 @@ export function ExportView() {
                 {/* 图片/视频状态摘要 */}
                 {hasSplitScenes && (
                   <div className="flex items-center gap-4 mt-2 text-[10px] text-muted-foreground">
-                    <span>图片: {imageReadyItems}/{totalItems}</span>
-                    <span>视频: {completedItems}/{totalItems}</span>
+                    <span>{t("图片: {{v0}}/{{v1}}", { v0: imageReadyItems, v1: totalItems })}</span>
+                    <span>{t("视频: {{v0}}/{{v1}}", { v0: completedItems, v1: totalItems })}</span>
                   </div>
                 )}
               </div>
@@ -372,7 +372,7 @@ export function ExportView() {
               {/* Export stats hint */}
               {hasSplitScenes && directorStats && (
                 <div className="mt-4 text-xs text-muted-foreground">
-                  可导出: {directorStats.imagesReady} 张首帧 · {directorStats.videosReady} 个视频{directorStats.endFramesReady > 0 ? ` · ${directorStats.endFramesReady} 张尾帧` : ''}
+                  {t("可导出: {{v0}} 张首帧 · {{v1}} 个视频", { v0: directorStats.imagesReady, v1: directorStats.videosReady })}{directorStats.endFramesReady > 0 ? t(" · {{v0}} 张尾帧", { v0: directorStats.endFramesReady }) : ''}
                 </div>
               )}
             </div>

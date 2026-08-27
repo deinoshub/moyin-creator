@@ -128,7 +128,7 @@ export function ExtendEditDialog({
   }, [sourceGroup, mode, direction, duration, editType, description, addShotGroup, onConfirm, onOpenChange]);
 
   const isExtend = mode === "extend";
-  const title = isExtend ? "视频延长" : "视频编辑";
+  const title = isExtend ? t("视频延长") : t("视频编辑");
   const Icon = isExtend ? Timer : Scissors;
 
   return (
@@ -141,8 +141,8 @@ export function ExtendEditDialog({
           </DialogTitle>
           <DialogDescription>
             {isExtend
-              ? "基于已生成视频继续延长，支持向后或向前拓展"
-              : "对已生成视频进行剧情编辑、角色替换等操作"
+              ? t("基于已生成视频继续延长，支持向后或向前拓展")
+              : t("对已生成视频进行剧情编辑、角色替换等操作")
             }
           </DialogDescription>
         </DialogHeader>
@@ -157,7 +157,7 @@ export function ExtendEditDialog({
               muted
             />
             <div className="px-2 py-1 bg-muted/30 text-xs text-muted-foreground">
-              来源：{sourceGroup.name}
+              {t("来源：{{v0}}", { v0: sourceGroup.name })}
             </div>
           </div>
         )}
@@ -213,8 +213,8 @@ export function ExtendEditDialog({
                   {EDIT_TYPE_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
                       <div className="flex flex-col">
-                        <span>{opt.label}</span>
-                        <span className="text-[10px] text-muted-foreground">{opt.desc}</span>
+                        <span>{t(opt.label)}</span>
+                        <span className="text-[10px] text-muted-foreground">{t(opt.desc)}</span>
                       </div>
                     </SelectItem>
                   ))}
@@ -233,8 +233,8 @@ export function ExtendEditDialog({
               className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
               rows={3}
               placeholder={isExtend
-                ? "描述延长部分的画面内容，如：镜头缓缓拉远，角色渐行渐远..."
-                : "描述编辑目标，如：将白天场景改为夜晚，保持人物不变..."
+                ? t("描述延长部分的画面内容，如：镜头缓缓拉远，角色渐行渐远...")
+                : t("描述编辑目标，如：将白天场景改为夜晚，保持人物不变...")
               }
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -269,7 +269,7 @@ export function ExtendEditDialog({
             ) : (
               <>
                 <Icon className="h-3 w-3 mr-1" />
-                确认{isExtend ? "延长" : "编辑"}
+                {isExtend ? t("确认延长") : t("确认编辑")}
               </>
             )}
           </Button>

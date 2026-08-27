@@ -18,6 +18,7 @@
 
 import { useAPIConfigStore, type AIFeature, type IProvider, AI_FEATURES } from '@/stores/api-config-store';
 import { parseApiKeys, getProviderKeyManager, ApiKeyManager } from '@/lib/api-key-manager';
+import { t } from "@/i18n";
 
 export interface FeatureConfig {
   feature: AIFeature;
@@ -220,13 +221,12 @@ export function isFeatureReady(feature: AIFeature): boolean {
 export function getFeatureNotConfiguredMessage(feature: AIFeature): string {
   const featureInfo = AI_FEATURES.find(f => f.key === feature);
   const featureName = featureInfo?.name || feature;
-  return `请先在设置中为「${featureName}」功能绑定 API 供应商`;
+  return t("请先在设置中为「{{v0}}」功能绑定 API 供应商", { v0: /[\u4e00-\u9fff]/.test(featureName) ? t(featureName) : featureName });
 }
 
 // ==================== 统一 API 调用入口 ====================
 
 import { callChatAPI } from '@/lib/script/script-parser';
-import { t } from "@/i18n";
 
 export interface CallFeatureAPIOptions {
   /** 自定义温度，默认 0.7 */

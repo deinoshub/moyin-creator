@@ -268,7 +268,7 @@ export function SettingsPanel() {
       if (result.success) {
         toast.success(t("图床 {{v0}} 连接测试成功", { v0: provider.name }));
       } else {
-        toast.error(t("测试失败: {{v0}}", { v0: result.error || '未知错误' }));
+        toast.error(t("测试失败: {{v0}}", { v0: result.error || t("未知错误") }));
       }
     } catch (error) {
       toast.error(t("连接测试失败，请检查网络"));
@@ -482,7 +482,7 @@ export function SettingsPanel() {
       toast.success(t("存储位置已更新，正在刷新..."));
       setTimeout(() => window.location.reload(), 500);
     } else {
-      toast.error(t("移动失败: {{v0}}", { v0: result.error || "未知错误" }));
+      toast.error(t("移动失败: {{v0}}", { v0: result.error || t("未知错误") }));
     }
   };
 
@@ -494,7 +494,7 @@ export function SettingsPanel() {
     if (result.success) {
       toast.success(t("数据已导出"));
     } else {
-      toast.error(t("导出失败: {{v0}}", { v0: result.error || "未知错误" }));
+      toast.error(t("导出失败: {{v0}}", { v0: result.error || t("未知错误") }));
     }
   };
 
@@ -502,7 +502,7 @@ export function SettingsPanel() {
     if (!window.storageManager) return;
     const dir = await window.storageManager.selectDirectory();
     if (!dir) return;
-    if (!confirm("导入将覆盖当前数据，是否继续？")) return;
+    if (!confirm(t("导入将覆盖当前数据，是否继续？"))) return;
     const result = await window.storageManager.importData(dir);
     if (result.success) {
       // 清除 localStorage 中的缓存，防止旧数据覆盖导入的数据
@@ -529,7 +529,7 @@ export function SettingsPanel() {
       // 延迟刷新页面以确保缓存清理完成
       setTimeout(() => window.location.reload(), 500);
     } else {
-      toast.error(t("导入失败: {{v0}}", { v0: result.error || "未知错误" }));
+      toast.error(t("导入失败: {{v0}}", { v0: result.error || t("未知错误") }));
     }
   };
 
@@ -544,12 +544,12 @@ export function SettingsPanel() {
     // Validate the directory first
     const validation = await window.storageManager.validateDataDir(dir);
     if (!validation.valid) {
-      toast.error(validation.error || "无效的数据目录");
+      toast.error(validation.error || t("无效的数据目录"));
       return;
     }
     
     // Confirm with user
-    const confirmMsg = `检测到 ${validation.projectCount || 0} 个项目文件，${validation.mediaCount || 0} 个素材文件。\n\n是否指向此目录？操作后建议重启应用。`;
+    const confirmMsg = t("检测到 {{v0}} 个项目文件，{{v1}} 个素材文件。\n\n是否指向此目录？操作后建议重启应用。", { v0: validation.projectCount || 0, v1: validation.mediaCount || 0 });
     if (!confirm(confirmMsg)) return;
     
     const result = await window.storageManager.linkData(dir);
@@ -579,7 +579,7 @@ export function SettingsPanel() {
       toast.success(t("已指向数据目录，正在刷新..."));
       setTimeout(() => window.location.reload(), 500);
     } else {
-      toast.error(t("操作失败: {{v0}}", { v0: result.error || "未知错误" }));
+      toast.error(t("操作失败: {{v0}}", { v0: result.error || t("未知错误") }));
     }
   };
 
@@ -592,7 +592,7 @@ export function SettingsPanel() {
         toast.success(t("缓存已清理"));
         refreshCacheSize();
       } else {
-        toast.error(t("清理失败: {{v0}}", { v0: result.error || "未知错误" }));
+        toast.error(t("清理失败: {{v0}}", { v0: result.error || t("未知错误") }));
       }
     } finally {
       setIsClearingCache(false);
@@ -609,7 +609,7 @@ export function SettingsPanel() {
     try {
       const result = await window.appUpdater.checkForUpdates();
       if (!result.success) {
-        toast.error(t("检查更新失败: {{v0}}", { v0: result.error || "未知错误" }));
+        toast.error(t("检查更新失败: {{v0}}", { v0: result.error || t("未知错误") }));
         return;
       }
 
@@ -648,7 +648,7 @@ export function SettingsPanel() {
         {activeTab === "api" && (
           <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground font-mono bg-muted border border-border px-2 py-1 rounded">
-              已配置: {configuredCount}/{providers.length}
+              {t("已配置: {{v0}}/{{v1}}", { v0: configuredCount, v1: providers.length })}
             </span>
             <Button onClick={() => setAddDialogOpen(true)} size="sm">
               <Plus className="h-4 w-4 mr-1" />
@@ -838,7 +838,7 @@ export function SettingsPanel() {
                                     toggleExpanded(provider.id);
                                   }}
                                 >
-                                  模型 ({provider.model.length})
+                                  {t("模型 ({{v0}})", { v0: provider.model.length })}
                                 </span>
                                 <span>|</span>
                                 <span
@@ -868,7 +868,7 @@ export function SettingsPanel() {
                                     if (result.success) {
                                       toast.success(t("已同步 {{v0}} 个模型", { v0: result.count }));
                                     } else {
-                                      toast.error(result.error || '同步失败');
+                                      toast.error(result.error || t("同步失败"));
                                     }
                                   }}
                                   disabled={!configured || syncingProvider === provider.id}
@@ -925,7 +925,7 @@ export function SettingsPanel() {
                                         {t("确认删除")}
                                       </AlertDialogTitle>
                                       <AlertDialogDescription>
-                                        确定要删除 {provider.name} 吗？此操作无法撤销。
+                                        {t("确定要删除 {{v0}} 吗？此操作无法撤销。", { v0: provider.name })}
                                       </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
@@ -960,7 +960,7 @@ export function SettingsPanel() {
                               className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
                             >
                               <ExternalLink className="h-3 w-3" />
-                              前往魔因API获取 Key →
+                              {t("前往魔因API获取 Key →")}
                             </a>
                           </div>
                         )}
@@ -1005,7 +1005,7 @@ export function SettingsPanel() {
                                   {keyCount > 1 && (
                                     <span className="text-muted-foreground">
                                       {" "}
-                                      (+{keyCount - 1} 个)
+                                      {t("(+{{v0}} 个)", { v0: keyCount - 1 })}
                                     </span>
                                   )}
                                 </span>
@@ -1052,7 +1052,7 @@ export function SettingsPanel() {
               {/* About */}
               <div className="text-center py-8 text-muted-foreground border-t border-border">
                 <p className="text-sm font-medium">{t("魔因漫创 Moyin Creator")}</p>
-                <p className="text-xs mt-1">v{appVersion} · AI 驱动的动漫视频创作工具</p>
+                <p className="text-xs mt-1">v{appVersion} · {t("AI 驱动的动漫视频创作工具")}</p>
               </div>
             </div>
           </ScrollArea>
@@ -1198,7 +1198,7 @@ export function SettingsPanel() {
               {/* About */}
               <div className="text-center py-8 text-muted-foreground border-t border-border">
                 <p className="text-sm font-medium">{t("魔因漫创 Moyin Creator")}</p>
-                <p className="text-xs mt-1">v{appVersion} · AI 驱动的动漫视频创作工具</p>
+                <p className="text-xs mt-1">v{appVersion} · {t("AI 驱动的动漫视频创作工具")}</p>
               </div>
             </div>
           </ScrollArea>
@@ -1254,12 +1254,12 @@ export function SettingsPanel() {
                                 )}
                               </div>
                               <p className="text-xs text-muted-foreground">
-                                {provider.platform} · {endpoint || '未设置地址'}
+                                {provider.platform} · {endpoint || t("未设置地址")}
                               </p>
                               <p className="text-xs text-muted-foreground">
                                 {provider.apiKeyOptional && keyCount === 0
-                                  ? "游客上传（无需 Key）"
-                                  : `${keyCount} 个 Key`}
+                                  ? t("游客上传（无需 Key）")
+                                  : t("{{v0}} 个 Key", { v0: keyCount })}
                               </p>
                             </div>
                             <div className="flex items-center gap-2">
@@ -1282,7 +1282,7 @@ export function SettingsPanel() {
                               {testingImageHostId === provider.id ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                               ) : (
-                                "测试连接"
+                                t("测试连接")
                               )}
                             </Button>
                             <Button size="sm" variant="outline" onClick={() => handleEditImageHost(provider)}>
@@ -1309,7 +1309,7 @@ export function SettingsPanel() {
                     {t("启用多个图床会按顺序轮流使用，失败自动切换。")}
                   </p>
                   <p className="text-sm">
-                    默认已启用 SCDN 图床，不需要填写KEY；
+                    {t("默认已启用 SCDN 图床，不需要填写KEY；")}
                     {t("ImgBB 默认保持关闭，如需使用请手动开启并自行测试可用性。")}
                   </p>
                 </div>
@@ -1318,7 +1318,7 @@ export function SettingsPanel() {
               {/* About */}
               <div className="text-center py-8 text-muted-foreground border-t border-border">
                 <p className="text-sm font-medium">{t("魔因漫创 Moyin Creator")}</p>
-                <p className="text-xs mt-1">v{appVersion} · AI 驱动的动漫视频创作工具</p>
+                <p className="text-xs mt-1">v{appVersion} · {t("AI 驱动的动漫视频创作工具")}</p>
               </div>
             </div>
           </ScrollArea>
@@ -1405,7 +1405,7 @@ export function SettingsPanel() {
                   <Label className="text-xs text-muted-foreground">{t("数据存储位置（包含项目和素材）")}</Label>
                   <div className="flex items-center gap-2">
                     <Input
-                      value={storagePaths.basePath || '默认位置'}
+                      value={storagePaths.basePath || t("默认位置")}
                       placeholder={t("默认位置")}
                       readOnly
                       className="font-mono text-xs"
@@ -1426,7 +1426,7 @@ export function SettingsPanel() {
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  ⚠️ 更改位置会移动现有数据到新目录（自动创建 projects/ 和 media/ 子目录）
+                  {t("⚠️ 更改位置会移动现有数据到新目录（自动创建 projects/ 和 media/ 子目录）")}
                 </p>
               </div>
 
@@ -1452,7 +1452,7 @@ export function SettingsPanel() {
                     {t("指向已有数据目录")}
                   </Button>
                   <p className="text-xs text-muted-foreground">
-                    💡 选择包含 projects/ 和 media/ 子目录的数据目录，操作后重启应用。
+                    {t("💡 选择包含 projects/ 和 media/ 子目录的数据目录，操作后重启应用。")}
                   </p>
                 </div>
               </div>
@@ -1468,7 +1468,7 @@ export function SettingsPanel() {
                   <div>
                     <p className="text-sm font-medium">{t("缓存大小")}</p>
                     <p className="text-xs text-muted-foreground">
-                      {isCacheLoading ? "计算中..." : formatBytes(cacheSize)}
+                      {isCacheLoading ? t("计算中...") : formatBytes(cacheSize)}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -1489,7 +1489,7 @@ export function SettingsPanel() {
                       {isClearingCache ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
-                        "清理"
+                        t("清理")
                       )}
                     </Button>
                   </div>
@@ -1587,7 +1587,7 @@ export function SettingsPanel() {
               {/* About */}
               <div className="text-center py-8 text-muted-foreground border-t border-border">
                 <p className="text-sm font-medium">{t("魔因漫创 Moyin Creator")}</p>
-                <p className="text-xs mt-1">v{appVersion} · AI 驱动的动漫视频创作工具</p>
+                <p className="text-xs mt-1">v{appVersion} · {t("AI 驱动的动漫视频创作工具")}</p>
               </div>
             </div>
           </ScrollArea>

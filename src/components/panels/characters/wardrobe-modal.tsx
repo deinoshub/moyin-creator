@@ -167,7 +167,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
       name: preset.name,
       visualPrompt: preset.prompt,
     });
-    toast.success(t("已添加 \"{{v0}}\" 变体", { v0: preset.name }));
+    toast.success(t("已添加 \"{{v0}}\" 变体", { v0: t(preset.name) }));
   };
 
   const resetAddForm = () => {
@@ -179,7 +179,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
 
   // ---- Delete Variation ----
   const handleDeleteVariation = (variationId: string, name: string) => {
-    if (confirm(`确定要删除变体 "${name}" 吗？`)) {
+    if (confirm(t("确定要删除变体 \"{{v0}}\" 吗？", { v0: name }))) {
       deleteVariation(character.id, variationId);
       toast.success(t("变体已删除"));
     }
@@ -232,7 +232,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
     const ts = Date.now();
     const safeName = `${character.name}_${varName}_${ts}`.replace(/[^a-zA-Z0-9\u4e00-\u9fa5_]/g, '_');
 
-    toast.loading("正在保存图片到本地...", { id: 'saving-wardrobe' });
+    toast.loading(t("正在保存图片到本地..."), { id: 'saving-wardrobe' });
 
     try {
       // 1. Persist image locally (same as generation-panel)
@@ -252,7 +252,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
       const aiFolderId = getOrCreateCategoryFolder('ai-image');
       addMediaFromUrl({
         url: localPath,
-        name: `衣橱-${character.name}-${varName}`,
+        name: `${t("衣橱")}-${character.name}-${varName}`,
         type: 'image',
         source: 'ai-image',
         folderId: aiFolderId,
@@ -279,7 +279,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
         <DialogContent className="max-w-lg max-h-[80vh] p-0 gap-0 flex flex-col">
           <div className="px-6 pt-6 pb-3 shrink-0">
             <DialogHeader>
-              <DialogTitle>预览变体图片 - {variation?.name}</DialogTitle>
+              <DialogTitle>{t("预览变体图片 - {{v0}}", { v0: variation?.name ? t(variation.name) : "" })}</DialogTitle>
               <DialogDescription>
                 {t("确认图片是否满意，满意则保存")}
               </DialogDescription>
@@ -331,7 +331,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Shirt className="h-5 w-5" />
-              {character.name} 的衣橱
+              {t("{{v0}} 的衣橱", { v0: character.name })}
             </DialogTitle>
             <DialogDescription>
               {t("管理角色的不同造型变体，AI 生成时将保持面部特征一致")}
@@ -360,11 +360,11 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
                 <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{t("基础定妆照")}</span>
               </div>
               <p className="text-xs text-muted-foreground truncate mt-0.5">
-                {character.visualTraits || character.description || '未设置视觉描述'}
+                {character.visualTraits || character.description || t("未设置视觉描述")}
               </p>
               {!characterBaseImage && (
                 <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
-                  ⚠ 请先生成角色基础图片，衣橱变体需要基础定妆照作为参考
+                  {t("⚠ 请先生成角色基础图片，衣橱变体需要基础定妆照作为参考")}
                 </p>
               )}
             </div>
@@ -373,7 +373,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
           {/* Existing variations */}
           {variations.length > 0 && (
             <div className="space-y-2">
-              <Label className="text-sm font-medium">已有变体 ({variations.length})</Label>
+              <Label className="text-sm font-medium">{t("已有变体 ({{v0}})", { v0: variations.length })}</Label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {variations.map((variation) => (
                   <div
@@ -391,7 +391,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
                           variation.referenceImage && "cursor-pointer ring-offset-background hover:ring-2 hover:ring-primary/40 hover:ring-offset-1 transition-shadow"
                         )}
                         onDoubleClick={() => variation.referenceImage && setZoomedImageUrl(variation.referenceImage)}
-                        title={variation.referenceImage ? "双击放大查看" : undefined}
+                        title={variation.referenceImage ? t("双击放大查看") : undefined}
                       >
                         {variation.referenceImage ? (
                           <img 
@@ -407,7 +407,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
                       {/* Info */}
                       <div className="flex-1 min-w-0 overflow-hidden">
                         <div className="flex items-center justify-between gap-1">
-                          <h4 className="font-medium text-sm truncate flex-1 min-w-0">{variation.name}</h4>
+                          <h4 className="font-medium text-sm truncate flex-1 min-w-0">{t(variation.name)}</h4>
                           <Button
                             size="icon"
                             variant="text"
@@ -444,7 +444,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
                           {generatingVariationId === variation.id ? (
                             <>
                               <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                              生成中...
+                              {t("生成中...")}
                             </>
                           ) : variation.referenceImage ? (
                             <>
@@ -484,12 +484,12 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
                     {exists ? (
                       <>
                         <Check className="h-3 w-3 mr-1 text-green-500" />
-                        {preset.name}
+                        {t(preset.name)}
                       </>
                     ) : (
                       <>
                         <Plus className="h-3 w-3 mr-1" />
-                        {preset.name}
+                        {t(preset.name)}
                       </>
                     )}
                   </Button>
@@ -521,7 +521,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
               {/* Clothing reference images upload */}
               <div className="space-y-2">
                 <Label className="text-xs text-muted-foreground">
-                  服装参考图（可选，最多 {MAX_CLOTHING_REFS} 张）
+                  {t("服装参考图（可选，最多 {{v0}} 张）", { v0: MAX_CLOTHING_REFS })}
                 </Label>
                 <p className="text-[11px] text-muted-foreground">
                   {t("上传想要角色穿的衣服/造型照片，AI 会将角色融合到该服装中")}
@@ -536,7 +536,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
                     >
                       <img
                         src={img}
-                        alt={`服装参考 ${idx + 1}`}
+                        alt={t("服装参考 {{v0}}", { v0: idx + 1 })}
                         className="w-full h-full object-cover"
                       />
                       <button
@@ -546,7 +546,7 @@ export function WardrobeModal({ character, open, onOpenChange }: WardrobeModalPr
                         <X className="h-3 w-3" />
                       </button>
                       <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-[9px] text-white text-center py-0.5">
-                        参考 {idx + 1}
+                        {t("参考 {{v0}}", { v0: idx + 1 })}
                       </div>
                     </div>
                   ))}
@@ -858,7 +858,7 @@ async function pollForVariationImage(
       }
 
       if (status === 'failed' || status === 'error') {
-        throw new Error(data.error || '图片生成失败');
+        throw new Error(data.error || t("图片生成失败"));
       }
     } catch (error) {
       if (error instanceof Error &&

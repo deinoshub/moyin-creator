@@ -84,7 +84,7 @@ export function ProjectHeader() {
               onClick={backToSeries}
               title={t("返回全剧视图")}
             >
-              第{activeEpisodeIndex}集
+              {t("第{{v0}}集", { v0: activeEpisodeIndex })}
             </button>
           </>
         )}
@@ -95,7 +95,7 @@ export function ProjectHeader() {
               {currentStageConfig.phase}
             </span>
             <span className="text-xs text-zinc-400">
-              {currentStageConfig.label}
+              {t(currentStageConfig.label)}
             </span>
           </>
         )}

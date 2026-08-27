@@ -366,7 +366,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     
     const mediaId = addMediaFromUrl({
       url: videoUrl,
-      name: `分镜 ${sceneId + 1} - AI视频`,
+      name: t("分镜 {{v0}} - AI视频", { v0: sceneId + 1 }),
       type: 'video',
       source: 'ai-video',
       thumbnailUrl,
@@ -385,7 +385,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     
     const mediaId = addMediaFromUrl({
       url: imageUrl,
-      name: `分镜 ${sceneId + 1} - AI图片`,
+      name: t("分镜 {{v0}} - AI图片", { v0: sceneId + 1 }),
       type: 'image',
       source: 'ai-image',
       folderId,
@@ -529,7 +529,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     updateSplitSceneImageStatus(sceneId, {
       imageStatus: 'idle',
       imageProgress: 0,
-      imageError: '用户已取消',
+      imageError: t("用户已取消"),
     });
     setIsGenerating(false);
     setCurrentGeneratingId(null);
@@ -541,7 +541,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     updateSplitSceneVideo(sceneId, {
       videoStatus: 'idle',
       videoProgress: 0,
-      videoError: '用户已取消',
+      videoError: t("用户已取消"),
     });
     setIsGenerating(false);
     setCurrentGeneratingId(null);
@@ -553,7 +553,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     updateSplitSceneEndFrameStatus(sceneId, {
       endFrameStatus: 'idle',
       endFrameProgress: 0,
-      endFrameError: '用户已取消',
+      endFrameError: t("用户已取消"),
     });
     setIsGenerating(false);
     toast.info(t("分镜 {{v0}} 尾帧生成已停止", { v0: sceneId + 1 }));
@@ -575,7 +575,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
       ? (scene.imageDataUrl || scene.imageHttpUrl) 
       : (scene.endFrameImageUrl || scene.endFrameHttpUrl);
     if (!imageUrl) {
-      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? "首帧" : "尾帧" }));
+      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? t("首帧") : t("尾帧") }));
       return;
     }
 
@@ -727,7 +727,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
       ? (scene.imageDataUrl || scene.imageHttpUrl)
       : (scene.endFrameImageUrl || scene.endFrameHttpUrl);
     if (!imageUrl) {
-      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? "首帧" : "尾帧" }));
+      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? t("首帧") : t("尾帧") }));
       return;
     }
 
@@ -932,7 +932,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
             headers: { 'Authorization': `Bearer ${apiKey}` },
           });
           
-          if (!statusResp.ok) throw new Error(`查询任务失败: ${statusResp.status}`);
+          if (!statusResp.ok) throw new Error(t("查询任务失败: {{v0}}", { v0: statusResp.status }));
           
           const statusData = await statusResp.json();
           const status = (statusData.status ?? statusData.data?.status ?? '').toString().toLowerCase();
@@ -947,7 +947,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
           }
           
           if (status === 'failed' || status === 'error') {
-            throw new Error(statusData.error || '图片生成失败');
+            throw new Error(statusData.error || t("图片生成失败"));
           }
           
           await new Promise(r => setTimeout(r, pollInterval));
@@ -1001,7 +1001,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
       slicedImages.forEach((img, idx) => {
         addMediaFromUrl({
           url: img,
-          name: `四宫格-${variationTypeLabel}-${variationLabels[idx]}`,
+          name: t("四宫格-{{v0}}-{{v1}}", { v0: t(variationTypeLabel), v1: t(variationLabels[idx]) }),
           type: 'image',
           source: 'ai-image',
           folderId,
@@ -1042,7 +1042,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     setQuadGridResultOpen(false);
     setQuadGridResult(null);
     setQuadGridTarget(null);
-    toast.success(t("已应用到{{v0}}", { v0: quadGridTarget.type === "start" ? "首帧" : "尾帧" }));
+    toast.success(t("已应用到{{v0}}", { v0: quadGridTarget.type === "start" ? t("首帧") : t("尾帧") }));
   }, [quadGridResult, quadGridTarget, updateSplitSceneImage, updateSplitSceneEndFrame]);
 
   // Copy quad grid image to another scene
@@ -1061,7 +1061,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
       updateSplitSceneEndFrame(targetSceneId, localPath, undefined, httpUrl || undefined);
     }
 
-    toast.success(t("已复制到分镜 {{v0}} 的{{v1}}", { v0: targetSceneId + 1, v1: targetFrameType === "start" ? "首帧" : "尾帧" }));
+    toast.success(t("已复制到分镜 {{v0}} 的{{v1}}", { v0: targetSceneId + 1, v1: targetFrameType === "start" ? t("首帧") : t("尾帧") }));
   }, [quadGridResult, updateSplitSceneImage, updateSplitSceneEndFrame]);
 
   // Save quad grid image to library
@@ -1074,7 +1074,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     const folderId = getImageFolderId();
     addMediaFromUrl({
       url: imageToSave,
-      name: `四宫格-${quadGridResult.variationType}-${imageIndex + 1}`,
+      name: t("四宫格-{{v0}}-{{v1}}", { v0: t(quadGridResult.variationType), v1: imageIndex + 1 }),
       type: 'image',
       source: 'ai-image',
       folderId,
@@ -1092,7 +1092,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     quadGridResult.images.forEach((img, idx) => {
       addMediaFromUrl({
         url: img,
-        name: `四宫格-${quadGridResult.variationType}-${idx + 1}`,
+        name: t("四宫格-{{v0}}-{{v1}}", { v0: t(quadGridResult.variationType), v1: idx + 1 }),
         type: 'image',
         source: 'ai-image',
         folderId,
@@ -1893,7 +1893,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
           }
 
           if (status === 'failed' || status === 'error') {
-            const errorMsg = statusData.error || statusData.message || statusData.data?.error || '图片生成失败';
+            const errorMsg = statusData.error || statusData.message || statusData.data?.error || t("图片生成失败");
             console.error('[SplitScenes] Task failed:', statusData);
             throw new Error(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg));
           }
@@ -2086,10 +2086,10 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
     const firstCount = tasks.filter(t => t.type === 'first').length;
     const endCount = tasks.filter(t => t.type === 'end').length;
     const parts: string[] = [];
-    if (firstCount > 0) parts.push(`${firstCount}个首帧`);
-    if (endCount > 0) parts.push(`${endCount}个尾帧`);
+    if (firstCount > 0) parts.push(t("{{v0}}个首帧", { v0: firstCount }));
+    if (endCount > 0) parts.push(t("{{v0}}个尾帧", { v0: endCount }));
     const completedCount = splitScenes.filter(isSceneCompleted).length;
-    const skipInfo = completedCount > 0 ? `（跳过${completedCount}个已完成视频）` : '';
+    const skipInfo = completedCount > 0 ? t("（跳过{{v0}}个已完成视频）", { v0: completedCount }) : '';
     toast.info(t("开始九宫格合并生成：{{v0}}{{v1}}", { v0: parts.join('、'), v1: skipInfo }));
 
     // 任务分页（每9个任务一页，混合首帧和尾帧）
@@ -2399,7 +2399,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
             headers: { 'Authorization': `Bearer ${apiKey}` },
           });
           
-          if (!statusResp.ok) throw new Error(`查询任务失败: ${statusResp.status}`);
+          if (!statusResp.ok) throw new Error(t("查询任务失败: {{v0}}", { v0: statusResp.status }));
           
           const statusData = await statusResp.json();
           console.log(`[MergedGen] Task ${taskId} poll #${attempt}:`, JSON.stringify(statusData, null, 2).substring(0, 500));
@@ -2423,7 +2423,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
           }
           
           if (status === 'failed' || status === 'error') {
-            const errMsg = statusData.error || statusData.message || statusData.data?.error || '图片生成失败';
+            const errMsg = statusData.error || statusData.message || statusData.data?.error || t("图片生成失败");
             throw new Error(typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg));
           }
           
@@ -2434,7 +2434,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
       if (!gridImageUrl) {
         console.error('[MergedGen] 无法获取图片 URL, apiResult:', apiResult);
         if (taskId) {
-          throw new Error(`九宫格生成超时（任务 ${taskId} 在 3 分钟内未完成），API 服务可能繁忙，请稍后重试`);
+          throw new Error(t("九宫格生成超时（任务 {{v0}} 在 3 分钟内未完成），API 服务可能繁忙，请稍后重试", { v0: taskId }));
         }
         throw new Error(t("未获取到九宫格图片 URL，请检查 API 响应"));
       }
@@ -2479,7 +2479,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
             // 自动保存尾帧到素材库
             addMediaFromUrl({
               url: localPath,
-              name: `分镜 ${s.id + 1} - 尾帧`,
+              name: t("分镜 {{v0}} - 尾帧", { v0: s.id + 1 }),
               type: 'image',
               source: 'ai-image',
               folderId,
@@ -2491,7 +2491,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
             // 自动保存首帧到素材库
             addMediaFromUrl({
               url: localPath,
-              name: `分镜 ${s.id + 1} - 首帧`,
+              name: t("分镜 {{v0}} - 首帧", { v0: s.id + 1 }),
               type: 'image',
               source: 'ai-image',
               folderId,
@@ -2533,7 +2533,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
       // 统计当前页的首帧/尾帧数量
       const pageFirstCount = pageTasks.filter(t => t.type === 'first').length;
       const pageEndCount = pageTasks.filter(t => t.type === 'end').length;
-      const pageInfo = [pageFirstCount > 0 ? `${pageFirstCount}首帧` : '', pageEndCount > 0 ? `${pageEndCount}尾帧` : ''].filter(Boolean).join('+');
+      const pageInfo = [pageFirstCount > 0 ? t("{{v0}}首帧", { v0: pageFirstCount }) : '', pageEndCount > 0 ? t("{{v0}}尾帧", { v0: pageEndCount }) : ''].filter(Boolean).join('+');
       
       console.log(`[MergedGen] 第 ${p + 1}/${taskPages.length} 页，${pageTasks.length} 个任务（${pageInfo}），${refs.length} 张参考图`);
       
@@ -2565,7 +2565,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
 
         const pageFirstCount = fp.pageTasks.filter(t => t.type === 'first').length;
         const pageEndCount = fp.pageTasks.filter(t => t.type === 'end').length;
-        const pageInfo = [pageFirstCount > 0 ? `${pageFirstCount}首帧` : '', pageEndCount > 0 ? `${pageEndCount}尾帧` : ''].filter(Boolean).join('+');
+        const pageInfo = [pageFirstCount > 0 ? t("{{v0}}首帧", { v0: pageFirstCount }) : '', pageEndCount > 0 ? t("{{v0}}尾帧", { v0: pageEndCount }) : ''].filter(Boolean).join('+');
 
         console.log(`[MergedGen] 自动重试第 ${fp.index + 1} 页（${pageInfo}）`);
         try {
@@ -2578,7 +2578,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
           const retryMsg = retryErr.message || String(retryErr);
           console.error(`[MergedGen] 第 ${fp.index + 1} 页重试仍然失败:`, retryMsg);
           // 再次重置为 error 状态
-          resetPageTasksToError(fp.pageTasks, `重试失败: ${retryMsg}`);
+          resetPageTasksToError(fp.pageTasks, t("重试失败: {{v0}}", { v0: retryMsg }));
           toast.error(t("第 {{v0}} 页重试失败: {{v1}}", { v0: fp.index + 1, v1: retryMsg.substring(0, 80) }));
         }
       }
@@ -2837,7 +2837,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
         const folderId = getImageFolderId();
         addMediaFromUrl({
           url: persistResult.localPath,
-          name: `分镜 ${sceneId + 1} - 尾帧`,
+          name: t("分镜 {{v0}} - 尾帧", { v0: sceneId + 1 }),
           type: 'image',
           source: 'ai-image',
           folderId,
@@ -2896,7 +2896,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
             const folderId = getImageFolderId();
             addMediaFromUrl({
               url: persistResult.localPath,
-              name: `分镜 ${sceneId + 1} - 尾帧`,
+              name: t("分镜 {{v0}} - 尾帧", { v0: sceneId + 1 }),
               type: 'image',
               source: 'ai-image',
               folderId,
@@ -2908,7 +2908,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
           }
 
           if (status === 'failed' || status === 'error') {
-            const errorMsg = statusData.error || statusData.message || '尾帧生成失败';
+            const errorMsg = statusData.error || statusData.message || t("尾帧生成失败");
             throw new Error(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg));
           }
 
@@ -2943,7 +2943,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
         const folderId = getVideoFolderId();
         addMediaFromUrl({
           url: scene.videoUrl,
-          name: `分镜 ${scene.id + 1} - AI视频`,
+          name: t("分镜 {{v0}} - AI视频", { v0: scene.id + 1 }),
           type: 'video',
           source: 'ai-video',
           thumbnailUrl: scene.imageDataUrl,
@@ -2960,7 +2960,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
         const folderId = getImageFolderId();
         addMediaFromUrl({
           url: scene.imageDataUrl,
-          name: `分镜 ${scene.id + 1} - AI图片`,
+          name: t("分镜 {{v0}} - AI图片", { v0: scene.id + 1 }),
           type: 'image',
           source: 'ai-image',
           folderId,
@@ -3227,12 +3227,12 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
                         {isGenerating ? (
                           <>
                             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            生成中...
+                            {t("生成中...")}
                           </>
                         ) : (
                           <>
                             <Play className="h-4 w-4 mr-2" />
-                            生成预告片视频 ({trailerScenes.length})
+                            {t("生成预告片视频 ({{v0}})", { v0: trailerScenes.length })}
                           </>
                         )}
                       </Button>
@@ -3313,7 +3313,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
             <SelectContent>
               {SCLASS_ASPECT_RATIOS.map(ar => (
                 <SelectItem key={ar.value} value={ar.value} className="text-xs">
-                  {ar.label}
+                  {t(ar.label)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -3438,7 +3438,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
               onClick={() => setUseExemplar(!useExemplar)}
               className={cn("px-2 py-1 text-xs rounded border", useExemplar ? 'bg-primary text-primary-foreground' : 'bg-background hover:bg-muted')}
               title={t("同组格引用已生成的范例成片作为锚点")}
-            >范例锚图 {useExemplar ? '开' : '关'}</button>
+            >{t("范例锚图 {{v0}}", { v0: useExemplar ? t("开") : t("关") })}</button>
           </div>
 
           {/* 执行合并生成 - 突出显示 */}
@@ -3459,7 +3459,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
                 className="h-8 px-3 text-xs"
                 onClick={handleStopMergedGeneration}
               >
-                <Square className="h-3.5 w-3.5 mr-1" />停止
+                <Square className="h-3.5 w-3.5 mr-1" />{t("停止")}
               </Button>
             )}
           </div>
@@ -3486,14 +3486,14 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
               "px-3 py-1.5 text-xs",
               sclassGenMode === 'group' ? 'bg-primary text-primary-foreground' : 'bg-background hover:bg-muted'
             )}
-          >分组生成 ({shotGroups.length} 组)</button>
+          >{t("分组生成 ({{v0}} 组)", { v0: shotGroups.length })}</button>
           <button
             onClick={() => setSclassGenMode('single')}
             className={cn(
               "px-3 py-1.5 text-xs border-l",
               sclassGenMode === 'single' ? 'bg-primary text-primary-foreground' : 'bg-background hover:bg-muted'
             )}
-          >单镜生成 ({splitScenes.length} 镜)</button>
+          >{t("单镜生成 ({{v0}} 镜)", { v0: splitScenes.length })}</button>
         </div>
         {sclassGenMode === 'group' && (
           <div className="ml-auto flex items-center gap-1.5">
@@ -3563,7 +3563,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
                     generateGroupVideo(g, {
                       confirmBeforeGenerate: () => new Promise((resolve) => {
                         resolve(window.confirm(
-                          '格子图和提示词已准备完毕，可在分组卡片中预览和下载。\n\n是否继续调用 API 生成视频？'
+                          t("格子图和提示词已准备完毕，可在分组卡片中预览和下载。\n\n是否继续调用 API 生成视频？")
                         ));
                       }),
                     }).finally(() => setIsGenerating(false));
@@ -3705,16 +3705,16 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                         {batchProgress
-                          ? `生成中 (${batchProgress.completed}/${batchProgress.total})...`
-                          : '生成中...'
+                          ? t("生成中 ({{v0}}/{{v1}})...", { v0: batchProgress.completed, v1: batchProgress.total })
+                          : t("生成中...")
                         }
                       </>
                     ) : (
                       <>
                         <Play className="h-4 w-4 mr-2" />
                         {sclassGenMode === 'group'
-                          ? `Seedance 2.0 组级生成 (${groupsNeedGen}/${shotGroups.length} 组)`
-                          : `生成视频 (${scenesNeedVideo}/${splitScenes.length})`
+                          ? t("Seedance 2.0 组级生成 ({{v0}}/{{v1}} 组)", { v0: groupsNeedGen, v1: shotGroups.length })
+                          : t("生成视频 ({{v0}}/{{v1}})", { v0: scenesNeedVideo, v1: splitScenes.length })
                         }
                       </>
                     )}
@@ -3724,9 +3724,9 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
                   {noImages ? (
                     <p>{t("请先为分镜生成图片，再生成视频")}</p>
                   ) : sclassGenMode === 'group' ? (
-                    <p>{groupsNeedGen} 个组待生成，每组合并多镜头 + @引用 调用 Seedance 2.0，逐组尾帧传递</p>
+                    <p>{t("{{v0}} 个组待生成，每组合并多镜头 + @引用 调用 Seedance 2.0，逐组尾帧传递", { v0: groupsNeedGen })}</p>
                   ) : (
-                    <p>{scenesWithImages} 个分镜已有图片，{scenesNeedVideo} 个待生成视频</p>
+                    <p>{t("{{v0}} 个分镜已有图片，{{v1}} 个待生成视频", { v0: scenesWithImages, v1: scenesNeedVideo })}</p>
                   )}
                 </TooltipContent>
               </Tooltip>
@@ -3817,7 +3817,7 @@ export function SClassScenes({ onBack, onGenerateVideos }: SplitScenesProps) {
         result={quadGridResult}
         frameType={quadGridTarget?.type || "start"}
         currentSceneId={quadGridTarget?.sceneId ?? 0}
-        availableScenes={splitScenes.map(s => ({ id: s.id, label: `分镜 ${s.id + 1}` }))}
+        availableScenes={splitScenes.map(s => ({ id: s.id, label: t("分镜 {{v0}}", { v0: s.id + 1 }) }))}
         onApply={handleApplyQuadGrid}
         onCopyToScene={handleCopyQuadGridToScene}
       />

@@ -50,7 +50,7 @@ export function CustomStylesGrid() {
       <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div className="flex items-center gap-2">
           <h2 className="text-sm font-semibold text-foreground">{t("我的风格")}</h2>
-          <span className="text-xs text-muted-foreground">{styles.length} 个</span>
+          <span className="text-xs text-muted-foreground">{t("{{v0}} 个", { v0: styles.length })}</span>
         </div>
         <Button size="sm" onClick={() => setEditingStyle("new")}>
           <Plus className="w-3.5 h-3.5 mr-1.5" />

@@ -121,7 +121,7 @@ export function EditProviderDialog({
             <div className="flex items-center justify-between">
               <Label>API Keys</Label>
               <span className="text-xs text-muted-foreground">
-                {keyCount} 个 Key
+                {t("{{v0}} 个 Key", { v0: keyCount })}
               </span>
             </div>
             <Textarea
@@ -131,7 +131,7 @@ export function EditProviderDialog({
               className="font-mono text-sm min-h-[100px]"
             />
             <p className="text-xs text-muted-foreground">
-              💡 支持多个 Key 轮换使用，失败时自动切换到下一个
+              {t("💡 支持多个 Key 轮换使用，失败时自动切换到下一个")}
             </p>
           </div>
 

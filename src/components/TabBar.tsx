@@ -92,11 +92,11 @@ export function TabBar() {
                   className="w-full flex flex-col items-center py-2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                  <span className="text-[8px]">{theme === "dark" ? "浅色" : "深色"}</span>
+                  <span className="text-[8px]">{theme === "dark" ? t("浅色") : t("深色")}</span>
                 </button>
               </TooltipTrigger>
               <TooltipContent side="right">
-                {theme === "dark" ? "切换到浅色模式" : "切换到深色模式"}
+                {theme === "dark" ? t("切换到浅色模式") : t("切换到深色模式")}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -211,11 +211,11 @@ export function TabBar() {
                 className="w-full flex flex-col items-center py-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                <span className="text-[8px]">{theme === "dark" ? "浅色" : "深色"}</span>
+                <span className="text-[8px]">{theme === "dark" ? t("浅色") : t("深色")}</span>
               </button>
             </TooltipTrigger>
             <TooltipContent side="right">
-              {theme === "dark" ? "切换到浅色模式" : "切换到深色模式"}
+              {theme === "dark" ? t("切换到浅色模式") : t("切换到深色模式")}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

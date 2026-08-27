@@ -54,7 +54,7 @@ export function ShotSizeSelector({
               <span className="font-mono text-[10px] bg-muted px-1 rounded">
                 {preset.abbr}
               </span>
-              <span>{preset.label}</span>
+              <span>{t(preset.label)}</span>
             </div>
           </SelectItem>
         ))}
@@ -75,7 +75,7 @@ export function ShotSizeLabel({ shotSize }: { shotSize: ShotSizeType | null }) {
   return (
     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded text-[10px] font-medium">
       <span className="font-mono">{preset.abbr}</span>
-      <span>{preset.label}</span>
+      <span>{t(preset.label)}</span>
     </span>
   );
 }

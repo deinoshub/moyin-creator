@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { DURATION_PRESETS, type DurationType } from "@/stores/director-store";
 import { Clock } from "lucide-react";
+import { t } from "@/i18n";
 
 interface DurationSelectorProps {
   value: DurationType;
@@ -46,7 +47,7 @@ export function DurationSelector({
       <SelectContent>
         {DURATION_PRESETS.map((preset) => (
           <SelectItem key={preset.id} value={String(preset.id)}>
-            {preset.label}
+            {t(preset.label)}
           </SelectItem>
         ))}
       </SelectContent>

@@ -131,7 +131,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
         {providers.map((provider) => (
           <div key={provider.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-sm font-medium">{provider.name}</Label>
+              <Label className="text-sm font-medium">{t(provider.name)}</Label>
               {isConfigured(provider.id) && (
                 <span className="text-xs text-green-500 flex items-center gap-1">
                   <Check className="h-3 w-3" />
@@ -139,12 +139,12 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
                 </span>
               )}
             </div>
-            <p className="text-xs text-muted-foreground">{provider.description}</p>
+            <p className="text-xs text-muted-foreground">{t(provider.description)}</p>
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
                 <Input
                   type={showKeys[provider.id] ? "text" : "password"}
-                  placeholder={`输入 ${provider.name} API Key`}
+                  placeholder={t("输入 {{v0}} API Key", { v0: t(provider.name) })}
                   value={apiKeys[provider.id] || ""}
                   onChange={(e) => setApiKey(provider.id, e.target.value)}
                   className="pr-10 text-sm"
@@ -175,7 +175,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
                 ) : testResults[provider.id] === false ? (
                   <X className="h-4 w-4 text-destructive" />
                 ) : (
-                  "测试"
+                  t("测试")
                 )}
               </Button>
             </div>
@@ -186,7 +186,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
                   key={service}
                   className="text-[10px] px-1.5 py-0.5 rounded bg-muted"
                 >
-                  {service}
+                  {t(service)}
                 </span>
               ))}
             </div>
@@ -215,7 +215,7 @@ export function APISettings({ collapsed = true, onToggleCollapse }: APISettingsP
       {/* Tips */}
       <div className="pt-2 border-t">
         <p className="text-xs text-muted-foreground">
-          💡 API Key 仅存储在本地浏览器，不会上传到服务器
+          {t("💡 API Key 仅存储在本地浏览器，不会上传到服务器")}
         </p>
       </div>
     </div>

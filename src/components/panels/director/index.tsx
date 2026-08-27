@@ -200,7 +200,7 @@ export function DirectorView() {
       const folderId = getOrCreateCategoryFolder('ai-image');
       const mediaId = addMediaFromUrl({
         url: result.imageUrl,
-        name: `故事板-${config.sceneCount}场景`,
+        name: t("故事板-{{v0}}场景", { v0: config.sceneCount }),
         type: 'image',
         source: 'ai-image',
         folderId,
@@ -279,9 +279,9 @@ export function DirectorView() {
           return (
             <div className="flex flex-col items-center justify-center h-64 gap-4">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              <p className="text-sm text-muted-foreground">生成故事板中... {storyboardProgress}%</p>
+              <p className="text-sm text-muted-foreground">{t("生成故事板中... {{v0}}%", { v0: storyboardProgress })}</p>
               <p className="text-xs text-muted-foreground/60">
-                {storyboardConfig.sceneCount} 个场景 · {storyboardConfig.aspectRatio} · {storyboardConfig.resolution}
+                {t("{{v0}} 个场景 · {{v1}} · {{v2}}", { v0: storyboardConfig.sceneCount, v1: storyboardConfig.aspectRatio, v2: storyboardConfig.resolution })}
               </p>
             </div>
           );
@@ -348,10 +348,10 @@ export function DirectorView() {
             {/* Screenplay preview */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="font-medium">{screenplay?.title || "剧本预览"}</h3>
+                <h3 className="font-medium">{screenplay?.title || t("剧本预览")}</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">
-                    {screenplay?.scenes.length || 0} 个场景
+                    {t("{{v0}} 个场景", { v0: screenplay?.scenes.length || 0 })}
                   </span>
                   {(screenplay?.scenes.length || 0) > 0 && (
                     <Button
@@ -446,7 +446,7 @@ export function DirectorView() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">
-                  {screenplay?.scenes.length || 0} 个场景
+                  {t("{{v0}} 个场景", { v0: screenplay?.scenes.length || 0 })}
                 </span>
                 {(screenplay?.scenes.length || 0) > 0 && (
                   <Button
@@ -591,18 +591,18 @@ export function DirectorView() {
           <div className="flex items-center gap-2">
             {showHeaderStatus && (
               <span className={storyboardStatus === "editing" ? "hidden" : "text-xs text-muted-foreground capitalize"}>
-                {storyboardStatus === "generating" && `故事板 ${storyboardProgress}%`}
-                {storyboardStatus === "preview" && "预览"}
-                {storyboardStatus === "splitting" && "切割中..."}
-                {storyboardStatus === "editing" && "编辑场景"}
-                {storyboardStatus === "error" && "错误"}
-                {storyboardStatus === "idle" && screenplayStatus === "generating" && "生成剧本..."}
-                {storyboardStatus === "idle" && screenplayStatus === "ready" && "就绪"}
-                {storyboardStatus === "idle" && screenplayStatus === "generating_images" && `图片 ${overallProgress}%`}
-                {storyboardStatus === "idle" && screenplayStatus === "images_ready" && "图片就绪"}
-                {storyboardStatus === "idle" && screenplayStatus === "generating_videos" && `视频 ${overallProgress}%`}
-                {storyboardStatus === "idle" && screenplayStatus === "completed" && "完成"}
-                {storyboardStatus === "idle" && screenplayStatus === "error" && "错误"}
+                {storyboardStatus === "generating" && t("故事板 {{v0}}%", { v0: storyboardProgress })}
+                {storyboardStatus === "preview" && t("预览")}
+                {storyboardStatus === "splitting" && t("切割中...")}
+                {storyboardStatus === "editing" && t("编辑场景")}
+                {storyboardStatus === "error" && t("错误")}
+                {storyboardStatus === "idle" && screenplayStatus === "generating" && t("生成剧本...")}
+                {storyboardStatus === "idle" && screenplayStatus === "ready" && t("就绪")}
+                {storyboardStatus === "idle" && screenplayStatus === "generating_images" && t("图片 {{v0}}%", { v0: overallProgress })}
+                {storyboardStatus === "idle" && screenplayStatus === "images_ready" && t("图片就绪")}
+                {storyboardStatus === "idle" && screenplayStatus === "generating_videos" && t("视频 {{v0}}%", { v0: overallProgress })}
+                {storyboardStatus === "idle" && screenplayStatus === "completed" && t("完成")}
+                {storyboardStatus === "idle" && screenplayStatus === "error" && t("错误")}
               </span>
             )}
             <Button
@@ -612,7 +612,7 @@ export function DirectorView() {
               onClick={() => setActiveTab('settings')}
             >
               <Settings className="h-3 w-3 mr-1" />
-              {hasRequiredApis ? 'API' : '配置 API'}
+              {hasRequiredApis ? t("API") : t("配置 API")}
             </Button>
           </div>
         </div>
@@ -648,7 +648,7 @@ export function DirectorView() {
               }`}>
                 {idx + 1}
               </span>
-              <span className="hidden sm:inline">{step.name}</span>
+              <span className="hidden sm:inline">{t(step.name)}</span>
               {idx < STEPS.length - 1 && (
                 <ChevronRight className="h-3 w-3 text-muted-foreground/30 mx-1" />
               )}

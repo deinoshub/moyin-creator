@@ -144,7 +144,7 @@ export function ShotGroupCard({
     return scenes.map((s, idx) => ({
       id: s.id,
       duration: s.duration > 0 ? s.duration : 5,
-      label: `镜头${idx + 1}`,
+      label: t("镜头{{v0}}", { v0: idx + 1 }),
     }));
   }, [scenes]);
 
@@ -269,7 +269,7 @@ export function ShotGroupCard({
                   ) : (
                     <Sparkles className="h-3 w-3 mr-1" />
                   )}
-                  {isCalibrating ? '校准中' : isCalibrated ? '已校准' : 'AI校准'}
+                  {isCalibrating ? t("校准中") : isCalibrated ? t("已校准") : t("AI校准")}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

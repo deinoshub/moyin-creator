@@ -178,7 +178,7 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
         ...(type === "start" ? { imageUrl, imageStatus: "completed" } : {}),
       });
 
-      toast.success(t("{{v0}}生成完成", { v0: type === "start" ? "起始帧" : "结束帧" }));
+      toast.success(t("{{v0}}生成完成", { v0: type === "start" ? t("起始帧") : t("结束帧") }));
     } catch (error) {
       toast.error(t("生成失败: {{v0}}", { v0: (error as Error).message }));
     } finally {
@@ -238,7 +238,7 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
       : endKf?.imageUrl;
 
     if (!imageUrl) {
-      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? "起始帧" : "结束帧" }));
+      toast.error(t("请先生成{{v0}}", { v0: type === "start" ? t("起始帧") : t("结束帧") }));
       return;
     }
 
@@ -356,14 +356,14 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
     if (shotsToProcess.length === 0) return;
 
     if (allStartFramesGenerated) {
-      if (!confirm("确定要重新生成所有镜头的首帧吗？")) return;
+      if (!confirm(t("确定要重新生成所有镜头的首帧吗？"))) return;
     }
 
     setBatchProgress({
       isVisible: true,
       current: 0,
       total: shotsToProcess.length,
-      message: allStartFramesGenerated ? "正在重新生成所有首帧..." : "正在批量生成首帧...",
+      message: allStartFramesGenerated ? t("正在重新生成所有首帧...") : t("正在批量生成首帧..."),
     });
 
     for (let i = 0; i < shotsToProcess.length; i++) {
@@ -373,7 +373,7 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
       setBatchProgress((prev) => ({
         ...prev,
         current: i + 1,
-        message: `正在生成镜头 ${i + 1}/${shotsToProcess.length}...`,
+        message: t("正在生成镜头 {{v0}}/{{v1}}...", { v0: i + 1, v1: shotsToProcess.length }),
       }));
 
       try {
@@ -448,7 +448,7 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
           className="h-8"
         >
           <Sparkles className="w-3 h-3 mr-1.5" />
-          {allStartFramesGenerated ? "重新生成首帧" : "批量生成首帧"}
+          {allStartFramesGenerated ? t("重新生成首帧") : t("批量生成首帧")}
         </Button>
       </div>
 
@@ -680,7 +680,7 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
                             disabled={processingType === "start"}
                             className="text-[10px] text-indigo-400 hover:text-white disabled:opacity-50"
                           >
-                            {startKf?.imageUrl || activeShot.imageUrl ? "重新生成" : "生成"}
+                            {startKf?.imageUrl || activeShot.imageUrl ? t("重新生成") : t("生成")}
                           </button>
                         </div>
                       </div>
@@ -723,7 +723,7 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
                             disabled={processingType === "end"}
                             className="text-[10px] text-indigo-400 hover:text-white disabled:opacity-50"
                           >
-                            {endKf?.imageUrl ? "重新生成" : "生成"}
+                            {endKf?.imageUrl ? t("重新生成") : t("生成")}
                           </button>
                         </div>
                       </div>
@@ -782,7 +782,7 @@ export function ShotGridView({ onGenerateImage, onGenerateVideo }: ShotGridViewP
                       </>
                     ) : (
                       <>
-                        {activeShot.videoUrl || activeShot.interval?.videoUrl ? "重新生成视频" : "生成视频"}
+                        {activeShot.videoUrl || activeShot.interval?.videoUrl ? t("重新生成视频") : t("生成视频")}
                       </>
                     )}
                   </Button>
